@@ -1,0 +1,68 @@
+mini_substation_automation/
+│
+├── docs/
+│   ├── architecture/
+│   ├── communication_maps/
+│   ├── SCL_files/                # IEC61850 SCL/ICD/CID files
+│   └── hardware/                 
+│
+├── hardware/
+│   ├── switchyard/               # Raspberry Pi + servo hat
+│   ├── protection_relay/         # RPi + LCD firmware & configs
+│   ├── ct_arduino/               # Arduino code + Modbus config
+│   ├── ms_switchgear/            # LED/IO schematic + arduino integration
+│   └── hmi_pc/                   
+│
+├── firmware/                     # Embedded code for the microcontrollers
+│   ├── arduino_ct/
+│   │   └── src/
+│   ├── arduino_modbus/
+│   │   └── src/
+│   ├── rpi_switchyard/
+│   │   └── src/
+│   └── rpi_relay/
+│       └── src/
+│
+├── software/
+│   ├── iec61850/
+│   │   ├── servers/              # Your configs + plugins for open_server
+│   │   ├── clients/              # HMI integrations
+│   │   ├── gateway_rtu/          # IEC61850 <-> 104 gateway
+│   │   └── utils/
+│   │
+│   ├── scada/
+│   │   ├── central_scada/        # open_scada_dms config, plugins
+│   │   ├── hmi_app/              # HMI logic running on the EEE PC
+│   │   └── data_models/          # unified info model
+│   │
+│   └── tools/
+│       ├── testing/              # small apps for debugging IEC61850/104/Modbus
+│       └── simulation/           # mock CB/DS states, simulated CT currents etc.
+│
+├── config/
+│   ├── iec61850/
+│   ├── modbus/
+│   ├── hmi/
+│   ├── scada/
+│   └── gateway/
+│
+├── deps/                         # External dependencies (submodules)
+│   ├── libiec61850/              -> git submodule link
+│   ├── iec61850_open_server/     -> git submodule link
+│   ├── iec61850_open_client/     -> git submodule link
+│   ├── iec61850_open_gateway/    -> git submodule link
+│   └── open_scada_dms/           -> git submodule link
+│
+├── scripts/
+│   ├── setup/                    # install/build scripts
+│   ├── dev/                      # helper scripts for flashing, testing
+│   └── deployment/               # systemd services, environment setup
+│
+├── tests/
+│   ├── unit/
+│   ├── integration/
+│   └── system/
+│
+├── .gitmodules                   # Would reference the above deps/
+├── README.md
+└── LICENSE
