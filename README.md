@@ -258,7 +258,7 @@ Submodules should **not** be modified unless working on a dedicated branch.
 
 ## 📝 License
 
-To be defined (MIT recommended unless restrictions apply).
+Apache 2.0
 
 ---
 
@@ -266,8 +266,8 @@ To be defined (MIT recommended unless restrictions apply).
 
 For questions, ideas, or collaboration:
 
-* Project owner: **<your name>**
-* GitHub: [https://github.com/](https://github.com/)<yourname>
+* Project owner: Robin
+* GitHub: [https://github.com/](https://github.com/)robidev
 
 ---
 
@@ -275,6 +275,4 @@ Enjoy experimenting with your very own **miniature digital substation**! ⚡
 This project aims to bring IEC61850 automation into a fun, hands-on, hardware-rich environment.
 
 ```
-
----
 
