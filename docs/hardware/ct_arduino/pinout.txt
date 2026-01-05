@@ -1,0 +1,229 @@
+display pinout - 4 pins (5v, gnd, scl sda)
+charlieplexed keypad(3 pins, diodes)
+4 leds
+16 analog in
+5v out
+serial (rx=0, tx=1)
+
+
+//switchgear
+unsigned char ioarray[8] = {PIN0, PIN1, PIN2, PIN3, PIN4, PIN5, PIN6, PIN7};
+
+//leds frontpanel
+#define LED1 46 // LED1
+#define LED2 47 // LED2
+#define LED3 48 // LED3
+#define LED4 49 // LED4
+unsigned char ledarray[4] = {LED1,LED2,LED3,LED4};
+
+//lcd frontpanel
+#define LCD_SDA 20 // D20
+#define LCD_SDC 21 // D21
+unsigned char lcdpins[2] = {LCD_SDA, LCD_SDC};
+LiquidCrystal_I2C lcd(0x27,  16, 2);
+
+//6 charlieplexed buttons frontpanel
+#define BTN1 11  //
+#define BTN2 12  //
+#define BTN3 13 //
+unsigned char charlieplexed_buttons[3] = {BTN1,BTN2,BTN3};
+
+//serial for com with hs01 rpi
+Serial.begin(9600,SERIAL_8N1)
+
+//ethernet
+byte mac[] = {  0xDE, 0xAD, 0xBE, 0xEF, 0xFE, 0xED };
+IPAddress ip(192, 168, 1, 177);
+// telnet defaults to port 23
+EthernetServer ethServer(502);
+
+  Ethernet.init(10);  // Most Arduino shields
+  Ethernet.begin(mac, ip);
+
+
+//modbus
+ModbusTCPServer modbusTCPServer;
+EthernetClient clients[8];
+
+if (!modbusTCPServer.begin()) {
+modbusTCPServer.configureCoils(0x00, 1);
+
+
+
+//ADC readout
+
+[0xAA][0x55]           Header (2 bytes)
+[LEN]                 Payload length (1 byte)
+[ADC0_L][ADC0_H]      |
+[ADC1_L][ADC1_H]      | 12 × 2 bytes = 24 bytes
+...                   |
+[ADC11_L][ADC11_H]    |
+[CRC]                 CRC-8 over LEN + payload
+[0x0D][0x0A]          Trailer (CR LF, optional)
+
+➡ 30 bytes per frame
+
+At 115200 baud: ~2.6 ms per frame max → safe.
+
+
+#define ADC_CH_COUNT 12
+
+#define ADC0_PIN A0
+#define ADC1_PIN A1
+#define ADC2_PIN A2
+#define ADC3_PIN A3
+#define ADC4_PIN A4
+#define ADC5_PIN A5
+
+#define ADC6_PIN A10
+#define ADC7_PIN A11
+#define ADC8_PIN A12
+#define ADC9_PIN A13
+#define ADC10_PIN A14
+#define ADC11_PIN A15
+
+const uint8_t adcPins[ADC_CH_COUNT] = {
+  ADC0_PIN, ADC1_PIN, ADC2_PIN, ADC3_PIN,
+  ADC4_PIN, ADC5_PIN, ADC6_PIN, ADC7_PIN,
+  ADC8_PIN, ADC9_PIN, ADC10_PIN, ADC11_PIN
+};
+
+uint16_t adcValues[ADC_CH_COUNT];
+
+uint8_t crc8(const uint8_t *data, uint8_t len) {
+  uint8_t crc = 0x00;
+  while (len--) {
+    crc ^= *data++;
+    for (uint8_t i = 0; i < 8; i++) {
+      if (crc & 0x80)
+        crc = (crc << 1) ^ 0x07;
+      else
+        crc <<= 1;
+    }
+  }
+  return crc;
+}
+
+void readADC() {
+  for (uint8_t i = 0; i < ADC_CH_COUNT; i++) {
+    adcValues[i] = analogRead(adcPins[i]);
+  }
+}
+
+void sendADCPacket() {
+  const uint8_t payloadLen = ADC_CH_COUNT * 2;
+  uint8_t packet[1 + payloadLen]; // LEN + payload
+
+  packet[0] = payloadLen;
+
+  for (uint8_t i = 0; i < ADC_CH_COUNT; i++) {
+    packet[1 + i * 2]     = adcValues[i] & 0xFF;        // LSB
+    packet[1 + i * 2 + 1] = adcValues[i] >> 8;          // MSB
+  }
+
+  uint8_t crc = crc8(packet, sizeof(packet));
+
+  // Ensure buffer space before sending (important!)
+  if (Serial.availableForWrite() >= (2 + sizeof(packet) + 1 + 2)) {
+    Serial.write(0xAA);
+    Serial.write(0x55);
+    Serial.write(packet, sizeof(packet));
+    Serial.write(crc);
+    Serial.write(0x0D);
+    Serial.write(0x0A);
+  }
+}
+
+
+
+unsigned long tADC = 0;
+const unsigned long ADC_INTERVAL = 50; // ms
+
+void loop() {
+  unsigned long now = millis();
+
+  ethernetTask();   // always run this
+
+  if (now - tADC >= ADC_INTERVAL) {
+    tADC = now;
+    readADC();
+    sendADCPacket();
+  }
+}
+
+
+
+drive 1-10uS the pin low
+resistor values?
+22k ohm pulldown(red-red-orange) voor 12 ADC
+470 ohm pullup(yellow-purple-brown) voor 5v power
+470 ohm resistor(yellow-purple-brown) for busbar
+
+                              5v - 470  +
+                                        |
+5v - 470 - adc - [ 470 - x - 470 ] - gnd-adc 
+
+#define WIRE_COUNT 6
+const uint8_t wirePins[WIRE_COUNT] = {A0, A1, A2, A3, A4, A5}; // ADC pins
+
+const uint16_t ADC_GND_THRESHOLD = 600;  // ~2.9V (tweak for noise)
+const uint16_t ADC_SHORT_THRESHOLD = 750; // ~3.6V (tweak for noise)
+
+const unsigned long PULSE_SETTLE_US = 2;   // settle time when pulling LOW
+
+void detectGrounds(bool gndStatus[WIRE_COUNT]) {
+  for (uint8_t i = 0; i < WIRE_COUNT; i++) {
+    pinMode(wirePins[i], INPUT);       // ensure high-Z
+    uint16_t adc = analogRead(wirePins[i]);
+    gndStatus[i] = (adc < ADC_GND_THRESHOLD); // true if shorted to GND
+  }
+}
+
+void detectShorts(bool shortMatrix[WIRE_COUNT][WIRE_COUNT]) {
+  // Initialize all to false
+  for (uint8_t i = 0; i < WIRE_COUNT; i++)
+    for (uint8_t j = 0; j < WIRE_COUNT; j++)
+      shortMatrix[i][j] = false;
+
+  for (uint8_t drive = 0; drive < WIRE_COUNT; drive++) {
+    // Ensure all other wires are INPUT
+    for (uint8_t j = 0; j < WIRE_COUNT; j++)
+      pinMode(wirePins[j], INPUT);
+
+    // Drive one wire LOW
+    pinMode(wirePins[drive], OUTPUT);
+    digitalWrite(wirePins[drive], LOW);
+
+    delayMicroseconds(PULSE_SETTLE_US);
+
+    // Read all other wires
+    for (uint8_t sense = 0; sense < WIRE_COUNT; sense++) {
+      if (sense == drive) continue; // skip self
+      uint16_t adc = analogRead(wirePins[sense]);//110uS
+      shortMatrix[drive][sense] = (adc < ADC_SHORT_THRESHOLD); // true if connected
+    }
+
+    // Release driven pin
+    pinMode(wirePins[drive], INPUT);
+
+    // Optional small delay to avoid ADC ghosting
+    delayMicroseconds(2);
+  }
+}
+
+void loop() {
+  bool gndStatus[WIRE_COUNT];
+  bool shortMatrix[WIRE_COUNT][WIRE_COUNT];
+
+  detectGrounds(gndStatus);
+  detectShorts(shortMatrix);
+
+  // Process or send results
+  sendResultsOverSerial(gndStatus, shortMatrix);
+
+  // Other tasks
+  ethernetTask();
+  updateLEDs();
+  updateLCD();
+}
+

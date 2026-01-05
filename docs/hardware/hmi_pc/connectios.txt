@@ -1,0 +1,7 @@
+asus EEE pc
+network-connection
+power adapter
+
+ram
+disk
+processor

@@ -1,0 +1,4 @@
+pinout serial(uart5)
+pinout lcd (spi/i2c)
+power
+ethernet

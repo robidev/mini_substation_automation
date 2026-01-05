@@ -1,0 +1,4 @@
+#!/bin/bash
+SKETCH_DIR="$(dirname "$0")"
+arduino-cli upload -p /dev/ttyACM0 --fqbn arduino:avr:mega "$SKETCH_DIR"
+

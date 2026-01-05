@@ -1,0 +1,4 @@
+#!/bin/bash
+SKETCH_DIR="$(dirname "$0")"
+arduino-cli compile --fqbn arduino:avr:mega "$SKETCH_DIR"
+

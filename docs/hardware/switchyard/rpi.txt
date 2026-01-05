@@ -1,0 +1,7 @@
+servo hat
+uart+gnd
+14 outputs
+10 servo's
+5v psu
+micro-usb
+usb-a to arduino

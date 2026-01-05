@@ -1,0 +1,6 @@
+read serial values from arduino (18x2byte+2start, 2crc 2stop), 64byte buffer
+
+send servo open/close (threaded), send status intermediate/end
+
+
+
