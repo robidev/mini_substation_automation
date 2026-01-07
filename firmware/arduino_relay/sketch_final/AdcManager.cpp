@@ -112,9 +112,6 @@ void handleSerialCommand(StreamControl& sc) {
 }
 
 void adcSendTick(StreamControl& sc) {
-  if (!sc.enabled || sc.remainingFrames == 0)
-    return;
-
   uint32_t now = micros();
   if (now - sc.lastSendUs < ADC_PERIOD_US)
     return;
@@ -122,6 +119,10 @@ void adcSendTick(StreamControl& sc) {
   sc.lastSendUs = now;
 
   readADC();
+
+  if (!sc.enabled || sc.remainingFrames == 0)
+    return;
+
   sendADCPacket();   // read ADC + write serial frame
   sc.remainingFrames--;
 
@@ -145,3 +146,4 @@ void AdcManager_tick() {
 uint16_t getAdcValue(int index) {
   return adcValues[index];
 }
+ 

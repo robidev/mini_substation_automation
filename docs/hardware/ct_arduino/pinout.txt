@@ -5,6 +5,7 @@ charlieplexed keypad(3 pins, diodes)
 5v out
 serial (rx=0, tx=1)
 
+wiznet W5500
 
 //switchgear
 unsigned char ioarray[8] = {PIN0, PIN1, PIN2, PIN3, PIN4, PIN5, PIN6, PIN7};

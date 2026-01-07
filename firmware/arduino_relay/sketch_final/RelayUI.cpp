@@ -248,21 +248,21 @@ void actionSelectRTU() {
   currentRTU = currentIndex;
 }
 
-bool localEnabled = true;
-
 void actionControlMode() {
-  localEnabled = !localEnabled;
+  relay_state *relay = getRelayDataByIndex(currentRTU);
+  relay->remote = !relay->remote;
   lcd.setCursor(0, 0);
   lcd_print("Control:");
   lcd.setCursor(0, 1);
-  lcd_print(localEnabled ? "Local" : "Remote");
+  lcd_print(relay->remote? "Remote" : "Local" );
 }
 
 void actionShowStatus() {
   uint8_t len = 0;
-  BreakerEvent breaker = BREAKER_OPEN;
-  bool trip = false;
-  bool fault = false;
+  relay_state *relay = getRelayDataByIndex(currentRTU);
+  BreakerEvent breaker = (relay->tripState ? BREAKER_TRIPPED : (relay->breakerState? BREAKER_CLOSED : BREAKER_OPEN));
+  bool trip = relay->tripState;
+  bool fault = relay->faultState;
 
   lcd.setCursor(0, 0);
   len = lcd_print("Breaker: ",0); 
@@ -281,8 +281,6 @@ void actionShowStatus() {
       lcd_print("error", 16-len);
     break;
   }
-
-
   lcd.setCursor(0, 1);
   len = lcd_print("Trip:",0); 
   len += lcd_print(trip ? "Y" : "N",0);
@@ -293,36 +291,131 @@ void actionShowStatus() {
 
 void actionShowMeasurementsVT()
 {
+  relay_state *relay = getRelayDataByIndex(currentRTU);
   lcd.setCursor(0, 0);
-  lcd_print("U1:10.3 U2:10.1");
+  lcd_print("U1:",0);
+  lcd.print(relay->Measurement[0]);
+  lcd_print(" ");
+  lcd.setCursor(8, 0);
+  lcd_print("U2:",0);
+  lcd.print(relay->Measurement[1]);
   lcd.setCursor(0, 1);
-  lcd_print("U3:10.0 Un: 0.1");
+  lcd_print("U3:",0);
+  lcd.print(relay->Measurement[2]);
+  lcd_print(" ");
+  lcd.setCursor(8, 1);
+  lcd_print("Un:",0);
+  lcd.print(relay->Measurement[3]);
+  lcd_print(" ",7);
 }
 
 void actionShowMeasurementsCT()
 {
+  relay_state *relay = getRelayDataByIndex(currentRTU);
   lcd.setCursor(0, 0);
-  lcd_print("I1: 5.3 I2: 5.1");
+  lcd_print("I1:",0);
+  lcd.print(relay->Measurement[0]);
+  lcd_print(" ");
+  lcd.setCursor(8, 0);
+  lcd_print("I2:",0);
+  lcd.print(relay->Measurement[1]);
+  lcd_print(" ",7);
   lcd.setCursor(0, 1);
-  lcd_print("I3: 5.0 In: 0.0");
+  lcd_print("I3:",0);
+  lcd.print(relay->Measurement[2]);
+  lcd_print(" ");
+  lcd.setCursor(8, 1);
+  lcd_print("In:",0);
+  lcd.print(relay->Measurement[3]);
+  lcd_print(" ",7);
 }
 
 void actionShowBreakerControl()
 {
-  if(true)//check was ok
+  bool error = false;
+  relay_state *relay = getRelayDataByIndex(currentRTU);
+  switch(currentMenu->parentIndex)
+  {
+    case 0:
+      if(relay->breakerState == true) {
+        process_breaker(relay, 1, LOCAL); //open breaker
+      }
+      else
+      {
+        error = true;
+        lcd.setCursor(0, 0);
+        lcd_print("operation failed!");
+        lcd.setCursor(0, 1);
+        lcd_print("already open");
+      }
+    break;
+    case 1:
+      if(relay->breakerState == false) {
+        if(relay->tripState == false) {
+          if(relay->faultState == false) {
+            process_breaker(relay, 2, LOCAL); //close breaker
+          }
+          else
+          {
+            error = true;
+            lcd.setCursor(0, 0);
+            lcd_print("operation failed!");
+            lcd.setCursor(0, 1);
+            lcd_print("fault not clear");
+          }
+        }
+        else
+        {
+          error = true;
+          lcd.setCursor(0, 0);
+          lcd_print("operation failed!");
+          lcd.setCursor(0, 1);
+          lcd_print("reset trip first");
+        }
+      }
+      else
+      {
+        error = true;
+        lcd.setCursor(0, 0);
+        lcd_print("operation failed!");
+        lcd.setCursor(0, 1);
+        lcd_print("already closed");
+      }
+    break;
+    case 2:
+      if(relay->tripState == true) {
+        if(relay->faultState == false) {
+          process_trip(relay, 1, LOCAL); //reset trip
+        }
+        else
+        {
+          error = true;
+          lcd.setCursor(0, 0);
+          lcd_print("operation failed!");
+          lcd.setCursor(0, 1);
+          lcd_print("fault not clear");
+        }
+      }
+      else
+      {
+        error = true;
+        lcd.setCursor(0, 0);
+        lcd_print("operation failed!");
+        lcd.setCursor(0, 1);
+        lcd_print("not tripped");
+      }
+    break;
+    default:
+    return;
+  }
+  if(!error)//check was ok
   {
     lcd.setCursor(0, 0);
     lcd_print("Action executed");
     lcd.setCursor(0, 1);
     lcd_print("succesfull");
   }
-  else
-  {
-    lcd.setCursor(0, 0);
-    lcd_print("operation failed!");
-    lcd.setCursor(0, 1);
-    lcd_print("Error: blocked");
-  }
+
   delayedRedraw = millis() + 5000; //display message for 5 seconds
   //go back to previous menu
   currentIndex = currentMenu->parentIndex;
@@ -331,10 +424,27 @@ void actionShowBreakerControl()
 
 void actionShowTripHistory()
 {
+  relay_state *relay = getRelayDataByIndex(currentRTU);
   lcd.setCursor(0, 0);
-  lcd_print("Last Trip:PhasOC");
+  switch(relay->faultEvent)
+  {
+    case   None:
+      lcd_print("Last Trip: None");
+    break;
+    case   Phase_OC:
+      lcd_print("Last Trip:Phase OC");
+    break;
+    case   Earth_fault:
+      lcd_print("Last Trip:Earth");
+    break;
+    default:
+      lcd_print("Last Trip:Unknown");
+  }
+
   lcd.setCursor(0, 1);
-  lcd_print("Time: 12:34:56");
+  lcd_print("Time:",0);
+  lcd.print(relay->faultTime);
+  lcd_print("ms",10);
 }
 
 void actionShowAbout() {

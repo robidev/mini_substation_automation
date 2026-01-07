@@ -111,18 +111,18 @@ extern const Menu mainRTUMenu;
 extern const Menu mainMeasureMenu;
 extern const Menu breakerMenu;
 extern const Menu settingsMenu;
-extern Menu confirmMenu;
+extern Menu confirmBreakerMenu;
 
 // Confirm an action
-const MenuItem confirmItems[] = {
+const MenuItem confirmBreakerItems[] = {
   { strOk,              actionShowBreakerControl,    nullptr },
   { strCancel,          nullptr,                     nullptr }
 };
 
 //not const, as we rewrite the parent and index dynamic to know where the dialog came from
-Menu confirmMenu = {
+Menu confirmBreakerMenu = {
   nullptr, //signal navevents this is a dialog
-  confirmItems,
+  confirmBreakerItems,
   2,
   renderConfirmMenu,
   nullptr,// set dynamic
@@ -132,9 +132,9 @@ Menu confirmMenu = {
 
 // Breaker control
 const MenuItem breakerItems[] = {
-  { strOpen,          nullptr,    &confirmMenu },
-  { strClose,         nullptr,    &confirmMenu },
-  { strReset,         nullptr,    &confirmMenu },
+  { strOpen,          nullptr,    &confirmBreakerMenu },
+  { strClose,         nullptr,    &confirmBreakerMenu },
+  { strReset,         nullptr,    &confirmBreakerMenu },
   { strBack,          nullptr,        nullptr }
 };
 

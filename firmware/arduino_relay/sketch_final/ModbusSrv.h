@@ -1,5 +1,20 @@
 #pragma once
 #include <Arduino.h>
+#include <Client.h>
+#include "ModbusServer.h"
+
+class customModbusTCPServer : public ModbusServer {
+public:
+  customModbusTCPServer();
+  virtual ~customModbusTCPServer();
+  int begin(int id = 0xff);
+  void accept(Client& client);
+  virtual int poll();
+
+private:
+  Client* _client;
+};
+
 
 void ModbusSrv_init();
 void ModbusSrv_tick();
@@ -13,9 +28,11 @@ Floats (for CT/VT) stored as 2 consecutive 16-bit registers if needed
 No scaling is applied — raw values are used
 All operations are single coil/write per function for simplicity
 
+mbpoll -m tcp -a 1 -t 3 -0 -r 0 -c 50 172.16.1.12
+
 | Address | Name            | Type | Description           | Values                                  |
 | ------- | --------------- | ---- | --------------------- | --------------------------------------- |
-| 40001   | Breaker Control | RW   | Command to breaker    | 0 = No action, 1 = Close, 2 = Open      |
+| 40001   | Breaker Control | RW   | Command to breaker    | 0 = No action, , 1 = Open, 2 = Close      |
 | 40002   | Trip Reset      | RW   | Clears a trip         | 0 = No action, 1 = Reset trip           |
 | 40004   | Local/Remote    | RW   | set to local/remote   | 0 = Local, 1 = Remote(cannot be written)|
 
@@ -43,14 +60,18 @@ All operations are single coil/write per function for simplicity
 | 30022   | VC   | RO   | Phase C voltage                     |                           |
 | 30023   | Vn   | RO   | Phase neutral voltage               |                           |
 
+
 | Address | Name           | Type | Description                           |
 | ------- | -------------- | ---- | ------------------------------------- |
 | 30030   | Last Trip Type | RO   | 0=None, 1=Phase OC, 2=Earth Fault     |
 | 30031   | Last Trip Time | RO   | Unix timestamp or seconds since reset |
 
 
-  modbusTCP.configureHoldingRegisters(0, 64);// means 40000
-  modbusTCP.configureInputRegisters(0, 64);  // means 30000
-  modbusTCP.configureCoils(0, 32);
-  modbusTCP.configureDiscreteInputs(0, 32);
+| Address | Name                | Type | Description         |
+| ------- | ------------------- | ---- | ------------------- |
+| 30040   | PIOC Pickup current | RO   | current in amps     |
+| 30041   | PTOC Pickup current | RO   | current in amps     |
+| 30042   | PTOC TMS            | RO   | Time mulitplier     |
+
 */
+

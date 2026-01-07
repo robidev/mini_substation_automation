@@ -2,10 +2,10 @@
 #include <Arduino.h>
 
 /* ================= MS LED OUTPUTS ================= */
-constexpr uint8_t RED1 = 3; // in
-constexpr uint8_t RED2 = 5; // out1
-constexpr uint8_t RED3 = 2; // out2
-constexpr uint8_t RED4 = 4; // out3
+constexpr uint8_t RED1 = 3;  // in
+constexpr uint8_t RED2 = 43; // out1
+constexpr uint8_t RED3 = 5;  // out2
+constexpr uint8_t RED4 = 42; // out3
 constexpr uint8_t BLUE1 = 7; // in
 constexpr uint8_t BLUE2 = 9; // out1
 constexpr uint8_t BLUE3 = 6; // out2
@@ -13,9 +13,9 @@ constexpr uint8_t BLUE4 = 8; // out3
 
 
 /* ================= MS INPUTS (short sense for outgoing MS feeder) ================= */
-constexpr uint8_t PIN_MS_IN_RED2 = 30; // pin-assignment not final
-constexpr uint8_t PIN_MS_IN_RED3 = 31; // pin-assignment not final
-constexpr uint8_t PIN_MS_IN_RED4 = 32; // pin-assignment not final
+constexpr uint8_t PIN_MS_IN_RED2  = 30; // pin-assignment not final
+constexpr uint8_t PIN_MS_IN_RED3  = 31; // pin-assignment not final
+constexpr uint8_t PIN_MS_IN_RED4  = 32; // pin-assignment not final
 constexpr uint8_t PIN_MS_IN_BLUE2 = 33; // pin-assignment not final
 constexpr uint8_t PIN_MS_IN_BLUE3 = 34; // pin-assignment not final
 constexpr uint8_t PIN_MS_IN_BLUE4 = 35; // pin-assignment not final
@@ -61,5 +61,11 @@ constexpr uint8_t LED3 = 48; // Warning
 constexpr uint8_t LED4 = 49; // Healthy
 
 
-/* ================= ETHERNET ================= */
-constexpr uint8_t PIN_ETH_CS = 10;
+/* ================= ETHERNET W5500 ================= */
+constexpr uint8_t PIN_ETH_CS     = 10; // W5500 chip select
+constexpr uint8_t PIN_ETHint     = 2;  // W5500 ethernet interrupt
+constexpr uint8_t PIN_SDcard     = 4;  // W5500 sdcard select
+constexpr uint8_t PIN_MISO       = 50; // W5500 SPI
+constexpr uint8_t PIN_MOSI       = 51; // W5500 SPI
+constexpr uint8_t PIN_SCK        = 52; // W5500 SPI
+constexpr uint8_t PIN_HardwareSS = 53; // W5500 slave select
