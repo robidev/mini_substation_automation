@@ -1,0 +1,127 @@
+for each protection relay instance:
+
+connect to unix socket for IO retrieval
+connect to unix socket for GUI
+
+
+configure setXSWI_Callback to be called when a switch/CBR needs to be moved-> translate to relevant channel
+->callback sets [channel] element in array with [state], as a signal to perform an action
+(MAKE THREADSAFE!!!)
+
+
+configure local_sample_simulation plugin to generate CTR/VTR sine waves, let magnitude be controlled by reveived values
+connect *ref to channel-name i.e. XSWI[channel], XCBR[channel-10], or channel = XSWI[nr], channel = XCBR[nr]+10
+
+service_loop:
+        GETDATA -> get measurement data over serial from HS
+           do logic for CT's and VT's
+	call plugin: update_sample_simulation_magnitude(int index, double magnitude) based on requested/received magnitude values
+
+	for each channel im interested in (from config)
+        	GETEVENT [channel]-> set SWI_callback_from_process(void *ref, Dbpos stval) if changed
+
+	if(signal)
+		SET [channel] [state]
+
+
+
+
+
+separate plugin:
+ui_loop
+	check_ui_requests:
+		{"command": "open_breaker"}-> perform local operate
+		{"command": "close_breaker"}-> perform local operate
+		{"command": "reset_trip"} // maybe handled in UI logic instead
+
+		{"command": "get_measurements"}
+			Expected response format:
+			{
+			  "voltage_l1": 13.8, From MMXU
+			  "voltage_l2": 13.7, From MMXU
+			  "voltage_l3": 13.9, From MMXU
+			  "current_l1": 125.5, From MMXU
+			  "current_l2": 124.8, From MMXU
+			  "current_l3": 126.2, From MMXU
+			  "breaker_state": "CLOSED", From XCBR.Pos.stval
+			  "trip_active": false -> need to be moddeled in PTRC or XCBR as cause of operate
+			  "fault": false -> ncurrent Tr value (not moddeled in UI yet!)
+			}
+
+
+
+UI:
+feed-prot 1: XSWI1, XCBR1, XSWI1a, XSWI1b interlocks, CTR 1,2,3 
+feed-prot 2: XSWI2, XCBR2, XSWI2a, XSWI2b interlocks, CTR 4,5,6 
+
+BUS-prot a: XSWI1a*(CTR 1,2,3) + XSWI2a*(CTR 4,5,6) - XSWI3a*(CTR 7,8,9) + XSWI4a*(CTR 10,11,12) =! 0->XSWI1a*XCBR1, XSWI2a*XCBR2   VTR=1,2,3   XCBR1,2,3,4 state via GOOSE, trip via GOOSE
+BUS-prot b: XSWI1b*(CTR 1,2,3) + XSWI2b*(CTR 4,5,6) - XSWI3b*(CTR 7,8,9) + XSWI4b*(CTR 10,11,12) =! 0->XSWI1b*XCBR1, XSWI2b*XCBR2   VTR=4,5,6   XCBR1,2,3,4 state via GOOSE, trip via GOOSE
+So 1 PDIF for each XCBR, with inputs from 4 XSWI, and 4 CT(2x in 2x out), and 1 op.general trip command for that XCBR index
+
+PTR-prot 1: XSWI3a, XSWI3b, XCBR3, interlocks, CTR 7,8,9
+PTR-prot 2: XSWI4a, XSWI4b, XCBR4, interlocks, CTR 10,11,12
+
+Busbar           a b
+feed1--------o-x-+-+
+feed2--------o-x-+ +
+                 | |
+transformer1-o-x-+-+
+                 | |
+transformer2-o-x-+-+
+
+Bay / Device	IED	Functions included
+Feed 1 Bay	Integrated Bay IED	- Feeder protection: PTOC/PIOC/Directional
+- Breaker control (CSWI)
+- Disconnector control (XSWI)
+- CT/VT monitoring
+- Trip outputs to breaker
+- Busbar interface (busbar CT input for differential)
+Feed 2 Bay	Integrated Bay IED	Same as Feed 1
+
+Transformer 1 Bay	Integrated Bay IED	- Transformer protection: differential, PTOC/PIOC, etc.
+- Breaker + disconnector control
+- CT/VT monitoring
+- Busbar interface
+Transformer 2 Bay	Integrated Bay IED	Same as Transformer 1
+
+Busbar A	Integrated Busbar Protection IED	- Busbar differential protection
+- Receives CTs from all bays connected to Bus A (via physical CT or merging units)
+- Trips all connected breaker IEDs in Bus A on fault
+- Monitors disconnectors
+Busbar B	Integrated Busbar Protection IED	Same as Busbar A
+
+
+protection relay x4
+-------------------
+CSWI->XCBR<-PTRC<PTOC,PIOC
+CSWI->XSWI<-CILO (x3)
+TCTR
+2x TVTR(each busbar)
+MMXU?
+pub dataset: XCBRx, XSWIxA,XSWIxB
+sub PDIFx.op.general->PTRC (2x; busa en busb)
+
+--o-------- 50kv
+--|---o---- 0kv
+  +-+-+
+    |
+   [x]
+    |
+    0 10a
+    |
+ (8 or o), for trafo or feed
+++++++++++++++++++++++++++++++++++++++
+busbar protection x2
+--------------------
+TCTR x4
+sub 4x XCBR, 4x XSWI (4 Dsets)
+PDIF x1
+publish 4PDIFS.op.general
+4x MMXU?
+
+--|-o-------o-o--
+0a| |20a    | |
+  x x   10a x x 10a
+  | |       | |
+
+

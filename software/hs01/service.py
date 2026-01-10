@@ -28,10 +28,15 @@ NUM_SERVOS = 10
 MOVE_SPEED = 0.03
 STEP_DEGREE = 1
 
-SERIAL1_DEV = "/dev/ttyACM0" # USB to arduino
+SERIAL1_DEV = "/dev/ttyACM0" # USB to arduino, WARNING: opening this device will reset the board! 
 SERIAL2_DEV = "/dev/ttyAMA0" # serial to second pi
 BAUD1 = 115200
 BAUD2 = 115200
+
+RECEIVE_FRAMES = 1
+ARDUINO_TIMEOUT = 5.0
+ADC_NUM_CHANNELS = 12
+ADC_WIRE_COUNT = 6
 
 kit = ServoKit(channels=16)
 
@@ -87,7 +92,7 @@ def servo_worker(channel):
         on_switch_start(channel, state)
         move_servo_smooth(channel, target)
         
-        GPIO.output(swi_gpio_pins[channel],state)
+        GPIO.output(swi_gpio_pins[channel],state) #set pin
         on_switch_end(channel, state)
 
         servo_busy[channel].clear()
@@ -125,13 +130,88 @@ def set_switch(channel, state):
 
 # ---------------- Serial1 reader ----------------
 
+def crc8(data: bytes) -> int:
+    crc = 0
+    for b in data:
+        crc ^= b
+        for _ in range(8):
+            if crc & 0x80:
+                crc = ((crc << 1) ^ 0x07) & 0xFF
+            else:
+                crc = (crc << 1) & 0xFF
+    return crc
+
+
+def serial1_writer(ser):
+    n = RECEIVE_FRAMES
+    while not shutdown.is_set():
+        cmd = f"@ADC:{n}\n".encode()
+        ser.write(cmd)
+        time.sleep(1) # sleep for 1 second
+
+def read_adc_packet(ser):
+    # Sync on header 0xAA 0x55
+    while True:
+        b = ser.read(1)
+        if not b:
+            return None
+        if b == b'\xAA':
+            if ser.read(1) == b'\x55':
+                break
+
+    length = ser.read(1)
+    if not length:
+        return None
+
+    payload_len = length[0]
+    payload = ser.read(payload_len)
+    crc_rx = ser.read(1)
+    tail = ser.read(2)
+
+    if len(payload) != payload_len or len(crc_rx) != 1:
+        return None
+
+    if tail != b'\r\n':
+        print("Invalid packet tail")
+        return None
+
+    crc_calc = crc8(length + payload)
+    if crc_calc != crc_rx[0]:
+        print("CRC error")
+        return None
+
+    # Decode ADCs
+    adc = []
+    idx = 0
+    for _ in range(ADC_NUM_CHANNELS):
+        val = payload[idx] | (payload[idx + 1] << 8)
+        adc.append(val)
+        idx += 2
+
+    # Decode short matrix (bitmasks)
+    short_matrix = payload[idx:idx + ADC_WIRE_COUNT]
+
+    return adc, short_matrix
+
+def format_packet_oneline(adc, short_matrix):
+    # ADC values: decimal
+    adc_part = "A" + ",".join(str(v) for v in adc)
+    # Short matrix: 6 bytes as lowercase hex, 2 chars each
+    short_part = "S" + ",".join(f"{b:02x}" for b in short_matrix)
+    return adc_part + " " + short_part
+
 def serial1_reader(ser):
     global serial1_data
     while not shutdown.is_set():
-        line = ser.readline()
-        if not line:
+        pkt = read_adc_packet(ser)
+        if not pkt:
             continue
-        processed = line.decode(errors="ignore").strip()  # replace with real processing
+
+        adc, shorts = pkt
+        #print_packet(adc, shorts)
+        processed = format_packet_oneline(adc, shorts)
+        #print(processed)
+
         with serial1_lock:
             serial1_data = processed
 
@@ -161,7 +241,7 @@ def serial2_api(ser):
             servo_event_q.put(f"DATA {data}\n")
 
         else:
-            #ser.write(b"ERR UNKNOWN_CMD\n")
+            msg= b"ERR UNKNOWN_CMD\n"
             servo_event_q.put(msg)
 
 # ---------------- Event reporter ----------------
@@ -178,6 +258,10 @@ def main():
     ser1 = serial.Serial(SERIAL1_DEV, BAUD1, timeout=1)
     ser2 = serial.Serial(SERIAL2_DEV, BAUD2, timeout=1)
 
+    print("sleeping until arduino has been reset")
+    time.sleep(ARDUINO_TIMEOUT)
+    print("starting daemons")
+
     for ch in range(NUM_SERVOS):
         threading.Thread(
             target=servo_worker,
@@ -187,6 +271,8 @@ def main():
     threading.Thread(target=gpio_worker, daemon=True).start()
 
     threading.Thread(target=serial1_reader, args=(ser1,), daemon=True).start()
+    threading.Thread(target=serial1_writer, args=(ser1,), daemon=True).start()
+
     threading.Thread(target=serial2_api, args=(ser2,), daemon=True).start()
     threading.Thread(target=serial2_writer, args=(ser2,), daemon=True).start()
 

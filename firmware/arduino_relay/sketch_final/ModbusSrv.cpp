@@ -30,11 +30,14 @@ void ModbusSrv_init() {
 void updateModbusRegisters(uint8_t index)
 {
   relay_state* relay = getRelayDataByIndex(index);
-  if(!relay) // nullptr means error
+  if(!relay){ // nullptr means error
+    //clear all registers
     return;
+  }
   
   //inputs
   if(relay->deviceType == TYPE_MEASURE) {
+    //clear all registers
     //TODO values should be 32 bit instead of 16
     modbusTCP.inputRegisterWrite(20,(uint16_t)relay->Measurement[0]);
     modbusTCP.inputRegisterWrite(21,(uint16_t)relay->Measurement[1]);
@@ -42,6 +45,7 @@ void updateModbusRegisters(uint8_t index)
     modbusTCP.inputRegisterWrite(23,(uint16_t)relay->Measurement[3]);
   }
   else { // TYPE BREAKER
+    //reset measurement regs
     //holding regs
     uint8_t breaker = modbusTCP.holdingRegisterRead(1); // | 40001 / 00  | Breaker Control | RW   | Command to breaker    | 0 = No action, 1 = Open, 2 = Close      |
     if(breaker) {
@@ -67,7 +71,7 @@ void updateModbusRegisters(uint8_t index)
     modbusTCP.inputRegisterWrite(3,(uint16_t)relay->faultState);   // 30003 / 02
     modbusTCP.inputRegisterWrite(4,(uint16_t)relay->remote + 1);   // 30004 / 03
     modbusTCP.inputRegisterWrite(5,(uint16_t)relay->deviceType);   // 30005 / 04
-    modbusTCP.inputRegisterWrite(6,(uint16_t)relay->index);   // 30005 / 05
+    modbusTCP.inputRegisterWrite(6,(uint16_t)relay->index);   // 30006 / 05
 
     //TODO some values should be 32 bit instead of 16
     modbusTCP.inputRegisterWrite(10,(uint16_t)relay->Measurement[0]);

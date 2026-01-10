@@ -23,6 +23,7 @@ void setup()
   EthernetMgr_init();
   // init mobus and modbus-register map
   ModbusSrv_init();
+  Serial.println("READY");
 }
 
 
