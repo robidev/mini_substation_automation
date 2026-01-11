@@ -16,13 +16,14 @@ UNIX_SOCKETS = [
     "/tmp/api_sock6",
 ]
 
-SERIAL_DEV = "/dev/ttyAMA5"
+#SERIAL_DEV = "/dev/ttyAMA5"
+SERIAL_DEV = "/tmp/ttyV0"
 BAUD = 115200
-NUM_CHANNELS = 10
+NUM_CHANNELS = 14
 
 # ---------------- Shared State ----------------
 
-tx_queue = Queue()         # (msg, client_conn) for command-response
+tx_queue = Queue()         # Messages to send to serial
 shutdown = threading.Event()
 
 event = [None for _ in range(NUM_CHANNELS)]  # event[channel] = state
@@ -31,18 +32,57 @@ event_lock = threading.Lock()
 data_message = ""
 data_lock = threading.Lock()
 
+# Track all connected clients for broadcasting
+clients = []
+clients_lock = threading.Lock()
+
+# ---------------- Client Broadcasting ----------------
+
+def broadcast_to_clients(message):
+    """Send a message to all connected clients"""
+    with clients_lock:
+        dead_clients = []
+        for conn in clients:
+            try:
+                conn.sendall((message + "\n").encode())
+            except Exception as e:
+                print(f"Failed to send to client: {e}")
+                dead_clients.append(conn)
+        
+        # Remove dead connections
+        for conn in dead_clients:
+            clients.remove(conn)
+            try:
+                conn.close()
+            except:
+                pass
+
+def register_client(conn):
+    """Add a client to the broadcast list"""
+    with clients_lock:
+        clients.append(conn)
+        print(f"Client registered. Total clients: {len(clients)}")
+
+def unregister_client(conn):
+    """Remove a client from the broadcast list"""
+    with clients_lock:
+        if conn in clients:
+            clients.remove(conn)
+            print(f"Client unregistered. Total clients: {len(clients)}")
+
 # ---------------- Serial Thread ----------------
 
 def serial_thread():
+    global data_message
     """Handles serial I/O to/from slave Pi"""
     ser = serial.Serial(SERIAL_DEV, BAUD, timeout=0.1)
 
     def write_loop():
         while not shutdown.is_set():
-            msg, client = tx_queue.get()
-            ser.write((msg + "\n").encode())
-            # ACK back to client immediately (optional)
-            client.sendall(b"OK\n")
+            msg = tx_queue.get()
+            print(f"msg: {msg}")
+            if msg:
+                ser.write((msg + "\n").encode())
 
     threading.Thread(target=write_loop, daemon=True).start()
 
@@ -52,66 +92,82 @@ def serial_thread():
             continue
         msg = line.decode(errors="ignore").strip()
 
-        # Parse events or data messages
-        # Example slave messages:
-        # "SERVO 3 START 120"
-        # "SERVO 3 END 120"
-        # "DATA xyz"
-
         parts = msg.split()
         if not parts:
             continue
 
-        if parts[0] == "SERVO" and len(parts) >= 4:
+        if parts[0] == "IO" and len(parts) >= 4:
             try:
-                ch = int(parts[1])
-                state = parts[2] + "_" + parts[3]  # e.g., "START_120" or "END_120"
+                mtype = parts[1]
+                ch = int(parts[2])
+                state = parts[3]
                 with event_lock:
                     if 0 <= ch < NUM_CHANNELS:
                         event[ch] = state
-            except:
+                        print(f"IO: {ch} {state}")
+                
+                if mtype == "B":
+                    # Broadcast IO event to all clients
+                    broadcast_to_clients(f"EVENT IO {ch} {state}")
+            except Exception as e:
+                print(f"Except IO: {e}")
                 continue
-        elif parts[0] == "DATA":
+                
+        elif parts[0] == "DATA" and len(parts) >= 3:
+            mtype = parts[1]
             with data_lock:
-                data_message = " ".join(parts[1:])
+                data_message = " ".join(parts[2:])
+                print(f"DATA: {data_message}")
+            if mtype == "B":
+                # Broadcast DATA event to all clients
+                broadcast_to_clients(f"EVENT DATA {data_message}")
 
 # ---------------- Unix Socket Client Handler ----------------
 
 def handle_client(conn, addr):
     """Each Unix socket connection runs here"""
-    with conn:
-        while not shutdown.is_set():
-            try:
-                data = conn.recv(1024)
-                if not data:
+    register_client(conn)
+    
+    try:
+        with conn:
+            while not shutdown.is_set():
+                try:
+                    data = conn.recv(1024)
+                    if not data:
+                        break
+                    cmd = data.decode(errors="ignore").strip().split()
+
+                    if not cmd:
+                        continue
+
+                    if cmd[0] == "SET" and len(cmd) == 3:
+                        print(f"SET! {cmd}")
+                        ch = int(cmd[1])
+                        state_val = cmd[2]
+                        tx_queue.put(f"SET {ch} {state_val}")
+                        conn.sendall(b"OK\n")
+
+                    elif cmd[0] == "GET" and len(cmd) == 2:
+                        ch = int(cmd[1])
+                        tx_queue.put(f"GET IO {ch}")
+                        with event_lock:
+                            state_val = event[ch] if 0 <= ch < NUM_CHANNELS else "UNKNOWN"
+                        conn.sendall((str(state_val) + "\n").encode())
+
+                    elif cmd[0] == "GETDATA":
+                        tx_queue.put(f"GET DATA")
+                        with data_lock:
+                            msg = data_message
+                        conn.sendall((msg + "\n").encode())
+
+                    else:
+                        conn.sendall(b"ERR UNKNOWN_CMD\n")
+
+                except Exception as e:
+                    print(f"Client error {addr}: {e}")
                     break
-                cmd = data.decode(errors="ignore").strip().split()
-
-                if not cmd:
-                    continue
-
-                if cmd[0] == "SET" and len(cmd) == 3:
-                    ch = int(cmd[1])
-                    state_val = cmd[2]
-                    tx_queue.put((f"SET {ch} {state_val}", conn))
-
-                elif cmd[0] == "GETEVENT" and len(cmd) == 2:
-                    ch = int(cmd[1])
-                    with event_lock:
-                        state_val = event[ch] if 0 <= ch < NUM_CHANNELS else "UNKNOWN"
-                    conn.sendall((str(state_val) + "\n").encode())
-
-                elif cmd[0] == "GETDATA":
-                    with data_lock:
-                        msg = data_message
-                    conn.sendall((msg + "\n").encode())
-
-                else:
-                    conn.sendall(b"ERR UNKNOWN_CMD\n")
-
-            except Exception as e:
-                print(f"Client error {addr}: {e}")
-                break
+    finally:
+        unregister_client(conn)
 
 # ---------------- Unix Socket Server ----------------
 
@@ -131,7 +187,8 @@ def start_unix_socket(path):
             conn, addr = s.accept()
             threading.Thread(target=handle_client, args=(conn, addr), daemon=True).start()
         except Exception as e:
-            print(f"Unix socket error {path}: {e}")
+            if not shutdown.is_set():
+                print(f"Unix socket error {path}: {e}")
             continue
 
 # ---------------- Main ----------------
@@ -140,9 +197,16 @@ def main():
     # Start serial thread
     threading.Thread(target=serial_thread, daemon=True).start()
 
+    # Initialize all channel values
+    for i in range(NUM_CHANNELS):
+        tx_queue.put(f"GET IO {i}")
+    tx_queue.put(f"GET DATA")
+
     # Start 6 UNIX socket servers
     for path in UNIX_SOCKETS:
         threading.Thread(target=start_unix_socket, args=(path,), daemon=True).start()
+
+
 
     try:
         while True:
