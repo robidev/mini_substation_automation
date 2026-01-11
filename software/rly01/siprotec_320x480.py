@@ -1,28 +1,3 @@
-#!/usr/bin/env python3
-"""
-Siprotec 5 Interface Frontend for Raspberry Pi
-Displays 6 relay interfaces with IEC61850 communication via Unix sockets
-
-Commands sent:
-{"command": "get_measurements"}
-{"command": "open_breaker"}
-{"command": "close_breaker"}
-{"command": "reset_trip"}
-
-Expected response format:
-{
-  "voltage_l1": 13.8,
-  "voltage_l2": 13.7,
-  "voltage_l3": 13.9,
-  "current_l1": 125.5,
-  "current_l2": 124.8,
-  "current_l3": 126.2,
-  "breaker_state": "CLOSED",
-  "trip_active": false
-}
-
-"""
-
 import pygame
 import socket
 import json
@@ -33,7 +8,7 @@ from dataclasses import dataclass
 from typing import Optional, Dict, List
 
 # Configuration
-SCREEN_WIDTH = 800
+SCREEN_WIDTH = 320
 SCREEN_HEIGHT = 480
 FPS = 30
 
@@ -264,23 +239,23 @@ class IconButton(Button):
         if self.hover:
             color = tuple(min(c + 30, 255) for c in self.color)
         
-        pygame.draw.rect(surface, color, self.rect, border_radius=10)
-        pygame.draw.rect(surface, WHITE, self.rect, 3, border_radius=10)
+        pygame.draw.rect(surface, color, self.rect, border_radius=8)
+        pygame.draw.rect(surface, WHITE, self.rect, 2, border_radius=8)
         
         # Draw relay icon (simple representation)
         icon_size = min(self.rect.width, self.rect.height) // 3
         icon_rect = pygame.Rect(0, 0, icon_size, icon_size)
-        icon_rect.center = (self.rect.centerx, self.rect.centery - 20)
-        pygame.draw.rect(surface, WHITE, icon_rect, 3, border_radius=5)
+        icon_rect.center = (self.rect.centerx, self.rect.centery - 15)
+        pygame.draw.rect(surface, WHITE, icon_rect, 2, border_radius=3)
         
         # Draw text
         text_surf = font.render(self.text, True, WHITE)
-        text_rect = text_surf.get_rect(center=(self.rect.centerx, self.rect.centery + 30))
+        text_rect = text_surf.get_rect(center=(self.rect.centerx, self.rect.centery + 20))
         surface.blit(text_surf, text_rect)
 
 
 class StartScreen:
-    """Start screen with 2x3 grid of relay icons"""
+    """Start screen with 3x2 grid of relay icons (portrait layout)"""
     
     def __init__(self, width: int, height: int):
         self.width = width
@@ -289,16 +264,16 @@ class StartScreen:
         self._create_buttons()
     
     def _create_buttons(self):
-        """Create the 2x3 grid of icon buttons"""
-        margin = 40
-        spacing = 20
-        button_width = (self.width - 2 * margin - spacing) // 3
-        button_height = (self.height - 2 * margin - 2 * spacing) // 2
+        """Create the 3x2 grid of icon buttons (3 rows, 2 columns)"""
+        margin = 20
+        spacing = 15
+        button_width = (self.width - 2 * margin - spacing) // 2
+        button_height = (self.height - 80 - 2 * margin - 2 * spacing) // 3
         
-        for row in range(2):
-            for col in range(3):
+        for row in range(3):
+            for col in range(2):
                 x = margin + col * (button_width + spacing)
-                y = margin + row * (button_height + spacing)
+                y = 70 + margin + row * (button_height + spacing)
                 relay_id = row * 2 + col
                 button = IconButton(x, y, button_width, button_height, 
                                    f"Relay {relay_id + 1}", relay_id)
@@ -308,10 +283,15 @@ class StartScreen:
         """Draw the start screen"""
         surface.fill(LIGHT_GRAY)
         
-        # Draw title
-        title = title_font.render("SIPROTEC 5 - Select Relay", True, SIEMENS_DARK_BLUE)
-        title_rect = title.get_rect(center=(self.width // 2, 30))
+        # Draw title bar
+        pygame.draw.rect(surface, SIEMENS_BLUE, (0, 0, self.width, 60))
+        title = title_font.render("SIPROTEC 5", True, WHITE)
+        title_rect = title.get_rect(center=(self.width // 2, 20))
         surface.blit(title, title_rect)
+        
+        subtitle = font.render("Select Relay", True, WHITE)
+        subtitle_rect = subtitle.get_rect(center=(self.width // 2, 42))
+        surface.blit(subtitle, subtitle_rect)
         
         # Draw buttons
         for button in self.buttons:
@@ -337,22 +317,22 @@ class RelayScreen:
     
     def _create_buttons(self):
         """Create control buttons"""
-        button_width = 150
-        button_height = 50
-        spacing = 20
-        start_y = self.height - button_height - 20
+        button_width = 90
+        button_height = 40
+        spacing = 10
+        start_y = self.height - button_height - 15
         
         # Back button
-        self.back_button = Button(20, 20, 100, 40, "← Back", GRAY, BLACK)
+        self.back_button = Button(10, 10, 70, 30, "← Back", GRAY, BLACK)
         
-        # Control buttons
+        # Control buttons (3 in a row at bottom)
         x = (self.width - 3 * button_width - 2 * spacing) // 2
         self.open_button = Button(x, start_y, button_width, button_height, 
                                   "OPEN", RED)
         self.close_button = Button(x + button_width + spacing, start_y, 
                                    button_width, button_height, "CLOSE", GREEN)
         self.reset_button = Button(x + 2 * (button_width + spacing), start_y, 
-                                   button_width, button_height, "RESET TRIP", ORANGE)
+                                   button_width, button_height, "RESET", ORANGE)
     
     def draw(self, surface: pygame.Surface, font: pygame.font.Font, 
              small_font: pygame.font.Font, title_font: pygame.font.Font):
@@ -362,95 +342,92 @@ class RelayScreen:
         data = self.client.get_data()
         
         # Draw header
-        pygame.draw.rect(surface, SIEMENS_BLUE, (0, 0, self.width, 70))
-        title = title_font.render(f"SIPROTEC 5 - {data.name}", True, WHITE)
-        surface.blit(title, (140, 15))
+        pygame.draw.rect(surface, SIEMENS_BLUE, (0, 0, self.width, 50))
+        title = title_font.render(data.name, True, WHITE)
+        surface.blit(title, (90, 12))
         
         # Connection status
         status_color = GREEN if data.connected else RED
-        status_text = "CONNECTED" if data.connected else "DISCONNECTED"
-        pygame.draw.circle(surface, status_color, (self.width - 80, 35), 10)
-        status_surf = small_font.render(status_text, True, WHITE)
-        surface.blit(status_surf, (self.width - 150, 25))
+        pygame.draw.circle(surface, status_color, (self.width - 20, 25), 8)
         
         # Draw back button
-        self.back_button.draw(surface, font)
+        self.back_button.draw(surface, small_font)
         
         # Draw measurements section
-        y_offset = 100
+        y_offset = 60
         
         # Voltages
-        self._draw_section(surface, "VOLTAGES (kV)", y_offset, font, small_font)
+        self._draw_section(surface, "VOLTAGES (kV)", y_offset, small_font)
         self._draw_measurement(surface, "L1:", data.voltage_l1, "kV", 
-                              y_offset + 40, small_font, SIEMENS_BLUE)
+                              y_offset + 30, small_font, SIEMENS_BLUE)
         self._draw_measurement(surface, "L2:", data.voltage_l2, "kV", 
-                              y_offset + 70, small_font, SIEMENS_BLUE)
+                              y_offset + 55, small_font, SIEMENS_BLUE)
         self._draw_measurement(surface, "L3:", data.voltage_l3, "kV", 
-                              y_offset + 100, small_font, SIEMENS_BLUE)
+                              y_offset + 80, small_font, SIEMENS_BLUE)
         
         # Currents
-        y_offset = 240
-        self._draw_section(surface, "CURRENTS (A)", y_offset, font, small_font)
+        y_offset = 170
+        self._draw_section(surface, "CURRENTS (A)", y_offset, small_font)
         self._draw_measurement(surface, "L1:", data.current_l1, "A", 
-                              y_offset + 40, small_font, SIEMENS_DARK_BLUE)
+                              y_offset + 30, small_font, SIEMENS_DARK_BLUE)
         self._draw_measurement(surface, "L2:", data.current_l2, "A", 
-                              y_offset + 70, small_font, SIEMENS_DARK_BLUE)
+                              y_offset + 55, small_font, SIEMENS_DARK_BLUE)
         self._draw_measurement(surface, "L3:", data.current_l3, "A", 
-                              y_offset + 100, small_font, SIEMENS_DARK_BLUE)
+                              y_offset + 80, small_font, SIEMENS_DARK_BLUE)
         
         # Breaker status
         self._draw_breaker_status(surface, data, font, small_font)
         
         # Draw control buttons
-        self.open_button.draw(surface, font)
-        self.close_button.draw(surface, font)
-        self.reset_button.draw(surface, font)
+        self.open_button.draw(surface, small_font)
+        self.close_button.draw(surface, small_font)
+        self.reset_button.draw(surface, small_font)
     
     def _draw_section(self, surface: pygame.Surface, title: str, y: int, 
-                     font: pygame.font.Font, small_font: pygame.font.Font):
+                     font: pygame.font.Font):
         """Draw a section header"""
-        pygame.draw.line(surface, DARK_GRAY, (50, y), (self.width - 50, y), 2)
+        pygame.draw.line(surface, DARK_GRAY, (20, y), (self.width - 20, y), 2)
         text = font.render(title, True, SIEMENS_DARK_BLUE)
-        surface.blit(text, (60, y + 5))
+        surface.blit(text, (25, y + 5))
     
     def _draw_measurement(self, surface: pygame.Surface, label: str, value: float, 
                          unit: str, y: int, font: pygame.font.Font, color: tuple):
         """Draw a measurement line"""
         label_surf = font.render(label, True, BLACK)
-        surface.blit(label_surf, (80, y))
+        surface.blit(label_surf, (40, y))
         
         value_text = f"{value:.2f} {unit}"
         value_surf = font.render(value_text, True, color)
-        surface.blit(value_surf, (200, y))
+        surface.blit(value_surf, (90, y))
     
     def _draw_breaker_status(self, surface: pygame.Surface, data: RelayData, 
                            font: pygame.font.Font, small_font: pygame.font.Font):
         """Draw breaker status indicator"""
-        x = 450
-        y = 150
+        x = 20
+        y = 280
         
         # Status box
-        status_rect = pygame.Rect(x, y, 300, 150)
-        pygame.draw.rect(surface, LIGHT_GRAY, status_rect, border_radius=10)
-        pygame.draw.rect(surface, DARK_GRAY, status_rect, 3, border_radius=10)
+        status_rect = pygame.Rect(x, y, self.width - 40, 100)
+        pygame.draw.rect(surface, LIGHT_GRAY, status_rect, border_radius=8)
+        pygame.draw.rect(surface, DARK_GRAY, status_rect, 2, border_radius=8)
         
         # Title
         title = font.render("BREAKER STATUS", True, SIEMENS_DARK_BLUE)
-        surface.blit(title, (x + 50, y + 10))
+        surface.blit(title, (x + 60, y + 10))
         
         # State indicator
         state_color = GREEN if data.breaker_state == BreakerState.CLOSED else RED
         if data.breaker_state == BreakerState.UNKNOWN:
             state_color = GRAY
         
-        pygame.draw.circle(surface, state_color, (x + 80, y + 70), 25)
-        state_text = small_font.render(data.breaker_state.value, True, BLACK)
-        surface.blit(state_text, (x + 130, y + 60))
+        pygame.draw.circle(surface, state_color, (x + 40, y + 55), 20)
+        state_text = font.render(data.breaker_state.value, True, BLACK)
+        surface.blit(state_text, (x + 80, y + 45))
         
         # Trip indicator
         if data.trip_active:
-            trip_text = font.render("⚠ TRIP ACTIVE", True, RED)
-            surface.blit(trip_text, (x + 60, y + 110))
+            trip_text = small_font.render("⚠ TRIP ACTIVE", True, RED)
+            surface.blit(trip_text, (x + 80, y + 70))
     
     def handle_event(self, event: pygame.event.Event) -> Optional[str]:
         """Handle events, return action string if needed"""
@@ -470,14 +447,14 @@ class Application:
     
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
+        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT),pygame.NOFRAME)
         pygame.display.set_caption("SIPROTEC 5 Interface")
         self.clock = pygame.time.Clock()
         
-        # Fonts
-        self.title_font = pygame.font.Font(None, 48)
-        self.font = pygame.font.Font(None, 32)
-        self.small_font = pygame.font.Font(None, 24)
+        # Fonts (smaller for compact display)
+        self.title_font = pygame.font.Font(None, 28)
+        self.font = pygame.font.Font(None, 22)
+        self.small_font = pygame.font.Font(None, 18)
         
         # Create IEC61850 clients
         self.clients = [IEC61850Client(path, i) for i, path in enumerate(SOCKET_PATHS)]

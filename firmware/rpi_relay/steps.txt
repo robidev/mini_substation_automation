@@ -1,0 +1,7 @@
+# ensure only my app starts
+copy .xsession to ~/.xsession
+
+# set splashscreen to custom
+sudo cp -r myspi /usr/share/plymouth/themes/
+sudo plymouth-set-default-theme myspi
+sudo plymouth-set-default-theme myspi -R

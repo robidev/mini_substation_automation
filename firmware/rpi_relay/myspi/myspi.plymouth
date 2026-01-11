@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=myspi
+Description=My SPI splash
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/myspi
+ScriptFile=/usr/share/plymouth/themes/myspi/myspi.script
