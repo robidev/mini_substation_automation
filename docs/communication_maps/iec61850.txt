@@ -1,0 +1,192 @@
+FEED1
+
+Loc-> true means control only from a single place/level allowed. All to false is ok
+
+  LPHD.PhyHealth.stVal (Ok=1, Warn=2, Alarm=3)
+  LLN0.Health.stVal (Ok=1, Warn=2, Alarm=3)
+      .Mod (opt for all other LN's)
+      .Beh (every LN mandatory)
+
+  TCTR1.AmpSv.instmag.i
+  TCTR2.AmpSv.instmag.i
+  TCTR3.AmpSv.instmag.i
+  TCTR4.AmpSv.instmag.i
+
+  PTOC1 Str.general (M i.e. fault, directional?)
+        Op.general (M)
+        < TCTRx.AmpSv.instmag.i
+
+  PTRC Tr.general
+       Op.general(operate from others, logical OR)
+       Str.general(start, faults from others, logical OR directional)
+       < PTOC1.Op.general
+       (RREC.OpCls.general)
+
+  XCBR1 Pos.stVal (DPos)
+        Loc.stVal (bool)
+        OpCnt.stVal (INT32)
+        BlkOpn.stVal
+        BlkCls.stVal
+        < PTRC.Tr.general
+        < BUS_Srb/PTRC.Tr.general GOOSE
+        < CSWI.OpOpn.general
+        < CSWI.OpCls.general
+
+
+  CILO EnaOpn.stVal (bool)
+       EnaCls.stVal (bool)
+       < XCBR.Pos.stVal (DPos)
+
+  CSWI1 Pos.stVal (DPos)
+        OpOpn.general
+        OpCls.general
+        < XCBR.Pos.stVal (DPos)
+
+  CSWI2 Pos.stVal (DPos)
+        OpOpn.general
+        OpCls.general
+        < XSWI2.Pos.stVal (DPos)
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+
+  CSWI3 Pos.stVal (DPos)
+        OpOpn.general
+        OpCls.general
+        < XSWI3.Pos.stVal (DPos)
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+
+  CSWI4 Pos.stVal (DPos)
+        OpOpn.general
+        OpCls.general
+        < XSWI4.Pos.stVal (DPos)
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+
+  XSWI2 Pos.stVal (DPos)
+        Loc.stVal (bool)
+        OpCnt.stVal (INT32)
+        SwTyp.stVal (ENUM)
+        BlkOpn.stVal
+        BlkCls.stVal
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+        < CSWI.OpOpn.general
+        < CSWI.OpCls.general
+
+  XSWI3 Pos.stVal (DPos)
+        Loc.stVal (bool)
+        OpCnt.stVal (INT32)
+        SwTyp.stVal (ENUM)
+        BlkOpn.stVal
+        BlkCls.stVal
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+        < CSWI.OpOpn.general
+        < CSWI.OpCls.general
+
+  XSWI4 Pos.stVal (DPos)
+        Loc.stVal (bool)
+        OpCnt.stVal (INT32)
+        SwTyp.stVal (ENUM)
+        BlkOpn.stVal
+        BlkCls.stVal
+        < CILO.EnaOpn.stVal
+        < CILO.EnaCls.stVal
+        < CSWI.OpOpn.general
+        < CSWI.OpCls.general
+
+ENUM SwTyp
+Load break switch               = 1
+Disconnector                    = 2
+Earthing switch                 = 3
+High speed earthing switchValue = 4
+
+
+  B1TVTR1.VolSv.instmag.i
+  B1TVTR2.VolSv.instmag.i
+  B1TVTR3.VolSv.instmag.i
+  B1TVTR4.VolSv.instmag.i
+
+  B2TVTR1.VolSv.instmag.i
+  B2TVTR2.VolSv.instmag.i
+  B2TVTR3.VolSv.instmag.i
+  B2TVTR4.VolSv.instmag.i
+
+  MMXU1 A
+        PhV
+        AvAPhs
+        AvPhVPhs
+        < TCTRx.AmpSv.instmag.i
+
+  MMXU2 A
+        PhV
+        AvAPhs
+        AvPhVPhs
+        < B1TVTRx.VolSv.instmag.i
+
+  MMXU3 A
+        PhV
+        AvAPhs
+        AvPhVPhs
+        < B2TVTRx.VolSv.instmag.i
+
+FEED2
+
+[]
+
+BUS_Srb
+
+  PDIF Str.general (directional?)
+        Op.general (M)
+        < TCTRx.AmpSv (2x in 2x uit)
+
+  PTRC Tr.general > GOOSE
+         < PDIF.Op.general
+
+
+  B1TVTR1.VolSv.instmag.i
+  B1TVTR2.VolSv.instmag.i
+  B1TVTR3.VolSv.instmag.i
+  B1TVTR4.VolSv.instmag.i
+  MMXU (voltage only)
+
+  B2TVTR1.VolSv.instmag.i
+  B2TVTR2.VolSv.instmag.i
+  B2TVTR3.VolSv.instmag.i
+  B2TVTR4.VolSv.instmag.i
+  MMXU (voltage only)
+
+
+
+TR1
+
+
+[]+
+  PDIF Str.general (directional?)
+        Op.general (M)
+        < TCTRx.AmpSv (1x in 1x uit) verhouding moet in aparte config voor trafo...
+
+TR2
+
+[]+
+  PDIF Str.general (directional?)
+        Op.general (M)
+        < TCTRx.AmpSv (1x in 1x uit) verhouding moet in aparte config voor trafo...
+
+
+
+Optional:
+  RREC OpCls.general
+       AutoRecSt.stVal(ENUM)
+		Ready = 1
+		In Progress
+		Successful
+		Waiting for trip
+		Trip issued by protection
+		Fault disappeared
+		Wait to complete
+		Circuit breaker closed
+		Cycle unsuccessful
+		Unsuccessful
+		Aborted = 11
