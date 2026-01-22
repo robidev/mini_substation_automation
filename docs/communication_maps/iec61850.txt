@@ -20,7 +20,7 @@ Loc-> true means control only from a single place/level allowed. All to false is
        Op.general(operate from others, logical OR)
        Str.general(start, faults from others, logical OR directional)
        < PTOC1.Op.general
-       (RREC.OpCls.general)
+
 
   XCBR1 Pos.stVal (DPos)
         Loc.stVal (bool)
@@ -31,6 +31,7 @@ Loc-> true means control only from a single place/level allowed. All to false is
         < BUS_Srb/PTRC.Tr.general GOOSE
         < CSWI.OpOpn.general
         < CSWI.OpCls.general
+        <(RREC.OpCls.general)
 
 
   CILO EnaOpn.stVal (bool)
@@ -190,3 +191,5 @@ Optional:
 		Cycle unsuccessful
 		Unsuccessful
 		Aborted = 11
+        < XCBR.Pos.stVal (DPos)
+        < PTRC.Tr.general (bool)

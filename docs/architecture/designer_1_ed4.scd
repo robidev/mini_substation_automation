@@ -996,49 +996,46 @@
 							<ExtRef intAddr="PTOC_Amp2" desc="sample_a2" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="2" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
 							<ExtRef intAddr="PTOC_Amp3" desc="sample_a3" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="3" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
 							<ExtRef intAddr="PTOC_Amp4" desc="sample_a4" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="4" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
-							<ExtRef intAddr="PTOC_xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="1" prefix="">
 						<Inputs>
-							<ExtRef intAddr="xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="2" prefix="">
 						<Inputs>
-							<ExtRef intAddr="xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="2" doName="Pos" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="2" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaCls" desc="interlock_close" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaCls" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="3" prefix="">
 						<Inputs>
-							<ExtRef intAddr="xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaCls" desc="interlock_close" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaCls" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="4" prefix="">
 						<Inputs>
-							<ExtRef intAddr="xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaCls" desc="interlock_close" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaCls" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="1" prefix="">
 						<Inputs>
-							<ExtRef intAddr="TrOp1" serviceType="GOOSE" iedName="BUS1" ldInst="LD1" lnClass="PDIF" lnInst="1" prefix="" doName="Op" daName="general" srcLDInst="LD1" srcPrefix="" srcLNClass="LLN0" srcCBName="Bus1TripEventCn"/>
-							<ExtRef intAddr="TrOp2" serviceType="GOOSE" iedName="BUS2" ldInst="LD1" lnClass="PDIF" lnInst="1" prefix="" doName="Op" daName="general" srcLDInst="LD1" srcPrefix="" srcLNClass="LLN0" srcCBName="Bus2TripEventCn"/>
-							<ExtRef intAddr="PTOC_Op" desc="PTOC_trip" iedName="FEED1" ldInst="LD1" lnClass="PTOC" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="xcbr_stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="Op1" serviceType="GOOSE" iedName="BUS1" ldInst="LD1" lnClass="PDIF" lnInst="1" prefix="" doName="Op" daName="general" srcLDInst="LD1" srcPrefix="" srcLNClass="LLN0" srcCBName="Bus1TripEventCn"/>
+							<ExtRef intAddr="Op2" serviceType="GOOSE" iedName="BUS2" ldInst="LD1" lnClass="PDIF" lnInst="1" prefix="" doName="Op" daName="general" srcLDInst="LD1" srcPrefix="" srcLNClass="LLN0" srcCBName="Bus2TripEventCn"/>
+							<ExtRef intAddr="Op3" desc="PTOC_trip" iedName="FEED1" ldInst="LD1" lnClass="PTOC" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="XCBR" lnType="XCBR$oscd$_420e2f9e111e8bf2" inst="1" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Tr" desc="Trip" iedName="FEED1" ldInst="LD1" lnClass="PTRC" lnInst="1" doName="Tr" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="OpCls" desc="OpClose" iedName="FEED1" ldInst="LD1" lnClass="PTRC" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="Op" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="1" doName="OpOpn" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="Op2" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="1" doName="OpCls" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpOpn" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="1" doName="OpOpn" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpCls" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="1" doName="OpCls" daName="general" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CILO" lnType="CILO$oscd$_aa7ec79ef27309b1" inst="1" prefix="">
@@ -1048,20 +1045,20 @@
 					</LN>
 					<LN lnClass="XSWI" lnType="XSWI$oscd$_430901aa6c264cc1" inst="2" prefix="">
 						<Inputs>
-							<ExtRef intAddr="Tr" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="2" doName="OpOpn" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="Op" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="2" doName="OpCls" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpOpn" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="2" doName="OpOpn" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpCls" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="2" doName="OpCls" daName="general" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="XSWI" lnType="XSWI$oscd$_430901aa6c264cc1" inst="3" prefix="">
 						<Inputs>
-							<ExtRef intAddr="Tr" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="3" doName="OpOpn" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="Op" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="3" doName="OpCls" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpOpn" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="3" doName="OpOpn" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpCls" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="3" doName="OpCls" daName="general" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="XSWI" lnType="XSWI$oscd$_430901aa6c264cc1" inst="4" prefix="">
 						<Inputs>
-							<ExtRef intAddr="Tr" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="4" doName="OpOpn" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="Op" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="4" doName="OpCls" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpOpn" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="4" doName="OpOpn" daName="general" serviceType="Poll"/>
+							<ExtRef intAddr="OpCls" desc="Operate" iedName="FEED1" ldInst="LD1" lnClass="CSWI" lnInst="4" doName="OpCls" daName="general" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="MMXU" lnType="MMXU$oscd$_3abca1c29963576c" inst="1" prefix="">
