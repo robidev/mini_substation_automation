@@ -130,7 +130,7 @@ def gpio_worker(channel):
 # ---------------- Public API ----------------
 
 def set_switch(channel, state):
-    if not (0 <= channel < NUM_SERVOS + NUM_GPIO):
+    if not (0 <= channel < NUM_SERVOS):
         return f"ERR {channel} INVALID_CHANNEL\n"
 
     if servo_busy[channel].is_set():
@@ -145,7 +145,11 @@ def set_switch(channel, state):
 
 def format_packet_oneline():
     # ADC values: decimal
-    adc_part = "A0,1,2,3,4,5,6,7,8,9,10,11"
+    feed1 = "0,0,0,"
+    if cur_state[10] == "10":
+        feed1 = "2,1,2,"
+    
+    adc_part = "A" + feed1 + "3,4,5,6,7,8,9,10,11"
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
     short_part = "S01,02,03,04,05,06"
     return adc_part + " " + short_part
@@ -187,7 +191,7 @@ def serial2_api(ser):
 
         elif cmd[0] == "GET" and cmd[1] == "IO":
             ch = int(cmd[2])
-            if  (0 <= ch < NUM_SERVOS + NUM_GPIO):
+            if  (0 <= ch < NUM_SERVOS):
                 state = cur_state[ch]
                 serial2_event_q.put(f"IO G {ch} {state}\n") # 
             else:

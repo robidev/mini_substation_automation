@@ -36,6 +36,96 @@ data_lock = threading.Lock()
 clients = []
 clients_lock = threading.Lock()
 
+# ---------------- Simulated readings ----------------
+
+def analog_data_simulator(data_string):
+    """
+    Parse sensor data string containing analog and digital measurements.
+    
+    Args:
+        data_string: String in format "A0,1,2,3,4,5,6,7,8,9,10,11 S01,02,03,04,05,06"
+    
+    Returns:
+        dict: Contains 'analog' list and 'digital' 6x6 boolean matrix
+    """
+    # Split the string into analog and digital parts
+    parts = data_string.strip().split(' ')
+    
+    # Parse analog values (after 'A')
+    analog_part = parts[0][1:]  # Remove 'A' prefix
+    analog_values = [int(x) for x in analog_part.split(',')]
+    
+    # Parse digital hex values (after 'S')
+    digital_part = parts[1][1:]  # Remove 'S' prefix
+    hex_values = digital_part.split(',')
+    
+    # Convert hex values to 6x6 boolean matrix
+    digital_matrix = []
+    for hex_val in hex_values:
+        # Convert hex to integer
+        value = int(hex_val, 16)
+        # Extract first 6 bits (from MSB)
+        row = []
+        for bit_pos in range(5, -1, -1):  # bits 5 down to 0
+            row.append(bool(value & (1 << bit_pos)))
+        digital_matrix.append(row)
+    
+
+    incoming_ct = analog_values[0:6]
+    outgoing_ct = analog_values[6:12]
+    busbar_vt = [0] * 6
+
+    ctmap1 = 10
+    dismap1 = [2,2,2,3,3,3]
+    ctmap2 = 11
+    dismap2 = [4,4,4,5,5,5]
+    # take over Analog measurements if switches conduct (CT and DIS from feeder)
+    for i in range(6): # calculate VT values
+        busbar_vt[i] = 0
+        if event[ctmap1] == '10' and event[dismap1[i]] == '10':
+            busbar_vt[i] = incoming_ct[i % 3]
+        if event[ctmap2] == '10' and event[dismap2[i]] == '10':
+            busbar_vt[i] = incoming_ct[(i % 3) + 3 ]
+    
+    # check if busbar is feeding back
+    dismap3 = [6,6,6,7,7,7]
+    dismap4 = [8,8,8,9,9,9]
+    for i in range(6): # calculate VT values from other busbar
+        if event[dismap3[i]] == '10' and event[dismap4[i]] == '10' and busbar_vt[i] > 0:
+            if i < 3:
+                busbar_vt[i + 3] = busbar_vt[i]
+            else:
+                busbar_vt[i - 3] = busbar_vt[i]
+
+    # check for short to ground
+    # ADC_GND_THRESHOLD = 600;  // ~2.9V (tweak for noise)
+    # ADC_SHORT_THRESHOLD = 750; // ~3.6V (tweak for noise)
+    short_to_gnd_threshold = 750
+    short_to_gnd_current = 50
+    gnd_short_active = [False] * 6
+    for i, analog_val in enumerate(incoming_ct):
+        if analog_val < short_to_gnd_threshold:
+            incoming_ct[i] = incoming_ct[i] * short_to_gnd_current
+            outgoing_ct[i] = outgoing_ct[i] / short_to_gnd_current
+            gnd_short_active[i] = True
+
+    # Process analog values above threshold, and then, if short is detected, increase current for input to simulate a short, and decrease current to outgoing ct's
+    # do not process if gnd-fault is already active, we cannot detect both reliably
+    threshold = 100
+    short_phase_current = 100
+    for i, analog_val in enumerate(incoming_ct):
+        if analog_val > threshold and gnd_short_active[i] == False:
+            # Placeholder for further processing
+            if any(digital_matrix[i]):
+                incoming_ct[i] = incoming_ct[i] * short_phase_current
+                outgoing_ct[i] = outgoing_ct[i] / short_phase_current
+
+    combined = incoming_ct + outgoing_ct + busbar_vt
+    output_string = ','.join(map(str, combined))
+    return "A" + output_string #simulated_values
+
+
+
 # ---------------- Client Broadcasting ----------------
 
 def broadcast_to_clients(message):
@@ -119,8 +209,9 @@ def serial_thread():
                 data_message = " ".join(parts[2:])
                 print(f"DATA: {data_message}")
             if mtype == "B":
+                simulated = analog_data_simulator(data_message)
                 # Broadcast DATA event to all clients
-                broadcast_to_clients(f"EVENT DATA {data_message}")
+                broadcast_to_clients(f"EVENT DATA {simulated}")
 
 # ---------------- Unix Socket Client Handler ----------------
 
@@ -161,6 +252,7 @@ def handle_client(conn, addr):
                         conn.sendall((msg + "\n").encode())
 
                     else:
+                        print("ERROR: unknown cmd: " + str(cmd))
                         conn.sendall(b"ERR UNKNOWN_CMD\n")
 
                 except Exception as e:
