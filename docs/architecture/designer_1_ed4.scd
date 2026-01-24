@@ -1414,6 +1414,8 @@
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
 			<DO name="PhV" type="PhV$oscd$_6482021654d47858"/>
 			<DO name="A" type="A$oscd$_6482021654d47858"/>
+			<DO name="AvPhVPhs" type="AvPhVPhs$oscd$_bf0b950e5c38251f"/>
+			<DO name="AvAPhs" type="AvAPhs$oscd$_bf0b950e5c38251f"/>
 		</LNodeType>
 		<LNodeType lnClass="PDIF" desc="Pdif1" id="PDIF$oscd$_3c648d71c9b24d12">
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
@@ -1460,6 +1462,16 @@
 			<DO name="PhyNam" type="PhyNam$oscd$_1b7440bbb0dea6d1"/>
 			<DO name="Proxy" type="Proxy$oscd$_d915d66d9e42a575"/>
 		</LNodeType>
+		<DOType cdc="MV" id="AvPhVPhs$oscd$_bf0b950e5c38251f">
+			<DA name="mag" fc="MX" dchg="true" dupd="true" bType="Struct" type="mag$oscd$_ed49c2f7a55ad05a"/>
+			<DA name="q" fc="MX" qchg="true" bType="Quality"/>
+			<DA name="t" fc="MX" bType="Timestamp"/>
+		</DOType>
+		<DOType cdc="MV" id="AvAPhs$oscd$_bf0b950e5c38251f">
+			<DA name="mag" fc="MX" dchg="true" dupd="true" bType="Struct" type="mag$oscd$_ed49c2f7a55ad05a"/>
+			<DA name="q" fc="MX" qchg="true" bType="Quality"/>
+			<DA name="t" fc="MX" bType="Timestamp"/>
+		</DOType>
 		<DOType cdc="ACT" id="Tr$oscd$_8598a343000a4c8c">
 			<DA name="general" fc="ST" dchg="true" bType="BOOLEAN"/>
 			<DA name="q" fc="ST" qchg="true" bType="Quality"/>
