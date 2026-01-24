@@ -10,8 +10,7 @@ from adafruit_servokit import ServoKit
 import RPi.GPIO as GPIO
 
 # List of GPIO pins
-swi_gpio_pins = [27, 18, 5, 6, 12, 13, 16, 19, 20, 21]
-cbr_gpio_pins = [24, 22, 23, 25]
+swi_gpio_pins = [27, 18, 5, 6, 12, 13, 16, 19, 20, 21, 24, 22, 23, 25]
 
 """
 SET <channel> <0|1>    -> OK | ERR BUSY
@@ -24,7 +23,7 @@ SERVO <ch> <state>     -> event of position
 # ---------------- Configuration ----------------
 
 LIMITS_FILE = "servo_limits.json"
-NUM_SERVOS = 10
+NUM_SERVOS = 14
 MOVE_SPEED = 0.03
 STEP_DEGREE = 1
 
@@ -51,7 +50,6 @@ with open(LIMITS_FILE, "r") as f:
 # ---------------- Shared state ----------------
 
 servo_queues = [Queue() for _ in range(NUM_SERVOS)]
-gpio_queue   = Queue()
 servo_busy   = [threading.Event() for _ in range(NUM_SERVOS)]
 
 servo_event_q = Queue()
@@ -63,11 +61,16 @@ shutdown = threading.Event()
 
 # ---------------- Callbacks ----------------
 
-def on_switch_start(channel, angle):
-    servo_event_q.put(f"SERVO {channel} {state}\n")
+def on_switch_start(channel):
+    servo_event_q.put(f"IO B {channel} 00\n")
 
-def on_switch_end(channel, angle):
-    servo_event_q.put(f"SERVO {channel} {state}\n")
+def on_switch_end(channel, state):
+    pos = "00"
+    if state == True:
+        pos = "10"
+    else:
+        pos = "01"
+    servo_event_q.put(f"IO B {channel} {pos}\n")
 
 # ---------------- Servo logic ----------------
 
@@ -84,9 +87,13 @@ def move_servo_smooth(channel, target_angle):
 
 def servo_worker(channel):
     q = servo_queues[channel]
+    cur_state = False
 
     while not shutdown.is_set():
         target,state = q.get()
+        if cur_state == state:  # skip if state reached
+            continue
+
         servo_busy[channel].set()
 
         on_switch_start(channel, state)
@@ -99,12 +106,36 @@ def servo_worker(channel):
 
 # ---------------- gpio logic ----------------
 
-def gpio_worker():
-    q = gpio_queue
+#def gpio_worker():
+#    q = gpio_queue
+
+#    while not shutdown.is_set():
+#        channel,state = q.get()
+#        GPIO.output(cbr_gpio_pins[channel + 10],state)
+
+def gpio_worker(channel):
+    q = servo_queues[channel]
+    cur_state = False
 
     while not shutdown.is_set():
-        channel,state = q.get()
-        GPIO.output(cbr_gpio_pins[channel + 10],state)
+        target,state = q.get()
+        if cur_state == state: # skip if state reached
+            continue
+
+        if state == False: # open switch: fast
+            GPIO.output(cbr_gpio_pins[channel],state)
+            on_switch_end(channel, state)
+        else: # close switch: slow
+            servo_busy[channel].set()
+            on_switch_start(channel, state)
+            time.sleep(3.0)
+        
+            GPIO.output(cbr_gpio_pins[channel],state) #set pin
+
+            on_switch_end(channel, state)
+
+            servo_busy[channel].clear()
+
 
 # ---------------- Public API ----------------
 
@@ -122,10 +153,8 @@ def set_switch(channel, state):
     target = limits["upper"] if state else limits["lower"]
     if target is None:
         return "ERR BAD_LIMIT\n"
-    if channel < 10:
-        servo_queues[channel].put((target,state))
-    else:
-        gpio_queue.put((channel,state))
+
+    servo_queues[channel].put((target,state))
     return "OK\n"
 
 # ---------------- Serial1 reader ----------------
@@ -263,12 +292,18 @@ def main():
     print("starting daemons")
 
     for ch in range(NUM_SERVOS):
-        threading.Thread(
-            target=servo_worker,
-            args=(ch,),
-            daemon=True
-        ).start()
-    threading.Thread(target=gpio_worker, daemon=True).start()
+        if ch < 10:
+            threading.Thread(
+                target=servo_worker,
+                args=(ch,),
+                daemon=True
+            ).start()
+        else:
+            threading.Thread(
+                target=gpio_worker,
+                args=(ch,),
+                daemon=True
+            ).start()
 
     threading.Thread(target=serial1_reader, args=(ser1,), daemon=True).start()
     threading.Thread(target=serial1_writer, args=(ser1,), daemon=True).start()

@@ -20,8 +20,7 @@ SERVO <ch> <state>     -> event of position
 
 # ---------------- Configuration ----------------
 
-NUM_SERVOS = 10
-NUM_GPIO = 4
+NUM_SERVOS = 14
 MOVE_SPEED = 0.03
 STEP_DEGREE = 1
 
@@ -31,14 +30,12 @@ BAUD2 = 115200
 ARDUINO_TIMEOUT = 5.0
 
 cur_state = ["01" for i in range(NUM_SERVOS)]
-cur_state.extend([False for i in range(NUM_GPIO)])
 
 current = 90
 
 # ---------------- Shared state ----------------
 
 servo_queues = [Queue() for _ in range(NUM_SERVOS)]
-gpio_queue   = Queue()
 servo_busy   = [threading.Event() for _ in range(NUM_SERVOS)]
 
 serial2_event_q = Queue()
@@ -103,17 +100,32 @@ def servo_worker(channel):
 
         servo_busy[channel].clear()
 
-# ---------------- gpio logic ----------------
 
-def gpio_worker():
+def gpio_worker(channel):
     global cur_state
-    q = gpio_queue
+    q = servo_queues[channel]
 
     while not shutdown.is_set():
-        channel,state = q.get()
-        print(f"GPIO: {channel} {state} (gpio)")
-        cur_state[channel] = state #"10" if state else "01"
+        target,state = q.get()
+
+        servo_busy[channel].set()
+
+        if (state == False and cur_state[channel] == "01") or (state == True and cur_state[channel] == "10"):
+            print("new state same as current")
+            servo_busy[channel].clear()
+            continue
+
+        on_switch_start(channel)
+        if state == False: # moving to off postion
+            print(f"GPIO: {channel} {state} (servo)") #set pin
+
         
+        if state == True:
+            time.sleep(3.0) #move_servo_smooth(channel, target)
+            print(f"GPIO: {channel} {state} (servo)") #set pin
+        on_switch_end(channel, state)
+
+        servo_busy[channel].clear()
 
 # ---------------- Public API ----------------
 
@@ -121,13 +133,11 @@ def set_switch(channel, state):
     if not (0 <= channel < NUM_SERVOS + NUM_GPIO):
         return f"ERR {channel} INVALID_CHANNEL\n"
 
-    if channel < NUM_SERVOS:
-        if servo_busy[channel].is_set():
-            return "ERR BUSY\n"
-        target = 120 if state else 90
-        servo_queues[channel].put((target,state))
-    else:
-        gpio_queue.put((channel,state))
+    if servo_busy[channel].is_set():
+        return "ERR BUSY\n"
+    target = 120 if state else 90
+    servo_queues[channel].put((target,state))
+
     return "OK\n"
 
 # ---------------- Serial1 reader ----------------
@@ -205,12 +215,18 @@ def main():
     print("starting daemons")
 
     for ch in range(NUM_SERVOS):
-        threading.Thread(
-            target=servo_worker,
-            args=(ch,),
-            daemon=True
-        ).start()
-    threading.Thread(target=gpio_worker, daemon=True).start()
+        if ch < 10:
+            threading.Thread(
+                target=servo_worker,
+                args=(ch,),
+                daemon=True
+            ).start()
+        else:
+            threading.Thread(
+                target=gpio_worker,
+                args=(ch,),
+                daemon=True
+            ).start()
 
     threading.Thread(target=serial1_reader_mock, daemon=True).start()
 
