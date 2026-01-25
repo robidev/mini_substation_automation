@@ -83,9 +83,9 @@ def analog_data_simulator(data_string):
     for i in range(6): # calculate VT values
         busbar_vt[i] = 0
         if event[ctmap1] == '10' and event[dismap1[i]] == '10':
-            busbar_vt[i] = incoming_ct[i % 3]
+            busbar_vt[i] = int(incoming_ct[i % 3])
         if event[ctmap2] == '10' and event[dismap2[i]] == '10':
-            busbar_vt[i] = incoming_ct[(i % 3) + 3 ]
+            busbar_vt[i] = int(incoming_ct[(i % 3) + 3 ])
     
     # check if busbar is feeding back
     dismap3 = [6,6,6,7,7,7]
@@ -105,8 +105,8 @@ def analog_data_simulator(data_string):
     gnd_short_active = [False] * 6
     for i, analog_val in enumerate(incoming_ct):
         if analog_val < short_to_gnd_threshold:
-            incoming_ct[i] = incoming_ct[i] * short_to_gnd_current
-            outgoing_ct[i] = outgoing_ct[i] / short_to_gnd_current
+            incoming_ct[i] = int(incoming_ct[i] * short_to_gnd_current)
+            outgoing_ct[i] = int(outgoing_ct[i] / short_to_gnd_current)
             gnd_short_active[i] = True
 
     # Process analog values above threshold, and then, if short is detected, increase current for input to simulate a short, and decrease current to outgoing ct's
@@ -117,8 +117,8 @@ def analog_data_simulator(data_string):
         if analog_val > threshold and gnd_short_active[i] == False:
             # Placeholder for further processing
             if any(digital_matrix[i]):
-                incoming_ct[i] = incoming_ct[i] * short_phase_current
-                outgoing_ct[i] = outgoing_ct[i] / short_phase_current
+                incoming_ct[i] = int(incoming_ct[i] * short_phase_current)
+                outgoing_ct[i] = int(outgoing_ct[i] / short_phase_current)
 
     combined = incoming_ct + outgoing_ct + busbar_vt
     output_string = ','.join(map(str, combined))
