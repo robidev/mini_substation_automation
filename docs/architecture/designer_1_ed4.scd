@@ -957,6 +957,7 @@
 			<ConfDataSet max="10" maxAttributes="50"/>
 			<DynDataSet max="10"/>
 			<ReadWrite/>
+			<ConfReportControl max="10" bufMode="both" bufConf="true"/>
 			<GetCBValues/>
 			<ConfLNs fixPrefix="true" fixLnInst="true"/>
 			<GOOSE max="5"/>
@@ -975,6 +976,10 @@
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" fc="ST"/>
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" fc="ST"/>
 						</DataSet>
+						<ReportControl name="ReportControl_001" buffered="false" rptID="Feed1Swi" bufTime="100" confRev="50001" datSet="Feed1SwiPos" intgPd="2000">
+							<TrgOps dchg="true" period="true" gi="true"/>
+							<OptFields seqNum="false" timeStamp="false" dataSet="true" reasonCode="true" dataRef="false" entryID="true" configRef="false"/>
+						</ReportControl>
 						<GSEControl name="Feed1SwiPosCtl" confRev="0" type="GOOSE" appID="FEED1/LD1/LLN0/Feed1SwiPosAppId" datSet="Feed1SwiPos"/>
 					</LN0>
 					<LN lnClass="LPHD" lnType="LPHD$oscd$_8ca3cb769327538e" inst="1" prefix=""/>
@@ -1079,10 +1084,10 @@
 					</LN>
 					<LN lnClass="MMXU" lnType="MMXU$oscd$_3abca1c29963576c" inst="3" prefix="">
 						<Inputs>
-							<ExtRef intAddr="MMXU_Vol1" desc="sample_v1" iedName="FEED1" ldInst="LD1" prefix="B2"  lnClass="TVTR" lnInst="1" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
-							<ExtRef intAddr="MMXU_Vol2" desc="sample_v2" iedName="FEED1" ldInst="LD1" prefix="B2"  lnClass="TVTR" lnInst="2" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
-							<ExtRef intAddr="MMXU_Vol3" desc="sample_v3" iedName="FEED1" ldInst="LD1" prefix="B2"  lnClass="TVTR" lnInst="3" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
-							<ExtRef intAddr="MMXU_Vol4" desc="sample_v4" iedName="FEED1" ldInst="LD1" prefix="B2"  lnClass="TVTR" lnInst="4" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
+							<ExtRef intAddr="MMXU_Vol1" desc="sample_v1" iedName="FEED1" ldInst="LD1" prefix="B2" lnClass="TVTR" lnInst="1" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
+							<ExtRef intAddr="MMXU_Vol2" desc="sample_v2" iedName="FEED1" ldInst="LD1" prefix="B2" lnClass="TVTR" lnInst="2" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
+							<ExtRef intAddr="MMXU_Vol3" desc="sample_v3" iedName="FEED1" ldInst="LD1" prefix="B2" lnClass="TVTR" lnInst="3" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
+							<ExtRef intAddr="MMXU_Vol4" desc="sample_v4" iedName="FEED1" ldInst="LD1" prefix="B2" lnClass="TVTR" lnInst="4" doName="VolSv" daName="instMag.i" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 				</LDevice>

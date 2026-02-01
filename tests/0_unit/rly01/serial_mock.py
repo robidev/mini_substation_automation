@@ -1,3 +1,4 @@
+#!/bin/env python3
 # Create two linked pseudo-terminals
 #socat -d -d PTY,link=/tmp/ttyV0,raw,echo=0 PTY,link=/tmp/ttyV1,raw,echo=0
 

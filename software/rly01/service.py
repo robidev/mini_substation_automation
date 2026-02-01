@@ -1,3 +1,4 @@
+#!/bin/env python3
 import os
 import socket
 import threading
@@ -44,9 +45,9 @@ def analog_data_simulator(data_string):
     
     Args:
         data_string: String in format "A0,1,2,3,4,5,6,7,8,9,10,11 S01,02,03,04,05,06"
-    
+  
     Returns:
-        dict: Contains 'analog' list and 'digital' 6x6 boolean matrix
+        dict: Contains 'analog' list of CT and VT values, first 6x input CT, then 6x outgoing CT, then 6x busbar VT
     """
     # Split the string into analog and digital parts
     parts = data_string.strip().split(' ')
@@ -87,10 +88,10 @@ def analog_data_simulator(data_string):
         if event[ctmap2] == '10' and event[dismap2[i]] == '10':
             busbar_vt[i] = int(incoming_ct[(i % 3) + 3 ])
     
-    # check if busbar is feeding back
+    # check if busbar is feeding back TODO: feedback also via feeders 1 and 2 possible!!!
     dismap3 = [6,6,6,7,7,7]
     dismap4 = [8,8,8,9,9,9]
-    for i in range(6): # calculate VT values from other busbar
+    for i in range(6): # calculate VT values from other busbar, if connected, and voltage is 0
         if event[dismap3[i]] == '10' and event[dismap4[i]] == '10' and busbar_vt[i] > 0:
             if i < 3:
                 busbar_vt[i + 3] = busbar_vt[i]
@@ -218,10 +219,17 @@ def serial_thread():
 def handle_client(conn, addr):
     """Each Unix socket connection runs here"""
     register_client(conn)
+    client_init = False
     
     try:
         with conn:
             while not shutdown.is_set():
+                if client_init == False: # ensure, after we connect, we send our current state
+                    with event_lock:
+                        for ch in range(NUM_CHANNELS):
+                            state_t = event[ch]
+                            conn.sendall((f"EVENT IO: {ch} {state_t}\n").encode())
+                    client_init = True
                 try:
                     data = conn.recv(1024)
                     if not data:
