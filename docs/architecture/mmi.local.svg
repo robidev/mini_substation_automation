@@ -24,7 +24,7 @@
   </linearGradient>
   </defs>
 
-  <g id="Layout_Metadata">
+  <g id="Layout_Metadata" style="filter: invert(1);">
     <text x="900" y="40" class="voltage-label" style="font-size: 24px; text-anchor: middle;">SS1 - Substation Single Line Diagram</text>
     
     <g id="Legend_Group" transform="translate(50, 1000)">
@@ -50,7 +50,7 @@
       <text x="55" y="180" class="equipment-label">Voltage Transformer</text>
     </g>
   </g>
-
+  <g id="HV_System_50kV" style="filter: invert(1);">
     <g id="Busbar_System_HV" transform="translate(345, 440)">
       <g id="Bus_1_HV">
         <line x1="0" y1="0" x2="1100" y2="0" class="busbar"/>
@@ -58,7 +58,7 @@
         <circle cx="-12" cy="0" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
         <circle cx="-24" cy="0" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
         <text x="-20" y="25" class="equipment-label" style="text-anchor:middle;">VTR_1</text>
-        <text x="-20" y="15" id="iec61850://127.0.0.1:102/FEED1LD1/MMXU2.AvPhVPhs.mag.f" class="MEAS" data-text="Voltage: {value} V" fill="#ff0000" stroke="#ff0000" font-size="12">voltage: {value} V</text>
+        <text x="-40" y="-15" id="iec61850://127.0.0.1:2102/FEED1LD1/MMXU2.AvPhVPhs.mag.f" class="MEAS" data-text="Voltage: {value} V" fill="#ff0000" stroke="#ff0000" font-size="12">voltage: {value} V</text>
 
       </g>
       <g id="Bus_2_HV" transform="translate(0, 60)">
@@ -67,12 +67,11 @@
         <circle cx="-12" cy="0" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
         <circle cx="-24" cy="0" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
         <text x="-20" y="25" class="equipment-label" style="text-anchor:middle;">VTR_2</text>
-        <text x="-20" y="35" id="iec61850://127.0.0.1:102/FEED1LD1/MMXU3.AvPhVPhs.mag.f" class="MEAS" data-text="Voltage: {value} V" fill="#ff0000" stroke="#ff0000" font-size="12">voltage: {value} V</text>
+        <text x="-40" y="35" id="iec61850://127.0.0.1:2102/FEED1LD1/MMXU3.AvPhVPhs.mag.f" class="MEAS" data-text="Voltage: {value} V" fill="#ff0000" stroke="#ff0000" font-size="12">voltage: {value} V</text>
 
       </g>
     </g>
 
-  <g id="HV_System_50kV">
     <text x="100" y="100" class="voltage-label" style="font-size: 20px;">50kV System</text>
 
     <g id="Incoming_Feeds_Group">
@@ -81,46 +80,80 @@
         <line x1="0" y1="0" x2="0" y2="120" class="conductor"/>
         <path d="M -10,00 L 0,20 L 10,0" class="arrow"/>
         <text x="25" y="40" class="equipment-label">LINE_F1</text>
+
         
         <line x1="0" y1="120" x2="0" y2="150" class="conductor"/>
-        <circle cx="0" cy="130" r="8" class="disconnector"/>
-        <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:102/FEED1LD1/CSWI2.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+        <g id="FEED1LD1_SWI2">
+          <circle cx="0" cy="130" r="8" class="disconnector"/>
+          <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/CSWI2.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
 
-        <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:102/FEED1LD1/XSWI2.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
-          <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
-          <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
-          <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
-          <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
-        </circle>
+          <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI2.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
 
-        <text x="25" y="130" class="equipment-label">DIS_F1</text>
-        <text x="25" y="140" id="iec61850://127.0.0.1:102/FEED1LD1/XSWI2.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12"></text>
-        
+          <text x="25" y="140" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI2.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="130" class="equipment-label">DIS_F1</text>
+        </g>
+
         <circle cx="0" cy="170" r="12" class="conductor"/>
         <line x1="0" y1="150" x2="0" y2="200" class="conductor"/>
         <text x="25" y="170" class="equipment-label">CTR_F1</text>
-        <text x="25" y="185" id="iec61850://127.0.0.1:102/FEED1LD1/MMXU1.AvAPhs.mag.f" class="MEAS" data-text="Current: {value} A" fill="#ff0000" stroke="#ff0000" font-size="12">current: {value} A</text>
+        <g id="FEED1LD1_CTR">
+          <text x="25" y="185" id="iec61850://127.0.0.1:2102/FEED1LD1/MMXU1.AvAPhs.mag.f" class="MEAS" data-text="Current: {value} A" fill="#ff0000" stroke="#ff0000" font-size="12">current: {value} A</text>
+        </g>
 
-        
-        <rect x="-12" y="210" width="24" height="24" class="cbr"/>
-        <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:102/FEED1LD1/XCBR1.Pos.stVal" class="XCBR"  stroke-width="1.5" stroke="#ff0000" fill="#ff0000">
-          <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
-          <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
-          <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
-          <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
-        </rect>
-        <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:102/FEED1LD1/CSWI1.Pos" class="CSWI" stroke-width="1.5" stroke="none" fill="none"/>
+        <g id="FEED1LD1_CBR1">
+          <rect x="-12" y="210" width="24" height="24" class="cbr"/>
+          <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:2102/FEED1LD1/CSWI1.Pos" class="CSWI" stroke-width="1.5" stroke="none" fill="none"/>
+          <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:2102/FEED1LD1/XCBR1.Pos.stVal" class="XCBR"  stroke-width="1.5" stroke="#ff0000" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
+          <text x="25" y="232" id="iec61850://127.0.0.1:2102/FEED1LD1/XCBR1.Pos.stVal" class="MEAS" data-text="CBR: QA1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+        </g>
         <line x1="0" y1="200" x2="0" y2="210" class="conductor"/>
         <line x1="0" y1="234" x2="0" y2="280" class="conductor"/>
         <text x="25" y="222" class="equipment-label">CBR_F1</text>
-        <text x="25" y="232" id="iec61850://127.0.0.1:102/FEED1LD1/XCBR1.Pos.stVal" class="MEAS" data-text="CBR: QA1={value}" fill="#ff0000" stroke="#ff0000" font-size="12"></text>
+
         
         <line x1="0" y1="340" x2="0" y2="400" class="conductor"/>
         <line x1="0" y1="280" x2="0" y2="340" class="conductor"/>
-        <circle cx="0" cy="340" r="8" class="disconnector"/>
+
+        <g id="FEED1LD1_SWI3">
+          <circle cx="0" cy="340" r="8" class="disconnector"/>
+          <circle cx="0" cy="340" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/CSWI3.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+
+          <circle cx="0" cy="340" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI3.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
+
+          <text x="25" y="350" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI3.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="330" class="equipment-label">DIS_F1_B1</text>
+        </g>
+
         <circle cx="0" cy="400" r="8" class="disconnector"/>
-        <text x="25" y="330" class="equipment-label">DIS_F1_B1</text>
-        <text x="25" y="390" class="equipment-label">DIS_F1_B2</text>
+        <g id="FEED1LD1_SWI4">
+          <circle cx="0" cy="400" r="8" class="disconnector"/>
+          <circle cx="0" cy="400" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/CSWI4.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+
+          <circle cx="0" cy="400" r="8" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI4.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
+
+          <text x="25" y="410" id="iec61850://127.0.0.1:2102/FEED1LD1/XSWI4.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="390" class="equipment-label">DIS_F1_B2</text>
+        </g>
       </g>
 
       <g id="Feed_2" transform="translate(650, 100)">
@@ -129,25 +162,76 @@
         <text x="25" y="40" class="equipment-label">LINE_F2</text>
         
         <line x1="0" y1="120" x2="0" y2="150" class="conductor"/>
-        <circle cx="0" cy="130" r="8" class="disconnector"/>
-        <text x="25" y="130" class="equipment-label">DIS_F2</text>
+        <g id="FEED2LD1_SWI2">
+          <circle cx="0" cy="130" r="8" class="disconnector"/>
+          <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/CSWI2.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+
+          <circle cx="0" cy="130" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
+
+          <text x="25" y="140" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="130" class="equipment-label">DIS_F2</text>
+        </g>
         
         <circle cx="0" cy="170" r="12" class="conductor"/>
         <line x1="0" y1="150" x2="0" y2="200" class="conductor"/>
         <text x="25" y="170" class="equipment-label">CTR_F2</text>
-        <text x="25" y="185" id="iec61850://127.0.0.1:103/FEED2LD1/MMXU1.AvAPhs.mag.f" class="MEAS" data-text="Current: {value} A" fill="#ff0000" stroke="#ff0000" font-size="12">current: {value} A</text>
-        
-        <rect x="-12" y="210" width="24" height="24" class="cbr"/>
+        <g id="FEED2LD1_CTR">
+          <text x="25" y="185" id="iec61850://127.0.0.1:2102/FEED2LD1/MMXU1.AvAPhs.mag.f" class="MEAS" data-text="Current: {value} A" fill="#ff0000" stroke="#ff0000" font-size="12">current: {value} A</text>
+        </g>
+
+        <g id="FEED2LD1_CBR1">
+          <rect x="-12" y="210" width="24" height="24" class="cbr"/>
+          <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:2102/FEED2LD1/CSWI1.Pos" class="CSWI" stroke-width="1.5" stroke="none" fill="none"/>
+          <rect x="-12" y="210" width="24" height="24" id="iec61850://127.0.0.1:2102/FEED2LD1/XCBR1.Pos.stVal" class="XCBR"  stroke-width="1.5" stroke="#ff0000" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
+          <text x="25" y="232" id="iec61850://127.0.0.1:2102/FEED2LD1/XCBR1.Pos.stVal" class="MEAS" data-text="CBR: QA1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+        </g>
         <line x1="0" y1="200" x2="0" y2="210" class="conductor"/>
         <line x1="0" y1="234" x2="0" y2="280" class="conductor"/>
         <text x="25" y="222" class="equipment-label">CBR_F2</text>
-        
-       <line x1="0" y1="340" x2="0" y2="400" class="conductor"/>
+
+
+        <line x1="0" y1="340" x2="0" y2="400" class="conductor"/>
         <line x1="0" y1="280" x2="0" y2="340" class="conductor"/>
-        <circle cx="0" cy="340" r="8" class="disconnector"/>
+        <g id="FEED2LD1_SWI3">
+          <circle cx="0" cy="340" r="8" class="disconnector"/>
+          <circle cx="0" cy="340" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/CSWI2.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+
+          <circle cx="0" cy="340" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
+
+          <text x="25" y="350" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="330" class="equipment-label">DIS_F2_B1</text>
+        </g>
+
         <circle cx="0" cy="400" r="8" class="disconnector"/>
-        <text x="25" y="330" class="equipment-label">DIS_F2_B1</text>
-        <text x="25" y="390" class="equipment-label">DIS_F2_B2</text>
+        <g id="FEED2LD1_SWI4">
+          <circle cx="0" cy="400" r="8" class="disconnector"/>
+          <circle cx="0" cy="400" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/CSWI2.Pos" class="CSWI" stroke="#ff0000" fill="#000000"/> 
+
+          <circle cx="0" cy="400" r="8" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="XSWI" stroke="#ff0000" fill="#000000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#vertSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />  
+          </circle>
+
+          <text x="25" y="410" id="iec61850://127.0.0.1:2102/FEED2LD1/XSWI2.Pos.stVal" class="MEAS" data-text="DIS: QB1={value}" fill="#ff0000" stroke="#ff0000" font-size="12">pos: 00</text>
+          <text x="25" y="390" class="equipment-label">DIS_F2_B2</text>
+        </g>
       </g>
     </g>
 
@@ -211,7 +295,7 @@
     </g>
   </g>
 
-  <g id="MV_System_10kV">
+  <g id="MV_System_10kV"  style="filter: invert(1);">
     <text x="100" y="800" class="voltage-label" style="font-size: 20px;">10kV System</text>
 
     <g id="PT1_MV_Zone" transform="translate(850, 760)">
