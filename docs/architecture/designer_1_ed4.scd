@@ -997,6 +997,13 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="3" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
 					<LN lnClass="PTOC" lnType="PTOC$oscd$_72a47fe03fb65b2f" inst="1" prefix="">
+						<DOI name="StrVal">
+							<SDI name="setMag">
+								<DAI name="f">
+									<Val>42.3</Val>
+								</DAI>
+							</SDI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="PTOC_Amp1" desc="sample_a1" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="1" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
 							<ExtRef intAddr="PTOC_Amp2" desc="sample_a2" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="2" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
