@@ -976,9 +976,10 @@
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" fc="ST"/>
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" fc="ST"/>
 						</DataSet>
-						<ReportControl name="ReportControl_001" buffered="false" rptID="Feed1Swi" bufTime="100" confRev="50001" datSet="Feed1SwiPos" intgPd="2000">
+						<ReportControl name="ReportControl_001" buffered="true" rptID="Feed1Swi" bufTime="100" confRev="1" datSet="Feed1SwiPos" intgPd="2000">
 							<TrgOps dchg="true" period="true" gi="true"/>
-							<OptFields seqNum="false" timeStamp="false" dataSet="true" reasonCode="true" dataRef="false" entryID="true" configRef="false"/>
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true" />
+							<RptEnabled max="1" />
 						</ReportControl>
 						<GSEControl name="Feed1SwiPosCtl" confRev="0" type="GOOSE" appID="FEED1/LD1/LLN0/Feed1SwiPosAppId" datSet="Feed1SwiPos"/>
 					</LN0>
@@ -1004,11 +1005,21 @@
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="1" prefix="">
+						<DOI name="Pos">
+							<DAI name="ctlModel">
+								<Val>sbo-with-enhanced-security</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XCBR" lnInst="1" doName="Pos" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="2" prefix="">
+						<DOI name="Pos">
+							<DAI name="ctlModel">
+								<Val>sbo-with-enhanced-security</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="2" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
@@ -1016,6 +1027,11 @@
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="3" prefix="">
+						<DOI name="Pos">
+							<DAI name="ctlModel">
+								<Val>sbo-with-enhanced-security</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
@@ -1023,6 +1039,11 @@
 						</Inputs>
 					</LN>
 					<LN lnClass="CSWI" lnType="CSWI$oscd$_a89dcc3919082155" inst="4" prefix="">
+						<DOI name="Pos">
+							<DAI name="ctlModel">
+								<Val>sbo-with-enhanced-security</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="stval" desc="xcbr_status" iedName="FEED1" ldInst="LD1" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" serviceType="Poll"/>
 							<ExtRef intAddr="EnaOpn" desc="interlock_open" iedName="FEED1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
