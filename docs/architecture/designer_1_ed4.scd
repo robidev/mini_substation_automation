@@ -978,8 +978,8 @@
 						</DataSet>
 						<ReportControl name="ReportControl_001" buffered="true" rptID="Feed1Swi" bufTime="100" confRev="1" datSet="Feed1SwiPos" intgPd="2000">
 							<TrgOps dchg="true" period="true" gi="true"/>
-							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true" />
-							<RptEnabled max="1" />
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
+							<RptEnabled max="1"/>
 						</ReportControl>
 						<GSEControl name="Feed1SwiPosCtl" confRev="0" type="GOOSE" appID="FEED1/LD1/LLN0/Feed1SwiPosAppId" datSet="Feed1SwiPos"/>
 					</LN0>
@@ -996,7 +996,7 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="2" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="3" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
-					<LN lnClass="PTOC" lnType="PTOC$oscd$_a64b54f94c354bee" inst="1" prefix="">
+					<LN lnClass="PTOC" lnType="PTOC$oscd$_72a47fe03fb65b2f" inst="1" prefix="">
 						<Inputs>
 							<ExtRef intAddr="PTOC_Amp1" desc="sample_a1" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="1" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
 							<ExtRef intAddr="PTOC_Amp2" desc="sample_a2" iedName="FEED1" ldInst="LD1" lnClass="TCTR" lnInst="2" doName="AmpSv" serviceType="Poll" daName="instMag.i"/>
@@ -1219,7 +1219,7 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="1" prefix=""/>
 					<LN lnClass="CILO" lnType="CILO$oscd$_aa7ec79ef27309b1" inst="1" prefix=""/>
-					<LN lnClass="PDIF" lnType="PDIF$oscd$_3c648d71c9b24d12" inst="1" prefix=""/>
+					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix=""/>
 				</LDevice>
 			</Server>
 		</AccessPoint>
@@ -1279,7 +1279,7 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="1" prefix=""/>
 					<LN lnClass="CILO" lnType="CILO$oscd$_aa7ec79ef27309b1" inst="1" prefix=""/>
-					<LN lnClass="PDIF" lnType="PDIF$oscd$_3c648d71c9b24d12" inst="1" prefix=""/>
+					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix=""/>
 				</LDevice>
 			</Server>
 		</AccessPoint>
@@ -1319,7 +1319,7 @@
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="2" prefix=""/>
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="3" prefix=""/>
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="4" prefix=""/>
-					<LN lnClass="PTOC" lnType="PTOC$oscd$_a64b54f94c354bee" inst="1" prefix=""/>
+					<LN lnClass="PTOC" lnType="PTOC$oscd$_72a47fe03fb65b2f" inst="1" prefix=""/>
 					<LN lnClass="XCBR" lnType="XCBR$oscd$_420e2f9e111e8bf2" inst="1" prefix=""/>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="1" prefix=""/>
 					<LN lnClass="CILO" lnType="CILO$oscd$_aa7ec79ef27309b1" inst="1" prefix=""/>
@@ -1335,7 +1335,7 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="2" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="3" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
-					<LN lnClass="PDIF" lnType="PDIF$oscd$_3c648d71c9b24d12" inst="1" prefix=""/>
+					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix=""/>
 				</LDevice>
 			</Server>
 		</AccessPoint>
@@ -1375,7 +1375,7 @@
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="2" prefix=""/>
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="3" prefix=""/>
 					<LN lnClass="TCTR" lnType="TCTR$oscd$_5b652afdf7c13340" inst="4" prefix=""/>
-					<LN lnClass="PTOC" lnType="PTOC$oscd$_a64b54f94c354bee" inst="1" prefix=""/>
+					<LN lnClass="PTOC" lnType="PTOC$oscd$_72a47fe03fb65b2f" inst="1" prefix=""/>
 					<LN lnClass="XCBR" lnType="XCBR$oscd$_420e2f9e111e8bf2" inst="1" prefix=""/>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="1" prefix=""/>
 					<LN lnClass="CILO" lnType="CILO$oscd$_aa7ec79ef27309b1" inst="1" prefix=""/>
@@ -1391,12 +1391,41 @@
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="2" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="3" prefix="B2"/>
 					<LN lnClass="TVTR" lnType="TVTR$oscd$_e990c540f6cd3155" inst="4" prefix="B2"/>
-					<LN lnClass="PDIF" lnType="PDIF$oscd$_3c648d71c9b24d12" inst="1" prefix=""/>
+					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix=""/>
 				</LDevice>
 			</Server>
 		</AccessPoint>
 	</IED>
 	<DataTypeTemplates>
+		<LNodeType lnClass="PDIF" desc="Pdif1" id="PDIF$oscd$_ab16057220381a95">
+			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
+			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
+			<DO name="LoSet" type="LoSet$oscd$_70f83e1c005744f2"/>
+			<DO name="HiSet" type="HiSet$oscd$_70f83e1c005744f2"/>
+			<DO name="MinOpTmms" type="MinOpTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="MaxOpTmms" type="MaxOpTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="RsDlTmms" type="RsDlTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="RstMod" type="RstMod$oscd$_f291a9c0baf147b7"/>
+			<DO name="TmACrv" type="TmACrv$oscd$_4af833088bcc2499"/>
+		</LNodeType>
+		<LNodeType lnClass="PTOC" desc="Ptoc1" id="PTOC$oscd$_72a47fe03fb65b2f">
+			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
+			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
+			<DO name="Str" type="Str$oscd$_ba49448ecb46113a"/>
+			<DO name="RsDlTmms" type="RsDlTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="OpDlTmms" type="OpDlTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="MaxOpTmms" type="MaxOpTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="MinOpTmms" type="MinOpTmms$oscd$_f1c0d370e7430e0c"/>
+			<DO name="StrVal" type="StrVal$oscd$_70f83e1c005744f2"/>
+			<DO name="TmACrv" type="TmACrv$oscd$_20fcfe62b7de20f2"/>
+			<DO name="TmMult" type="TmMult$oscd$_70f83e1c005744f2"/>
+			<DO name="TypRsCrv" type="TypRsCrv$oscd$_f291a9c0baf147b7"/>
+		</LNodeType>
+		<LNodeType lnClass="PIOC" desc="Pioc1" id="PIOC$oscd$_c8c42d738d01930d">
+			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
+			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
+			<DO name="StrVal" type="StrVal$oscd$_70f83e1c005744f2"/>
+		</LNodeType>
 		<LNodeType lnClass="PTRC" desc="Ptrc1" id="PTRC$oscd$_a60344357bbc2c12">
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
 			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
@@ -1432,20 +1461,12 @@
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
 			<DO name="ChTrg" type="ChTrg$oscd$_d915d66d9e42a575"/>
 		</LNodeType>
-		<LNodeType lnClass="PIOC" desc="Pioc1" id="PIOC$oscd$_7cb8af267f8be7e5">
-			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
-			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
-		</LNodeType>
 		<LNodeType lnClass="MMXU" desc="Mmxu1" id="MMXU$oscd$_3abca1c29963576c">
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
 			<DO name="PhV" type="PhV$oscd$_6482021654d47858"/>
 			<DO name="A" type="A$oscd$_6482021654d47858"/>
 			<DO name="AvPhVPhs" type="AvPhVPhs$oscd$_bf0b950e5c38251f"/>
 			<DO name="AvAPhs" type="AvAPhs$oscd$_bf0b950e5c38251f"/>
-		</LNodeType>
-		<LNodeType lnClass="PDIF" desc="Pdif1" id="PDIF$oscd$_3c648d71c9b24d12">
-			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
-			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
 		</LNodeType>
 		<LNodeType lnClass="CSWI" desc="Cswi1" id="CSWI$oscd$_a89dcc3919082155">
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
@@ -1457,11 +1478,6 @@
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
 			<DO name="EnaCls" type="EnaCls$oscd$_d915d66d9e42a575"/>
 			<DO name="EnaOpn" type="EnaOpn$oscd$_d915d66d9e42a575"/>
-		</LNodeType>
-		<LNodeType lnClass="PTOC" desc="Ptoc1" id="PTOC$oscd$_a64b54f94c354bee">
-			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
-			<DO name="Op" type="Op$oscd$_8598a343000a4c8c" transient="true"/>
-			<DO name="Str" type="Str$oscd$_ba49448ecb46113a"/>
 		</LNodeType>
 		<LNodeType lnClass="XCBR" desc="Xcbr1" id="XCBR$oscd$_420e2f9e111e8bf2">
 			<DO name="Beh" type="Beh$oscd$_c6ed035c8137b35a"/>
@@ -1488,6 +1504,42 @@
 			<DO name="PhyNam" type="PhyNam$oscd$_1b7440bbb0dea6d1"/>
 			<DO name="Proxy" type="Proxy$oscd$_d915d66d9e42a575"/>
 		</LNodeType>
+		<DOType cdc="ASG" id="LoSet$oscd$_70f83e1c005744f2">
+			<DA name="setMag" fc="SE" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
+		</DOType>
+		<DOType cdc="ASG" id="HiSet$oscd$_70f83e1c005744f2">
+			<DA name="setMag" fc="SE" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
+		</DOType>
+		<DOType cdc="ENG" id="RstMod$oscd$_f291a9c0baf147b7">
+			<DA name="setVal" fc="SE" bType="Enum" type="setVal$oscd$_98017d41cdb32bc1"/>
+		</DOType>
+		<DOType cdc="CURVE" id="TmACrv$oscd$_4af833088bcc2499">
+			<DA name="setCharact" fc="SE" bType="Enum" type="setCharact$oscd$_486b72b6f4047ed8"/>
+		</DOType>
+		<DOType cdc="ING" id="RsDlTmms$oscd$_f1c0d370e7430e0c">
+			<DA name="setVal" fc="SE" bType="INT32"/>
+		</DOType>
+		<DOType cdc="ING" id="OpDlTmms$oscd$_f1c0d370e7430e0c">
+			<DA name="setVal" fc="SE" bType="INT32"/>
+		</DOType>
+		<DOType cdc="ING" id="MaxOpTmms$oscd$_f1c0d370e7430e0c">
+			<DA name="setVal" fc="SE" bType="INT32"/>
+		</DOType>
+		<DOType cdc="ING" id="MinOpTmms$oscd$_f1c0d370e7430e0c">
+			<DA name="setVal" fc="SE" bType="INT32"/>
+		</DOType>
+		<DOType cdc="CURVE" id="TmACrv$oscd$_20fcfe62b7de20f2">
+			<DA name="setCharact" fc="SE" bType="Enum" type="setCharact$oscd$_95737bf2ad6f4abd"/>
+		</DOType>
+		<DOType cdc="ASG" id="TmMult$oscd$_70f83e1c005744f2">
+			<DA name="setMag" fc="SE" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
+		</DOType>
+		<DOType cdc="ENG" id="TypRsCrv$oscd$_f291a9c0baf147b7">
+			<DA name="setVal" fc="SE" bType="Enum" type="setVal$oscd$_98017d41cdb32bc1"/>
+		</DOType>
+		<DOType cdc="ASG" id="StrVal$oscd$_70f83e1c005744f2">
+			<DA name="setMag" fc="SE" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
+		</DOType>
 		<DOType cdc="MV" id="AvPhVPhs$oscd$_bf0b950e5c38251f">
 			<DA name="mag" fc="MX" dchg="true" dupd="true" bType="Struct" type="mag$oscd$_ed49c2f7a55ad05a"/>
 			<DA name="q" fc="MX" qchg="true" bType="Quality"/>
@@ -1698,6 +1750,15 @@
 		<DAType id="setMag$oscd$_ed49c2f7a55ad05a">
 			<BDA name="f" bType="FLOAT32"/>
 		</DAType>
+		<EnumType id="setCharact$oscd$_486b72b6f4047ed8">
+			<EnumVal ord="15">IEC Definite Time</EnumVal>
+		</EnumType>
+		<EnumType id="setCharact$oscd$_95737bf2ad6f4abd">
+			<EnumVal ord="11">IEC Inverse</EnumVal>
+		</EnumType>
+		<EnumType id="setVal$oscd$_98017d41cdb32bc1">
+			<EnumVal ord="1">None</EnumVal>
+		</EnumType>
 		<EnumType id="stVal$oscd$_a3d45706712dddd7">
 			<EnumVal ord="1">Ready</EnumVal>
 			<EnumVal ord="2">InProgress</EnumVal>
