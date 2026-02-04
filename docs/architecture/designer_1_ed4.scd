@@ -1545,7 +1545,7 @@
 			<DA name="setVal" fc="SE" bType="Enum" type="setVal$oscd$_98017d41cdb32bc1"/>
 		</DOType>
 		<DOType cdc="ASG" id="StrVal$oscd$_70f83e1c005744f2">
-			<DA name="setMag" fc="SE" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
+			<DA name="setMag" fc="SP" bType="Struct" type="setMag$oscd$_ed49c2f7a55ad05a"/>
 		</DOType>
 		<DOType cdc="MV" id="AvPhVPhs$oscd$_bf0b950e5c38251f">
 			<DA name="mag" fc="MX" dchg="true" dupd="true" bType="Struct" type="mag$oscd$_ed49c2f7a55ad05a"/>
