@@ -11,7 +11,7 @@ from config import (
 from drawing import (
     draw_single_line, swap_fg_bg, cursor_on, polar_to_xy
 )
-from models import RelayData
+
 
 
 # =====================================================
@@ -116,8 +116,8 @@ class MeasurementPage(Page):
     """Display measurements from relay data"""
     title = "Measurements"
 
-    def __init__(self, relay_data):
-        self.relay_data = relay_data
+    def __init__(self, client):
+        self.client = client
         self.right = ""
 
     def handle_key(self, key, stack):
@@ -125,14 +125,19 @@ class MeasurementPage(Page):
             stack.pop()
 
     def draw(self, surface):
-        data = self.relay_data.get_data() if self.relay_data else RelayData("N/A")
         text(surface, "Side 1", 20, 30)
         y = 55
         for v in MEASUREMENTS:
+            mag = self.client.get_measurement(v[1])
+            ang = self.client.get_measurement(v[2])
+            if mag == {}:
+                mag = 1.0
+            if ang == {}:
+                ang = 0
             if v[0][0] == "I":
-                text(surface, f"{v[0]:<8} {v[1]:>5} A {v[2]:>6}°", 40, y)
+                text(surface, f"{v[0]:<8} {mag:>5} A {ang:>6}°", 40, y)
             else:
-                text(surface, f"{v[0]:<8} {v[1]:>5} V {v[2]:>6}°", 40, y)                
+                text(surface, f"{v[0]:<8} {mag:>5} V {ang:>6}°", 40, y)                
             y += FONT_H + 3
 
 
@@ -140,7 +145,8 @@ class DiagramPage(Page):
     """Single line diagram"""
     title = "Single line"
 
-    def __init__(self):
+    def __init__(self, client):
+        self.client = client
         self.right = " Menu"
 
     def handle_key(self, key, stack):
@@ -156,7 +162,8 @@ class ControlPage(Page):
     """Control/selection page for diagram elements"""
     title = "Control"
     
-    def __init__(self):
+    def __init__(self, client):
+        self.client = client
         self.selectable_count = sum('selectable' in obj for obj in DIAGRAM_OBJECTS)
         self.control_index = 0
         self.right = "Switch"
@@ -213,10 +220,11 @@ class PhasorPage(Page):
     """Phasor diagram"""
     title = "Phasors"
 
-    def __init__(self):
+    def __init__(self, client):
+        self.client = client
         self.right = "next"
         self.page = 0
-        self.pages = 3
+        self.pages = 1
 
     def handle_key(self, key, stack):
         if key == pygame.K_ESCAPE:
@@ -231,7 +239,13 @@ class PhasorPage(Page):
         pygame.draw.line(surface, FG, (cx - r, cy), (cx + r, cy), 1)
         pygame.draw.line(surface, FG, (cx, cy - r), (cx, cy + r), 1)
 
-        for name, mag, ang in MEASUREMENTS[(self.page*3):(self.page*3)+3]:
+        for name, mag_ref, ang_ref in MEASUREMENTS[(self.page*3):(self.page*3)+3]:
+            mag = self.client.get_measurement(mag_ref)
+            ang = self.client.get_measurement(ang_ref)
+            if mag == {}:
+                mag = 1.0
+            if ang == {}:
+                ang = 0
             dx, dy = polar_to_xy(mag, ang, r)
             x, y = int(cx + dx), int(cy + dy)
             pygame.draw.line(surface, FG, (cx, cy), (x, y), 2)
@@ -245,8 +259,8 @@ class SettingsPage(Page):
     """Settings editor page"""
     title = "Settings"
 
-    def __init__(self, relay_data):
-        self.relay_data = relay_data
+    def __init__(self, client):
+        self.client = client
         self.items = [list(item) for item in SETTINGS]  # Deep copy settings
         self.sel = 0
         self.edit = False
@@ -281,7 +295,10 @@ class SettingsPage(Page):
 
     def draw(self, surface):
         y = 40
-        for i, (name, val) in enumerate(self.items):
+        for i, (name, ref) in enumerate(self.items):
+            val = self.client.get_setting(ref)
+            if val == None:
+                val = "N/A"
             if i == self.sel and not self.edit:
                 text(surface, f"{name:<12} {val:>7}", 20, y, INV_FG, INV_BG)
             else:

@@ -45,65 +45,109 @@ SOCKET_PATHS = [
 ]
 
 # =====================================================
-# SYMBOL DEFINITIONS
+# ELEMENT DEFINITIONS (IEC61850 MAPPING)
 # =====================================================
-# Each symbol is centered at origin (0, 0)
-SYMBOLS = {
-    "circuit_breaker_open": [
-        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
-        {"type": "line", "start": (0, -20), "end": (25, 5), "width": 2},
-        {"type": "line", "start": (-10, 0), "end": (10, 20), "width": 2},
-        {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
-        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
-    ],
-    "circuit_breaker_closed": [
-        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
-        {"type": "filled_circle", "center": (0, -20), "radius": 4},
-        {"type": "line", "start": (0, -20), "end": (0, 10), "width": 2},
-        {"type": "line", "start": (-10, 0), "end": (10, 20), "width": 2},
-        {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
-        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
-    ],
-    "disconnector_open": [
-        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
-        {"type": "line", "start": (0, -20), "end": (25, 5), "width": 2},
-        {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
-        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
-    ],
-    "disconnector_closed": [
-        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
-        {"type": "filled_circle", "center": (0, -20), "radius": 4},
-        {"type": "line", "start": (0, -20), "end": (0, 10), "width": 2},
-        {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
-        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
-    ],
-    "current_transformer": [
-        {"type": "line", "start": (0, -30), "end": (0, 30), "width": 2},
-        {"type": "circle", "center": (0, 0), "radius": 10, "width": 2},
-        {"type": "line", "start": (0, -15), "end": (0, 15), "width": 2},
-    ],
-    "voltage_transformer": [
-        {"type": "circle", "center": (0, -10), "radius": 15, "width": 2},
-        {"type": "circle", "center": (0, 10), "radius": 15, "width": 2},
-        {"type": "line", "start": (0, -40), "end": (0, -25), "width": 2},
-        {"type": "line", "start": (0, 25), "end": (0, 40), "width": 2},
-    ],
-    "power_transformer": [
-        {"type": "circle", "center": (0, -10), "radius": 15, "width": 2},
-        {"type": "circle", "center": (0, 10), "radius": 15, "width": 2},
-        {"type": "line", "start": (0, -40), "end": (0, -25), "width": 2},
-        {"type": "line", "start": (0, 25), "end": (0, 40), "width": 2},
-    ],
-    "earth": [
-        {"type": "line", "start": (0, -20), "end": (0, 0), "width": 2},
-        {"type": "line", "start": (-10, 0), "end": (10, 0), "width": 2},
-        {"type": "line", "start": (-7, 5), "end": (7, 5), "width": 2},
-        {"type": "line", "start": (-4, 10), "end": (4, 10), "width": 2},
-    ],
-    "busbar": [
-        {"type": "line", "start": (-120, 0), "end": (120, 0), "width": 4},
-    ],
+# Maps element names to their metadata
+ELEMENTS = {
+    # Controllable objects (circuit breakers and switches)
+    "cbr1": {
+        "type": "breaker",
+        "description": "Circuit Breaker 1"
+    },
+    "swi1": {
+        "type": "switch",
+        "description": "Switch 1"
+    },
+    "swi2": {
+        "type": "switch",
+        "description": "Switch 2"
+    },
+    "swi3": {
+        "type": "switch",
+        "description": "Switch 3"
+    },
+    # Measurement transformers
+    "ctr1": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsAngA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsAngB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "ctr1_phsAngC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1"
+    },
+    "vtr1": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "vtr2": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    # Settings
+    "set0_loc": {
+        "type": "setting",
+        "description": "Local/Remote Control"
+    },
+    "set1_Ilarge": {
+        "type": "setting",
+        "description": "Overcurrent Pickup"
+    },
+    "set2_Tm": {
+        "type": "setting",
+        "description": "Time Multiplier"
+    },
 }
+
+# =====================================================
+# SETTINGS AND MEASUREMENTS
+# =====================================================
+SETTINGS = [
+    ["I> pickup", "set1_Ilarge"],
+    ["T> delay", "set2_Tm"],
+    ["Local/Remote", "set0_loc"],
+]
+
+MEASUREMENTS = [
+    ("Iph A", "ctr1_phsA", "ctr1_phsAngA"),
+    ("Iph B", "ctr1_phsB", "ctr1_phsAngB"),
+    ("Iph C", "ctr1_phsC", "ctr1_phsAngC"),
+]
+
+INDICATORS = [
+    "cbr1",
+    "swi2",
+    "swi3",
+    "swi4",
+]
 
 # =====================================================
 # DIAGRAM OBJECTS
@@ -186,35 +230,62 @@ DIAGRAM_OBJECTS = [
 ]
 
 # =====================================================
-# SETTINGS AND MEASUREMENTS
+# SYMBOL DEFINITIONS
 # =====================================================
-SETTINGS = [
-    ["I> pickup", "120.0"],
-    ["T> delay", "0.50"],
-    ["CT ratio", "400.0"],
-    ["Local/Remote", "Remote"],
-]
-
-MEASUREMENTS = [
-    ("Iph A", 1.0, 0),
-    ("Iph B", 1.0, -120),
-    ("Iph C", 1.0, 120),
-    ("Vph A", 0, 0),
-    ("Vph B", 0, -120),
-    ("Vph C", 0, 120),
-    ("Vph A", 0, 0),
-    ("Vph B", 0, -120),
-    ("Vph C", 0, 120),
-]
-
-#[("IA", 1.0, 0), ("IB", 1.0, -120), ("IC", 1.0, 120)]
-
-INDICATORS = [
-    ("Fault", True),
-    ("Trip", True),
-    ("CBR1", False),
-    ("SWI1", False),
-    ("SWI2", True),
-    ("SWI3", True),
-    ("Conn", False),
-]
+# Each symbol is centered at origin (0, 0)
+SYMBOLS = {
+    "circuit_breaker_open": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "line", "start": (0, -20), "end": (25, 5), "width": 2},
+        {"type": "line", "start": (-10, 0), "end": (10, 20), "width": 2},
+        {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
+    "circuit_breaker_closed": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "filled_circle", "center": (0, -20), "radius": 4},
+        {"type": "line", "start": (0, -20), "end": (0, 10), "width": 2},
+        {"type": "line", "start": (-10, 0), "end": (10, 20), "width": 2},
+        {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
+    "disconnector_open": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "line", "start": (0, -20), "end": (25, 5), "width": 2},
+        {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
+    "disconnector_closed": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "filled_circle", "center": (0, -20), "radius": 4},
+        {"type": "line", "start": (0, -20), "end": (0, 10), "width": 2},
+        {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
+    "current_transformer": [
+        {"type": "line", "start": (0, -30), "end": (0, 30), "width": 2},
+        {"type": "circle", "center": (0, 0), "radius": 10, "width": 2},
+        {"type": "line", "start": (0, -15), "end": (0, 15), "width": 2},
+    ],
+    "voltage_transformer": [
+        {"type": "circle", "center": (0, -10), "radius": 15, "width": 2},
+        {"type": "circle", "center": (0, 10), "radius": 15, "width": 2},
+        {"type": "line", "start": (0, -40), "end": (0, -25), "width": 2},
+        {"type": "line", "start": (0, 25), "end": (0, 40), "width": 2},
+    ],
+    "power_transformer": [
+        {"type": "circle", "center": (0, -10), "radius": 15, "width": 2},
+        {"type": "circle", "center": (0, 10), "radius": 15, "width": 2},
+        {"type": "line", "start": (0, -40), "end": (0, -25), "width": 2},
+        {"type": "line", "start": (0, 25), "end": (0, 40), "width": 2},
+    ],
+    "earth": [
+        {"type": "line", "start": (0, -20), "end": (0, 0), "width": 2},
+        {"type": "line", "start": (-10, 0), "end": (10, 0), "width": 2},
+        {"type": "line", "start": (-7, 5), "end": (7, 5), "width": 2},
+        {"type": "line", "start": (-4, 10), "end": (4, 10), "width": 2},
+    ],
+    "busbar": [
+        {"type": "line", "start": (-120, 0), "end": (120, 0), "width": 4},
+    ],
+}

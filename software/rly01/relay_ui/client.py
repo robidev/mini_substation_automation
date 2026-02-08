@@ -5,9 +5,27 @@ import socket
 import json
 import threading
 import time
-from typing import Optional, Dict
+from dataclasses import dataclass, field
+from typing import Optional, Dict, Any
 
-from models import RelayData, BreakerState
+from config import ELEMENTS
+
+
+@dataclass
+class RelayData:
+    """Data structure for relay measurements and status"""
+    name: str
+    connected: bool = False
+    # Dynamic element storage for flexible element access
+    elements: Dict[str, Any] = field(default_factory=dict)
+    
+    def set_element_value(self, element_name: str, value: Any):
+        """Set the value for a named element"""
+        self.elements[element_name] = value
+    
+    def get_element_value(self, element_name: str, default: Any = None) -> Any:
+        """Get the value for a named element"""
+        return self.elements.get(element_name, default)
 
 
 class IEC61850Client:
@@ -103,32 +121,26 @@ class IEC61850Client:
                 response = self.receive_data()
                 if response:
                     with self.lock:
-                        self.data.voltage_l1 = response.get("voltage_l1", 0.0)
-                        self.data.voltage_l2 = response.get("voltage_l2", 0.0)
-                        self.data.voltage_l3 = response.get("voltage_l3", 0.0)
-                        self.data.current_l1 = response.get("current_l1", 0.0)
-                        self.data.current_l2 = response.get("current_l2", 0.0)
-                        self.data.current_l3 = response.get("current_l3", 0.0)
-                        
-                        state_str = response.get("breaker_state", "UNKNOWN")
-                        try:
-                            self.data.breaker_state = BreakerState[state_str]
-                        except KeyError:
-                            self.data.breaker_state = BreakerState.UNKNOWN
-                        
-                        # Update IEC61850 specific data
-                        self.data.cbr1_state = response.get("cbr1_state", "UNKNOWN")
-                        self.data.swi1_state = response.get("swi1_state", "UNKNOWN")
-                        self.data.swi2_state = response.get("swi2_state", "UNKNOWN")
-                        self.data.swi3_state = response.get("swi3_state", "UNKNOWN")
-                        
-                        self.data.ctr1_data = response.get("ctr1_data", {})
-                        self.data.vtr1_data = response.get("vtr1_data", {})
-                        self.data.vtr2_data = response.get("vtr2_data", {})
-                        
-                        self.data.set0_loc = response.get("set0_loc", "UNKNOWN")
-                        self.data.set1_Ilarge = response.get("set1_Ilarge", 0.0)
-                        self.data.set2_Tm = response.get("set2_Tm", 0.0)
+                        # Populate elements from response data
+                        for element_name in ELEMENTS:
+                            element_cfg = ELEMENTS[element_name]
+                            element_type = element_cfg.get("type")
+                            
+                            if element_type in ("breaker", "switch"):
+                                # Get state for breaker/switch (e.g., cbr1_state, swi1_state)
+                                state = response.get(f"{element_name}_state", "UNKNOWN")
+                                self.data.set_element_value(element_name, state)
+                            
+                            elif element_type == "measurement":
+                                # Get measurement data (e.g., ctr1_data, vtr1_data)
+                                data = response.get(f"{element_name}_data", {})
+                                self.data.set_element_value(element_name, data)
+                            
+                            elif element_type == "setting":
+                                # Get setting value directly by element name
+                                value = response.get(element_name)
+                                if value is not None:
+                                    self.data.set_element_value(element_name, value)
             
             time.sleep(0.5)  # Update every 500ms
     
@@ -148,6 +160,72 @@ class IEC61850Client:
         """Get the current relay data (thread-safe)"""
         with self.lock:
             return RelayData(**self.data.__dict__)
+
+    def get_element_value(self, element_name: str, default: Any = None) -> Any:
+        """
+        Get the value of a named element from config.ELEMENTS
+        Args:
+            element_name: Name of element (e.g., 'cbr1', 'swi1', 'ctr1')
+            default: Default value if element not found
+        Returns:
+            Element value or default
+        """
+        with self.lock:
+            return self.data.get_element_value(element_name, default)
+    
+    def get_switch_state(self, element_name: str) -> str:
+        """
+        Get the state of a breaker or switch element
+        Args:
+            element_name: Name of breaker/switch element (e.g., 'cbr1', 'swi1')
+        Returns:
+            State string ("OPEN", "CLOSED", "UNKNOWN", or "INTERMEDIATE")
+        """
+        if element_name not in ELEMENTS:
+            return "UNKNOWN"
+        
+        element_cfg = ELEMENTS[element_name]
+        if element_cfg.get("type") not in ("breaker", "switch"):
+            return "UNKNOWN"
+        
+        with self.lock:
+            return self.data.get_element_value(element_name, "UNKNOWN")
+    
+    def get_measurement(self, element_name: str) -> Optional[Dict]:
+        """
+        Get measurement data for a transformer element
+        Args:
+            element_name: Name of measurement element (e.g., 'ctr1', 'vtr1', 'vtr2')
+        Returns:
+            Dictionary with measurement data or None
+        """
+        if element_name not in ELEMENTS:
+            return None
+        
+        element_cfg = ELEMENTS[element_name]
+        if element_cfg.get("type") != "measurement":
+            return None
+        
+        with self.lock:
+            return self.data.get_element_value(element_name, {})
+    
+    def get_setting(self, element_name: str) -> Any:
+        """
+        Get a setting value
+        Args:
+            element_name: Name of setting element (e.g., 'set0_loc', 'set1_Ilarge')
+        Returns:
+            Setting value or None
+        """
+        if element_name not in ELEMENTS:
+            return None
+        
+        element_cfg = ELEMENTS[element_name]
+        if element_cfg.get("type") != "setting":
+            return None
+        
+        with self.lock:
+            return self.data.get_element_value(element_name)
     
     def set_visible(self, visible: bool):
         """Set visibility flag for data updates"""

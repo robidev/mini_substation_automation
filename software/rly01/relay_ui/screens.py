@@ -14,7 +14,6 @@ from ui_components import (
     draw_lcd_footer
 )
 from client import IEC61850Client
-from models import RelayData
 
 
 # =====================================================
@@ -127,12 +126,12 @@ class RelayScreen:
         """Initialize page menu"""
         self.root_menu = MenuPage("Main menu", [
             ("Measurements", MeasurementPage(self.client)),
-            ("Control", ControlPage()),
-            ("Phasors", PhasorPage()),
+            ("Control", ControlPage(self.client)),
+            ("Phasors", PhasorPage(self.client)),
             ("Settings", SettingsPage(self.client)),
         ])
         # Make the single-line diagram the main (initial) page
-        self.page_stack = [DiagramPage()]
+        self.page_stack = [DiagramPage(self.client)]
     
     def draw(self, surface: pygame.Surface, font: pygame.font.Font, 
              small_font: pygame.font.Font, title_font: pygame.font.Font):
@@ -210,9 +209,9 @@ class RelayScreen:
         text_bg_width = 30
         y_offset = self.status_panel_y + padding
         
-        for label, is_active in INDICATORS:
+        for label in INDICATORS:
             # Draw LED circle
-            led_color = GREEN if is_active else RED
+            led_color = GREEN if self.client.get_switch_state(label) else RED
             led_x = self.status_panel_x + padding + led_size // 2
             led_y = y_offset + led_size // 2
             pygame.draw.circle(surface, led_color, (led_x, led_y), led_size // 2)
