@@ -6,7 +6,7 @@ from typing import Optional, List, Tuple
 
 from config import (
     FG, BG, INV_FG, INV_BG, WHITE, BLACK, GRAY, DARK_GRAY, YELLOW, GREEN, RED,
-    SIEMENS_BLUE, SETTINGS, MEASUREMENTS, INDICATORS, DIAGRAM_OBJECTS
+    SIEMENS_BLUE, SETTINGS, MEASUREMENTS, DIAGRAM_OBJECTS
 )
 from drawing import (
     draw_single_line, swap_fg_bg, cursor_on, polar_to_xy
@@ -127,7 +127,7 @@ class MeasurementPage(Page):
     def draw(self, surface):
         text(surface, "Side 1", 20, 30)
         y = 55
-        for v in MEASUREMENTS:
+        for v in MEASUREMENTS[self.client.relay_id]:
             mag = self.client.get_measurement(v[1])
             ang = self.client.get_measurement(v[2])
             if mag == {}:
@@ -155,7 +155,22 @@ class DiagramPage(Page):
                 stack.pop()
 
     def draw(self, surface):
-        draw_single_line(surface, DIAGRAM_OBJECTS, -1)
+        for obj in DIAGRAM_OBJECTS[self.client.relay_id]:
+            if "element" in obj:
+                value = self.client.get_switch_state(obj["element"])
+                if obj["type"] == "symbol" and value != "UNKNOWN":
+                    if value == "01":
+                        obj["state"] = "open"
+                    elif value == "10":
+                        obj["state"] = "closed"
+                    elif value == "00":
+                        obj["state"] = "intermediate"
+                    else:
+                        obj["state"] = "error"
+                else:
+                    obj["value"] = value
+
+        draw_single_line(surface, DIAGRAM_OBJECTS[self.client.relay_id], -1)
 
 
 class ControlPage(Page):
@@ -164,7 +179,7 @@ class ControlPage(Page):
     
     def __init__(self, client):
         self.client = client
-        self.selectable_count = sum('selectable' in obj for obj in DIAGRAM_OBJECTS)
+        self.selectable_count = sum('selectable' in obj for obj in DIAGRAM_OBJECTS[self.client.relay_id])
         self.control_index = 0
         self.right = "Switch"
         self.selected_obj = None
@@ -173,7 +188,12 @@ class ControlPage(Page):
         if result == True:
             print("clicked OK, OPENING")   
             if self.selected_obj:
-                self.selected_obj['state'] = "open"
+                if 'BlkOpn' in self.selected_obj and self.client.get_element_value(self.selected_obj['BlkOpn'],False) == True:
+                    #stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
+                    print("OPEN " + str(self.selected_obj["element"]) + " blocked by interlocking")
+                else:
+                    self.client.open_switch(self.selected_obj["element"])
+                #self.selected_obj['state'] = "open"
         else:
             print("clicked CANCEL")
         self.selected_obj = None
@@ -182,7 +202,12 @@ class ControlPage(Page):
         if result == True:
             print("clicked OK, CLOSING")   
             if self.selected_obj:
-                self.selected_obj['state'] = "closed"
+                if 'BlkCls' in self.selected_obj and self.client.get_element_value(self.selected_obj['BlkCls'],False) == True:
+                    #stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
+                    print("CLOSE " + str(self.selected_obj["element"]) + " blocked by interlocking")
+                else:
+                    self.client.close_switch(self.selected_obj["element"])
+                #self.selected_obj['state'] = "closed"
         else:
             print("clicked CANCEL")
         self.selected_obj = None
@@ -204,16 +229,31 @@ class ControlPage(Page):
         elif key == pygame.K_RETURN:
             stack.append(PopupPage("Press the red(O) button to open or green(I) to close the selected switch", "error"))
         elif key == pygame.K_o:
-            self.selected_obj = [obj for obj in DIAGRAM_OBJECTS if obj.get("selectable")][self.control_index]
+            self.selected_obj = [obj for obj in DIAGRAM_OBJECTS[self.client.relay_id] if obj.get("selectable")][self.control_index]
             stack.append(PopupPage("Object selected: " + str(self.selected_obj["element"]) + " Press OK to OPEN", "confirm", self.action_callback_OPEN))
         elif key == pygame.K_i:
-            self.selected_obj = [obj for obj in DIAGRAM_OBJECTS if obj.get("selectable")][self.control_index]
+            self.selected_obj = [obj for obj in DIAGRAM_OBJECTS[self.client.relay_id] if obj.get("selectable")][self.control_index]
             stack.append(PopupPage("Object selected: " + str(self.selected_obj["element"]) + " Press OK to CLOSE", "confirm", self.action_callback_CLOSE))
         
 
 
     def draw(self, surface):
-        draw_single_line(surface, DIAGRAM_OBJECTS, self.control_index)
+        for obj in DIAGRAM_OBJECTS[self.client.relay_id]:
+            if "element" in obj:
+                value = self.client.get_switch_state(obj["element"])
+                if obj["type"] == "symbol" and value != "UNKNOWN":
+                    if value == "01":
+                        obj["state"] = "open"
+                    elif value == "10":
+                        obj["state"] = "closed"
+                    elif value == "00":
+                        obj["state"] = "intermediate"
+                    else:
+                        obj["state"] = "error"
+                else:
+                    obj["value"] = value
+
+        draw_single_line(surface, DIAGRAM_OBJECTS[self.client.relay_id], self.control_index)
 
 
 class PhasorPage(Page):
@@ -239,7 +279,7 @@ class PhasorPage(Page):
         pygame.draw.line(surface, FG, (cx - r, cy), (cx + r, cy), 1)
         pygame.draw.line(surface, FG, (cx, cy - r), (cx, cy + r), 1)
 
-        for name, mag_ref, ang_ref in MEASUREMENTS[(self.page*3):(self.page*3)+3]:
+        for name, mag_ref, ang_ref in MEASUREMENTS[self.client.relay_id][(self.page*3):(self.page*3)+3]:
             mag = self.client.get_measurement(mag_ref)
             ang = self.client.get_measurement(ang_ref)
             if mag == {}:
@@ -261,7 +301,7 @@ class SettingsPage(Page):
 
     def __init__(self, client):
         self.client = client
-        self.items = [list(item) for item in SETTINGS]  # Deep copy settings
+        self.items = [list(item) for item in SETTINGS[self.client.relay_id]]  # Deep copy settings
         self.sel = 0
         self.edit = False
         self.cursor = 0

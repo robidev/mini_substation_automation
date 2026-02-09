@@ -209,7 +209,7 @@ class RelayScreen:
         text_bg_width = 30
         y_offset = self.status_panel_y + padding
         
-        for label in INDICATORS:
+        for label in INDICATORS[self.client.relay_id]:
             # Draw LED circle
             led_color = GREEN if self.client.get_switch_state(label) else RED
             led_x = self.status_panel_x + padding + led_size // 2
@@ -261,7 +261,7 @@ class RelayScreen:
         # Switch controls
         if self.select_button.handle_event(event):
             self.page_stack[:] = self.page_stack[:1]
-            self.page_stack.append(ControlPage())
+            self.page_stack.append(ControlPage(self.client))
         if self.open_button.handle_event(event):
             if isinstance(self.page_stack[-1], DiagramPage): # Show popup only if on DiagramPage
                 self.page_stack.append(PopupPage("Open the control menu to select elements to operate", "info"))

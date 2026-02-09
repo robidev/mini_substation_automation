@@ -48,7 +48,7 @@ SOCKET_PATHS = [
 # ELEMENT DEFINITIONS (IEC61850 MAPPING)
 # =====================================================
 # Maps element names to their metadata
-ELEMENTS = {
+ELEMENTS_FEED = {
     # Controllable objects (circuit breakers and switches)
     "cbr1": {
         "type": "breaker",
@@ -127,32 +127,81 @@ ELEMENTS = {
     },
 }
 
+ELEMENTS = [
+    ELEMENTS_FEED,
+    ELEMENTS_FEED,
+    ELEMENTS_FEED,
+    ELEMENTS_FEED,
+    ELEMENTS_FEED,
+    ELEMENTS_FEED
+]
+
 # =====================================================
-# SETTINGS AND MEASUREMENTS
+# SETTINGS MEASUREMENTS AND INDICATORS
 # =====================================================
-SETTINGS = [
+SETTINGS_FEED = [
     ["I> pickup", "set1_Ilarge"],
     ["T> delay", "set2_Tm"],
     ["Local/Remote", "set0_loc"],
 ]
 
-MEASUREMENTS = [
+SETTINGS = [
+    SETTINGS_FEED,
+    SETTINGS_FEED,
+    SETTINGS_FEED,
+    SETTINGS_FEED,
+    SETTINGS_FEED,
+    SETTINGS_FEED
+]
+
+MEASUREMENTS_FEED = [
     ("Iph A", "ctr1_phsA", "ctr1_phsAngA"),
     ("Iph B", "ctr1_phsB", "ctr1_phsAngB"),
     ("Iph C", "ctr1_phsC", "ctr1_phsAngC"),
 ]
 
-INDICATORS = [
+MEASUREMENTS = [
+    MEASUREMENTS_FEED,
+    MEASUREMENTS_FEED,
+    MEASUREMENTS_FEED,
+    MEASUREMENTS_FEED,
+    MEASUREMENTS_FEED,
+    MEASUREMENTS_FEED
+]
+
+INDICATORS_FEED = [
     "cbr1",
     "swi2",
     "swi3",
     "swi4",
 ]
 
+INDICATORS_BUS = [
+    "cbr1",
+    "cbr2",
+    "cbr3",
+    "cbr4",
+]
+
+INDICATORS_TR = [
+    "cbr1",
+    "swi3",
+    "swi4",
+]
+
+INDICATORS = [
+    INDICATORS_FEED,
+    INDICATORS_FEED,
+    INDICATORS_BUS,
+    INDICATORS_BUS,
+    INDICATORS_TR,
+    INDICATORS_TR
+]
+
 # =====================================================
 # DIAGRAM OBJECTS
 # =====================================================
-DIAGRAM_OBJECTS = [
+DIAGRAM_OBJECTS_FEED = [
     {
         "type": "symbol",
         "name": "busbar",
@@ -227,6 +276,15 @@ DIAGRAM_OBJECTS = [
         "rotation": 180,
         "selectable": True,
     },  
+]
+
+DIAGRAM_OBJECTS = [
+    DIAGRAM_OBJECTS_FEED,
+    DIAGRAM_OBJECTS_FEED,
+    DIAGRAM_OBJECTS_FEED,
+    DIAGRAM_OBJECTS_FEED,
+    DIAGRAM_OBJECTS_FEED,
+    DIAGRAM_OBJECTS_FEED
 ]
 
 # =====================================================

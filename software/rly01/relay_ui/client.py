@@ -122,8 +122,8 @@ class IEC61850Client:
                 if response:
                     with self.lock:
                         # Populate elements from response data
-                        for element_name in ELEMENTS:
-                            element_cfg = ELEMENTS[element_name]
+                        for element_name in ELEMENTS[self.relay_id]:
+                            element_cfg = ELEMENTS[self.relay_id][element_name]
                             element_type = element_cfg.get("type")
                             
                             if element_type in ("breaker", "switch"):
@@ -181,10 +181,10 @@ class IEC61850Client:
         Returns:
             State string ("OPEN", "CLOSED", "UNKNOWN", or "INTERMEDIATE")
         """
-        if element_name not in ELEMENTS:
+        if element_name not in ELEMENTS[self.relay_id]:
             return "UNKNOWN"
         
-        element_cfg = ELEMENTS[element_name]
+        element_cfg = ELEMENTS[self.relay_id][element_name]
         if element_cfg.get("type") not in ("breaker", "switch"):
             return "UNKNOWN"
         
@@ -199,10 +199,10 @@ class IEC61850Client:
         Returns:
             Dictionary with measurement data or None
         """
-        if element_name not in ELEMENTS:
+        if element_name not in ELEMENTS[self.relay_id]:
             return None
         
-        element_cfg = ELEMENTS[element_name]
+        element_cfg = ELEMENTS[self.relay_id][element_name]
         if element_cfg.get("type") != "measurement":
             return None
         
@@ -217,10 +217,10 @@ class IEC61850Client:
         Returns:
             Setting value or None
         """
-        if element_name not in ELEMENTS:
+        if element_name not in ELEMENTS[self.relay_id]:
             return None
         
-        element_cfg = ELEMENTS[element_name]
+        element_cfg = ELEMENTS[self.relay_id][element_name]
         if element_cfg.get("type") != "setting":
             return None
         
