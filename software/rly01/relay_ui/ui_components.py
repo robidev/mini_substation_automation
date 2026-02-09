@@ -6,7 +6,8 @@ from typing import Optional, List, Tuple
 
 from config import (
     FG, BG, INV_FG, INV_BG, WHITE, BLACK, GRAY, DARK_GRAY, YELLOW, GREEN, RED,
-    SIEMENS_BLUE, SETTINGS, MEASUREMENTS, DIAGRAM_OBJECTS
+    SIEMENS_BLUE, SETTINGS, MEASUREMENTS, DIAGRAM_OBJECTS, 
+    DBPOS_ON, DBPOS_OFF, DBPOS_INTERMEDIATE, DBPOS_BAD
 )
 from drawing import (
     draw_single_line, swap_fg_bg, cursor_on, polar_to_xy
@@ -159,11 +160,11 @@ class DiagramPage(Page):
             if "element" in obj:
                 value = self.client.get_switch_state(obj["element"])
                 if obj["type"] == "symbol" and value != "UNKNOWN":
-                    if value == "01":
+                    if value == DBPOS_OFF:
                         obj["state"] = "open"
-                    elif value == "10":
+                    elif value == DBPOS_ON:
                         obj["state"] = "closed"
-                    elif value == "00":
+                    elif value == DBPOS_INTERMEDIATE:
                         obj["state"] = "intermediate"
                     else:
                         obj["state"] = "error"
@@ -242,11 +243,11 @@ class ControlPage(Page):
             if "element" in obj:
                 value = self.client.get_switch_state(obj["element"])
                 if obj["type"] == "symbol" and value != "UNKNOWN":
-                    if value == "01":
+                    if value == DBPOS_OFF:
                         obj["state"] = "open"
-                    elif value == "10":
+                    elif value == DBPOS_ON:
                         obj["state"] = "closed"
-                    elif value == "00":
+                    elif value == DBPOS_INTERMEDIATE:
                         obj["state"] = "intermediate"
                     else:
                         obj["state"] = "error"

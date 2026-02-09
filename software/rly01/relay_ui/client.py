@@ -51,7 +51,7 @@ class IEC61850Client:
             self.data.connected = True
             print(f"Connected to {self.socket_path}")
         except Exception as e:
-            print(f"Failed to connect to {self.socket_path}: {e}")
+            #print(f"Failed to connect to {self.socket_path}: {e}")
             self.connected = False
             self.data.connected = False
             self.sock = None
@@ -120,6 +120,7 @@ class IEC61850Client:
             if self.visible and self.send_command("get_measurements"):
                 response = self.receive_data()
                 if response:
+                    print("response: " + str(response))
                     with self.lock:
                         # Populate elements from response data
                         for element_name in ELEMENTS[self.relay_id]:
@@ -127,16 +128,22 @@ class IEC61850Client:
                             element_type = element_cfg.get("type")
                             
                             if element_type in ("breaker", "switch"):
-                                # Get state for breaker/switch (e.g., cbr1_state, swi1_state)
-                                state = response.get(f"{element_name}_state", "UNKNOWN")
+                                # Get state for breaker/switch (e.g., cbr1, swi1)
+                                state = response.get(f"{element_name}", "UNKNOWN")
                                 self.data.set_element_value(element_name, state)
                             
                             elif element_type == "measurement":
                                 # Get measurement data (e.g., ctr1_data, vtr1_data)
-                                data = response.get(f"{element_name}_data", {})
+                                data = response.get(f"{element_name}", {})
                                 self.data.set_element_value(element_name, data)
                             
                             elif element_type == "setting":
+                                # Get setting value directly by element name
+                                value = response.get(element_name)
+                                if value is not None:
+                                    self.data.set_element_value(element_name, value)
+
+                            elif element_type == "status":
                                 # Get setting value directly by element name
                                 value = response.get(element_name)
                                 if value is not None:

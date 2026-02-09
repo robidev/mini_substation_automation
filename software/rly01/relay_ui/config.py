@@ -32,6 +32,19 @@ FG = (35, 50, 85)
 INV_BG = FG
 INV_FG = BG
 
+DBPOS_INTERMEDIATE = 0 # moving
+DBPOS_ON = 1  # closed
+DBPOS_OFF = 2 # open
+DBPOS_BAD = 3 # error
+
+
+TODO: measurements from mmxu
+TODO: indicators from data decode
+TODO: settings write
+TODO: measurements in single lice
+TODO: dif prot diagram 
+TODO: transformer prot diagram
+
 # =====================================================
 # UNIX SOCKETS
 # =====================================================
@@ -54,17 +67,25 @@ ELEMENTS_FEED = {
         "type": "breaker",
         "description": "Circuit Breaker 1"
     },
-    "swi1": {
-        "type": "switch",
-        "description": "Switch 1"
-    },
     "swi2": {
         "type": "switch",
         "description": "Switch 2"
     },
+    "swi2_blkopn": {
+        "type": "status",
+        "description": "Switch 2 interlock condition for switch OPEN"
+    },
+    "swi2_blkcls": {
+        "type": "status",
+        "description": "Switch 2 interlock condition for switch CLOSE"
+    },
     "swi3": {
         "type": "switch",
         "description": "Switch 3"
+    },
+    "swi4": {
+        "type": "switch",
+        "description": "Switch 4"
     },
     # Measurement transformers
     "ctr1": {
@@ -272,6 +293,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "open",
         "element": "swi2",
+        "BlkOpn": "swi2_blkopn",
+        "BlkCls": "swi2_blkcls",
         "position": (120, 270),
         "rotation": 180,
         "selectable": True,
