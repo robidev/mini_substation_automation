@@ -209,9 +209,10 @@ class RelayScreen:
         text_bg_width = 30
         y_offset = self.status_panel_y + padding
         
-        for label in INDICATORS[self.client.relay_id]:
+        for label, reference in INDICATORS[self.client.relay_id]:
             # Draw LED circle
-            led_color = GREEN if self.client.get_switch_state(label) else RED
+            val = self.client.get_element_value(reference, False)
+            led_color = GREEN if val else RED
             led_x = self.status_panel_x + padding + led_size // 2
             led_y = y_offset + led_size // 2
             pygame.draw.circle(surface, led_color, (led_x, led_y), led_size // 2)
@@ -232,7 +233,7 @@ class RelayScreen:
     
     def handle_event(self, event: pygame.event.Event) -> Optional[str]:
         """Handle events, return action string if needed"""
-        if self.back_button.handle_event(event):
+        if self.back_button.handle_event(event) or ( len(self.page_stack) == 1 and event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE ):
             return "back"
         
         if event.type == pygame.KEYDOWN:

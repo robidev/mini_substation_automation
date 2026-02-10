@@ -105,6 +105,7 @@ class IEC61850Client:
             return None
         except Exception as e:
             print(f"Error receiving data from {self.socket_path}: {e}")
+            print(data)
             self.disconnect()
             return None
     
@@ -112,6 +113,8 @@ class IEC61850Client:
         """Background thread to continuously update data"""
         while self.running:
             if not self.connected:
+                with self.lock:
+                    self.data.set_element_value("connected", False)
                 self.connect()
                 time.sleep(2)
                 continue
@@ -122,6 +125,7 @@ class IEC61850Client:
                 if response:
                     print("response: " + str(response))
                     with self.lock:
+                        self.data.set_element_value("connected", True)
                         # Populate elements from response data
                         for element_name in ELEMENTS[self.relay_id]:
                             element_cfg = ELEMENTS[self.relay_id][element_name]
@@ -179,7 +183,19 @@ class IEC61850Client:
         """
         with self.lock:
             return self.data.get_element_value(element_name, default)
-    
+
+    def set_element_value(self, element_name: str, value: str):
+        """
+        Get the value of a named element from config.ELEMENTS
+        Args:
+            element_name: Name of element (e.g., 'cbr1', 'swi1', 'ctr1')
+            default: Default value if element not found
+        Returns:
+            Element value or default
+        """
+        with self.lock:
+            self.data.set_element_value(element_name, value)
+
     def get_switch_state(self, element_name: str) -> str:
         """
         Get the state of a breaker or switch element
@@ -234,6 +250,25 @@ class IEC61850Client:
         with self.lock:
             return self.data.get_element_value(element_name)
     
+    def set_setting(self, element_name: str, value: str) -> bool:
+        """
+        Get a setting value
+        Args:
+            element_name: Name of setting element (e.g., 'set0_loc', 'set1_Ilarge')
+        Returns:
+            Setting value or None
+        """
+        if element_name not in ELEMENTS[self.relay_id]:
+            return False
+        
+        element_cfg = ELEMENTS[self.relay_id][element_name]
+        if element_cfg.get("type") != "setting":
+            return False
+        
+        with self.lock:
+            self.data.set_element_value(element_name, value)
+            return True
+
     def set_visible(self, visible: bool):
         """Set visibility flag for data updates"""
         self.visible = visible

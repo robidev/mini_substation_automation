@@ -64,16 +64,11 @@ class Application:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
-            elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    if self.current_screen == "relay":
-                        self.relay_screens[self.current_relay].client.set_visible(False)
-                        self.current_screen = "start"
-                        self.current_relay = None
-                    else:
-                        self.running = False
             
             if self.current_screen == "start":
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    self.running = False
+                        
                 relay_id = self.start_screen.handle_event(event)
                 if relay_id is not None:
                     self.current_screen = "relay"

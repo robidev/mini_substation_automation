@@ -303,8 +303,12 @@ class SettingsPage(Page):
     def __init__(self, client):
         self.client = client
         self.items = [list(item) for item in SETTINGS[self.client.relay_id]]  # Deep copy settings
+        for i, (name, ref, value_type, default) in enumerate(SETTINGS[self.client.relay_id]):
+            self.items[i][3] = str(value_type( self.client.get_setting(ref) or default ))
+        
         self.sel = 0
         self.edit = False
+        self.visible = False
         self.cursor = 0
 
     def handle_key(self, key, stack):
@@ -315,31 +319,50 @@ class SettingsPage(Page):
                 self.sel = (self.sel - 1) % len(self.items)
             elif key == pygame.K_RETURN:
                 self.edit = True
-                self.cursor = len(self.items[self.sel][1]) - 1
+                self.cursor = len(self.items[self.sel][3]) - 1
             elif key == pygame.K_ESCAPE:
+                self.visible = False
                 stack.pop()
         else:
-            val = list(self.items[self.sel][1])
-            if key == pygame.K_LEFT:
-                self.cursor = max(0, self.cursor - 1)
-            elif key == pygame.K_RIGHT:
-                self.cursor = min(len(val) - 1, self.cursor + 1)
-            elif key == pygame.K_UP and val[self.cursor].isdigit():
-                val[self.cursor] = str((int(val[self.cursor]) + 1) % 10)
-            elif key == pygame.K_DOWN and val[self.cursor].isdigit():
-                val[self.cursor] = str((int(val[self.cursor]) - 1) % 10)
-            elif key == pygame.K_RETURN:
+            ref = self.items[self.sel][1]
+            if self.items[self.sel][2] is int or self.items[self.sel][2] is float:
+                val = list(self.items[self.sel][3])
+                if key == pygame.K_LEFT:
+                    self.cursor = max(0, self.cursor - 1)
+                elif key == pygame.K_RIGHT:
+                    self.cursor = min(len(val) - 1, self.cursor + 1)
+                elif key == pygame.K_UP and val[self.cursor].isdigit():
+                    val[self.cursor] = str((int(val[self.cursor]) + 1) % 10)
+                elif key == pygame.K_DOWN and val[self.cursor].isdigit():
+                    val[self.cursor] = str((int(val[self.cursor]) - 1) % 10)
+                self.items[self.sel][3] = "".join(val) # store temporary value
+
+            if self.items[self.sel][2] is bool:
+                if (key == pygame.K_UP or key == pygame.K_DOWN):
+                    self.items[self.sel][3] = str((self.items[self.sel][3]) != "True" ) # invert value
+                    
+            if key == pygame.K_RETURN:
+                value_type = self.items[self.sel][2]
+                if value_type is bool:
+                    self.client.set_setting(ref,self.items[self.sel][3] == "True")
+                else:
+                    self.client.set_setting(ref,value_type (self.items[self.sel][3]))
+                self.client.write_setting(self.items[self.sel][1],self.items[self.sel][3])
                 self.edit = False
+                self.visible = False
             elif key == pygame.K_ESCAPE:
                 self.edit = False
-            self.items[self.sel][1] = "".join(val)
+                self.visible = False
+            
 
     def draw(self, surface):
+        if self.visible == False: # init condition; get current values
+            for i, (name, ref, value_type, default) in enumerate(SETTINGS[self.client.relay_id]):
+                self.items[i][3] = str(value_type( self.client.get_setting(ref) or default ))
+            self.visible = True
+
         y = 40
-        for i, (name, ref) in enumerate(self.items):
-            val = self.client.get_setting(ref)
-            if val == None:
-                val = "N/A"
+        for i, (name, ref, _, val) in enumerate(self.items):
             if i == self.sel and not self.edit:
                 text(surface, f"{name:<12} {val:>7}", 20, y, INV_FG, INV_BG)
             else:

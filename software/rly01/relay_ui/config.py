@@ -38,12 +38,12 @@ DBPOS_OFF = 2 # open
 DBPOS_BAD = 3 # error
 
 
-TODO: measurements from mmxu
-TODO: indicators from data decode
-TODO: settings write
-TODO: measurements in single lice
-TODO: dif prot diagram 
-TODO: transformer prot diagram
+#TODO: -nan bug in measurements from mmxu
+#TODO: bug switches not corrctly displayed in indicators
+
+#TODO: add average volt/amp measurements in single line
+#TODO: differential protection single line diagram 
+#TODO: transformer protection single line diagram
 
 # =====================================================
 # UNIX SOCKETS
@@ -71,11 +71,11 @@ ELEMENTS_FEED = {
         "type": "switch",
         "description": "Switch 2"
     },
-    "swi2_blkopn": {
+    "set_swi2_blkopn": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch OPEN"
     },
-    "swi2_blkcls": {
+    "set_swi2_blkcls": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch CLOSE"
     },
@@ -91,34 +91,34 @@ ELEMENTS_FEED = {
     "ctr1": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1 average A"
     },
-    "ctr1_phsA": {
+    "set_ctr1_phsA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "ctr1_phsB": {
+    "set_ctr1_phsB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "ctr1_phsC": {
+    "set_ctr1_phsC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "ctr1_phsAngA": {
+    "set_ctr1_phsAngA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "ctr1_phsAngB": {
+    "set_ctr1_phsAngB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "ctr1_phsAngC": {
+    "set_ctr1_phsAngC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
@@ -126,12 +126,12 @@ ELEMENTS_FEED = {
     "vtr1": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 average V"
     },
     "vtr2": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 2"
+        "description": "Voltage Transformer 2 average V"
     },
     # Settings
     "set0_loc": {
@@ -161,9 +161,9 @@ ELEMENTS = [
 # SETTINGS MEASUREMENTS AND INDICATORS
 # =====================================================
 SETTINGS_FEED = [
-    ["I> pickup", "set1_Ilarge"],
-    ["T> delay", "set2_Tm"],
-    ["Local/Remote", "set0_loc"],
+    ["I> pickup",    "set1_Ilarge", float, 0.0],
+    ["T> delay",     "set2_Tm",     float, 0.0],
+    ["Local/Remote", "set0_loc",    bool,  False],
 ]
 
 SETTINGS = [
@@ -176,9 +176,9 @@ SETTINGS = [
 ]
 
 MEASUREMENTS_FEED = [
-    ("Iph A", "ctr1_phsA", "ctr1_phsAngA"),
-    ("Iph B", "ctr1_phsB", "ctr1_phsAngB"),
-    ("Iph C", "ctr1_phsC", "ctr1_phsAngC"),
+    ("Iph A", "set_ctr1_phsA", "set_ctr1_phsAngA"),
+    ("Iph B", "set_ctr1_phsB", "set_ctr1_phsAngB"),
+    ("Iph C", "set_ctr1_phsC", "set_ctr1_phsAngC"),
 ]
 
 MEASUREMENTS = [
@@ -191,23 +191,25 @@ MEASUREMENTS = [
 ]
 
 INDICATORS_FEED = [
-    "cbr1",
-    "swi2",
-    "swi3",
-    "swi4",
+    ("cbr1","cbr1"),
+    ("swi2","swi2"),
+    ("swi3","swi3"),
+    ("swi4","swi4"),
+    ("Loc","set0_loc"),
+    ("conn", "connected")    
 ]
 
 INDICATORS_BUS = [
-    "cbr1",
-    "cbr2",
-    "cbr3",
-    "cbr4",
+    ("cbr1","cbr1"),
+    ("cbr2","cbr2"),
+    ("cbr3","cbr3"),
+    ("cbr4","cbr4")
 ]
 
 INDICATORS_TR = [
-    "cbr1",
-    "swi3",
-    "swi4",
+    ("cbr1","cbr1"),
+    ("swi3","swi3"),
+    ("swi4","swi4")
 ]
 
 INDICATORS = [
@@ -293,8 +295,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "open",
         "element": "swi2",
-        "BlkOpn": "swi2_blkopn",
-        "BlkCls": "swi2_blkcls",
+        "BlkOpn": "set_swi2_blkopn",
+        "BlkCls": "set_swi2_blkcls",
         "position": (120, 270),
         "rotation": 180,
         "selectable": True,
@@ -330,6 +332,15 @@ SYMBOLS = {
         {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
         {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
     ],
+    "circuit_breaker_intermediate": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "line", "start": (0.0, -20.0), "end": (2.395, -14.601),  "width": 2},
+        {"type": "line", "start": (4.79, -9.202), "end": (7.185, -3.803),  "width": 2},
+        {"type": "line", "start": (9.58, 1.596), "end": (12.0, 7.0), "width": 2},
+        {"type": "line", "start": (-10, 0), "end": (10, 20), "width": 2},
+        {"type": "line", "start": (10, 0), "end": (-10, 20), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
     "disconnector_open": [
         {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
         {"type": "line", "start": (0, -20), "end": (25, 5), "width": 2},
@@ -340,6 +351,14 @@ SYMBOLS = {
         {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
         {"type": "filled_circle", "center": (0, -20), "radius": 4},
         {"type": "line", "start": (0, -20), "end": (0, 10), "width": 2},
+        {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
+        {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
+    ],
+    "disconnector_intermediate": [
+        {"type": "line", "start": (0, -30), "end": (0, -20), "width": 2},
+        {"type": "line", "start": (0.0, -20.0), "end": (2.395, -14.601),  "width": 2},
+        {"type": "line", "start": (4.79, -9.202), "end": (7.185, -3.803),  "width": 2},
+        {"type": "line", "start": (9.58, 1.596), "end": (12.0, 7.0), "width": 2},
         {"type": "line", "start": (-10, 10), "end": (10, 10), "width": 2},
         {"type": "line", "start": (0, 10), "end": (0, 30), "width": 2},
     ],
@@ -370,3 +389,6 @@ SYMBOLS = {
         {"type": "line", "start": (-120, 0), "end": (120, 0), "width": 4},
     ],
 }
+
+
+
