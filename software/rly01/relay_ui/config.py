@@ -71,11 +71,11 @@ ELEMENTS_FEED = {
         "type": "switch",
         "description": "Switch 2"
     },
-    "set_swi2_blkopn": {
+    "_swi2_blkopn": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch OPEN"
     },
-    "set_swi2_blkcls": {
+    "_swi2_blkcls": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch CLOSE"
     },
@@ -93,32 +93,32 @@ ELEMENTS_FEED = {
         "measurement_type": "current",
         "description": "Current Transformer 1 average A"
     },
-    "set_ctr1_phsA": {
+    "_ctr1_phsA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "set_ctr1_phsB": {
+    "_ctr1_phsB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "set_ctr1_phsC": {
+    "_ctr1_phsC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "set_ctr1_phsAngA": {
+    "_ctr1_phsAngA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "set_ctr1_phsAngB": {
+    "_ctr1_phsAngB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "set_ctr1_phsAngC": {
+    "_ctr1_phsAngC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
@@ -134,15 +134,15 @@ ELEMENTS_FEED = {
         "description": "Voltage Transformer 2 average V"
     },
     # Settings
-    "set0_loc": {
+    "_loc": {
         "type": "setting",
         "description": "Local/Remote Control"
     },
-    "set1_Ilarge": {
+    "_Ilarge": {
         "type": "setting",
         "description": "Overcurrent Pickup"
     },
-    "set2_Tm": {
+    "_Tm": {
         "type": "setting",
         "description": "Time Multiplier"
     },
@@ -161,9 +161,9 @@ ELEMENTS = [
 # SETTINGS MEASUREMENTS AND INDICATORS
 # =====================================================
 SETTINGS_FEED = [
-    ["I> pickup",    "set1_Ilarge", float, 0.0],
-    ["T> delay",     "set2_Tm",     float, 0.0],
-    ["Local/Remote", "set0_loc",    bool,  False],
+    ["I> pickup",    "_Ilarge", float, 0.0],
+    ["T> delay",     "_Tm",     float, 0.0],
+    ["Local/Remote", "_loc",    bool,  False],
 ]
 
 SETTINGS = [
@@ -176,9 +176,9 @@ SETTINGS = [
 ]
 
 MEASUREMENTS_FEED = [
-    ("Iph A", "set_ctr1_phsA", "set_ctr1_phsAngA"),
-    ("Iph B", "set_ctr1_phsB", "set_ctr1_phsAngB"),
-    ("Iph C", "set_ctr1_phsC", "set_ctr1_phsAngC"),
+    ("Iph A", "_ctr1_phsA", "_ctr1_phsAngA"),
+    ("Iph B", "_ctr1_phsB", "_ctr1_phsAngB"),
+    ("Iph C", "_ctr1_phsC", "_ctr1_phsAngC"),
 ]
 
 MEASUREMENTS = [
@@ -191,25 +191,25 @@ MEASUREMENTS = [
 ]
 
 INDICATORS_FEED = [
-    ("cbr1","cbr1"),
-    ("swi2","swi2"),
-    ("swi3","swi3"),
-    ("swi4","swi4"),
-    ("Loc","set0_loc"),
-    ("conn", "connected")    
+    ("cbr1","cbr1","swi"),
+    ("swi2","swi2","swi"),
+    ("swi3","swi3","swi"),
+    ("swi4","swi4","swi"),
+    ("Loc","_loc","int"),
+    ("conn", "connected","bool")    
 ]
 
 INDICATORS_BUS = [
-    ("cbr1","cbr1"),
-    ("cbr2","cbr2"),
-    ("cbr3","cbr3"),
-    ("cbr4","cbr4")
+    ("cbr1","cbr1","swi"),
+    ("cbr2","cbr2","swi"),
+    ("cbr3","cbr3","swi"),
+    ("cbr4","cbr4","swi")
 ]
 
 INDICATORS_TR = [
-    ("cbr1","cbr1"),
-    ("swi3","swi3"),
-    ("swi4","swi4")
+    ("cbr1","cbr1","swi"),
+    ("swi3","swi3","swi"),
+    ("swi4","swi4","swi")
 ]
 
 INDICATORS = [
@@ -257,7 +257,7 @@ DIAGRAM_OBJECTS_FEED = [
         "type": "symbol",
         "name": "disconnector",
         "state": "closed",
-        "element": "swi4",
+        "element": "swi3",
         "position": (80, 100),
         "rotation": 180,
         "selectable": True,
@@ -266,7 +266,7 @@ DIAGRAM_OBJECTS_FEED = [
         "type": "symbol",
         "name": "disconnector",
         "state": "open",
-        "element": "swi3",
+        "element": "swi4",
         "position": (160, 100),
         "rotation": 180,
         "selectable": True,
@@ -295,8 +295,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "open",
         "element": "swi2",
-        "BlkOpn": "set_swi2_blkopn",
-        "BlkCls": "set_swi2_blkcls",
+        "BlkOpn": "_swi2_blkopn",
+        "BlkCls": "_swi2_blkcls",
         "position": (120, 270),
         "rotation": 180,
         "selectable": True,

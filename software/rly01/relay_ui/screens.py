@@ -209,10 +209,18 @@ class RelayScreen:
         text_bg_width = 30
         y_offset = self.status_panel_y + padding
         
-        for label, reference in INDICATORS[self.client.relay_id]:
+        for label, reference, value_type in INDICATORS[self.client.relay_id]:
             # Draw LED circle
             val = self.client.get_element_value(reference, False)
-            led_color = GREEN if val else RED
+            if value_type == "swi":
+                if val == 1:
+                    led_color = RED
+                elif val == 2:
+                    led_color = GREEN
+                else:
+                    led_color = YELLOW 
+            elif value_type == "int" or value_type == "bool":
+                led_color = GREEN if val else RED
             led_x = self.status_panel_x + padding + led_size // 2
             led_y = y_offset + led_size // 2
             pygame.draw.circle(surface, led_color, (led_x, led_y), led_size // 2)
