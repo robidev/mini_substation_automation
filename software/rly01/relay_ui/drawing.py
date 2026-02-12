@@ -7,6 +7,19 @@ import pygame
 from config import FG, BG, SYMBOLS
 
 
+# =====================================================
+# FONT UTILITIES
+# =====================================================
+FONT_H = 14
+FONT = pygame.font.SysFont("courier", FONT_H, bold=True)
+
+
+def text(surface, txt, x, y, fg=FG, bg=None):
+    """Render text on surface"""
+    surf = FONT.render(txt, False, fg, bg)
+    surface.blit(surf, (x, y))
+
+
 def rotate_point(point, angle_deg):
     """Rotate a point around origin by angle_deg degrees."""
     if angle_deg == 0:
@@ -93,8 +106,7 @@ def draw_single_line(surface, object_list, highlighted_object):
                 if index != -1 and index == highlighted_object and cursor_on():
                     swap_fg_bg(surface, pygame.Rect(obj["position"][0]-15, obj["position"][1]-15, 30, 30), FG, (185, 200, 215))
         elif obj["type"] == "text":
-            # text rendering would use font from caller
-            pass
+            text(surface, obj["formatted_text"], obj["position"][0],obj["position"][1])
         elif obj["type"] == "primitive":
             draw_primitive(surface, obj["primitive"])
 

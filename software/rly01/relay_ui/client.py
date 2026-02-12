@@ -39,6 +39,8 @@ class IEC61850Client:
         self.data = RelayData(name=f"Relay {relay_id + 1}")
         self.lock = threading.Lock()
         self.visible = False
+        self.enable_measurements = True
+        self.enable_diagram_values = True
         self.running = True
         
     def connect(self):
@@ -120,38 +122,42 @@ class IEC61850Client:
                 continue
             
             # Request data update
-            if self.visible and self.send_command("get_measurements"):
-                response = self.receive_data()
-                if response:
-                    print("response: " + str(response))
-                    with self.lock:
-                        self.data.set_element_value("connected", True)
-                        # Populate elements from response data
-                        for element_name in ELEMENTS[self.relay_id]:
-                            element_cfg = ELEMENTS[self.relay_id][element_name]
-                            element_type = element_cfg.get("type")
-                            
-                            if element_type in ("breaker", "switch"):
-                                # Get state for breaker/switch (e.g., cbr1, swi1)
-                                state = response.get(f"{element_name}", "UNKNOWN")
-                                self.data.set_element_value(element_name, state)
-                            
-                            elif element_type == "measurement":
-                                # Get measurement data (e.g., ctr1_data, vtr1_data)
-                                data = response.get(f"{element_name}", {})
-                                self.data.set_element_value(element_name, data)
-                            
-                            elif element_type == "setting":
-                                # Get setting value directly by element name
-                                value = response.get(element_name)
-                                if value is not None:
-                                    self.data.set_element_value(element_name, value)
+            if self.visible:
+                if self.send_command("get_values",{"measurements": str(self.enable_measurements), "diagram": str(self.enable_diagram_values)}):
+                    self.enable_measurements = False   # disable until next time values are drawn that display these values
+                    self.enable_diagram_values = False # disable until next time values are drawn that display these values
 
-                            elif element_type == "status":
-                                # Get setting value directly by element name
-                                value = response.get(element_name)
-                                if value is not None:
-                                    self.data.set_element_value(element_name, value)
+                    response = self.receive_data()
+                    if response:
+                        print("response: " + str(response))
+                        with self.lock:
+                            self.data.set_element_value("connected", True)
+                            # Populate elements from response data
+                            for element_name in ELEMENTS[self.relay_id]:
+                                element_cfg = ELEMENTS[self.relay_id][element_name]
+                                element_type = element_cfg.get("type")
+                                
+                                if element_type in ("breaker", "switch"):
+                                    # Get state for breaker/switch (e.g., cbr1, swi1)
+                                    state = response.get(f"{element_name}", "UNKNOWN")
+                                    self.data.set_element_value(element_name, state)
+                                
+                                elif element_type == "measurement":
+                                    # Get measurement data (e.g., ctr1_data, vtr1_data)
+                                    data = response.get(f"{element_name}", {})
+                                    self.data.set_element_value(element_name, data)
+                                
+                                elif element_type == "setting":
+                                    # Get setting value directly by element name
+                                    value = response.get(element_name)
+                                    if value is not None:
+                                        self.data.set_element_value(element_name, value)
+
+                                elif element_type == "status":
+                                    # Get setting value directly by element name
+                                    value = response.get(element_name)
+                                    if value is not None:
+                                        self.data.set_element_value(element_name, value)
             
             time.sleep(0.5)  # Update every 500ms
     

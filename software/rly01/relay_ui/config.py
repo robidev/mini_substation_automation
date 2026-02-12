@@ -19,8 +19,7 @@ BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
 DARK_GRAY = (100, 100, 100)
 LIGHT_GRAY = (230, 230, 230)
-SIEMENS_BLUE = (0, 120, 200)
-SIEMENS_DARK_BLUE = (0, 80, 140)
+RELAY_BLUE = (0, 120, 200)
 GREEN = (0, 200, 0)
 RED = (200, 0, 0)
 YELLOW = (255, 200, 0)
@@ -37,13 +36,6 @@ DBPOS_ON = 1  # closed
 DBPOS_OFF = 2 # open
 DBPOS_BAD = 3 # error
 
-
-#TODO: -nan bug in measurements from mmxu
-#TODO: bug switches not corrctly displayed in indicators
-
-#TODO: add average volt/amp measurements in single line
-#TODO: differential protection single line diagram 
-#TODO: transformer protection single line diagram
 
 # =====================================================
 # UNIX SOCKETS
@@ -71,11 +63,11 @@ ELEMENTS_FEED = {
         "type": "switch",
         "description": "Switch 2"
     },
-    "_swi2_blkopn": {
+    "s_swi2_blkopn": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch OPEN"
     },
-    "_swi2_blkcls": {
+    "s_swi2_blkcls": {
         "type": "status",
         "description": "Switch 2 interlock condition for switch CLOSE"
     },
@@ -93,32 +85,32 @@ ELEMENTS_FEED = {
         "measurement_type": "current",
         "description": "Current Transformer 1 average A"
     },
-    "_ctr1_phsA": {
+    "m_ctr1_phsA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "_ctr1_phsB": {
+    "m_ctr1_phsB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "_ctr1_phsC": {
+    "m_ctr1_phsC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "_ctr1_phsAngA": {
+    "m_ctr1_phsAngA": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "_ctr1_phsAngB": {
+    "m_ctr1_phsAngB": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
     },
-    "_ctr1_phsAngC": {
+    "m_ctr1_phsAngC": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1"
@@ -128,21 +120,85 @@ ELEMENTS_FEED = {
         "measurement_type": "voltage",
         "description": "Voltage Transformer 1 average V"
     },
+
+    "m_v1_pA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "m_v1_pB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "m_v1_pC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "m_v1_aA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "m_v1_aB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+    "m_v1_aC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1"
+    },
+
     "vtr2": {
         "type": "measurement",
         "measurement_type": "voltage",
         "description": "Voltage Transformer 2 average V"
     },
+
+    "m_v2_pA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    "m_v2_pB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    "m_v2_pC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    "m_v2_aA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    "m_v2_aB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+    "m_v2_aC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 2"
+    },
+
     # Settings
-    "_loc": {
+    "s_loc": {
         "type": "setting",
         "description": "Local/Remote Control"
     },
-    "_Ilarge": {
+    "s_Ilarge": {
         "type": "setting",
         "description": "Overcurrent Pickup"
     },
-    "_Tm": {
+    "s_Tm": {
         "type": "setting",
         "description": "Time Multiplier"
     },
@@ -161,9 +217,9 @@ ELEMENTS = [
 # SETTINGS MEASUREMENTS AND INDICATORS
 # =====================================================
 SETTINGS_FEED = [
-    ["I> pickup",    "_Ilarge", float, 0.0],
-    ["T> delay",     "_Tm",     float, 0.0],
-    ["Local/Remote", "_loc",    bool,  False],
+    ["I> pickup",    "s_Ilarge", float, 0.0],
+    ["T> delay",     "s_Tm",     float, 0.0],
+    ["Local/Remote", "s_loc",    bool,  False],
 ]
 
 SETTINGS = [
@@ -176,9 +232,15 @@ SETTINGS = [
 ]
 
 MEASUREMENTS_FEED = [
-    ("Iph A", "_ctr1_phsA", "_ctr1_phsAngA"),
-    ("Iph B", "_ctr1_phsB", "_ctr1_phsAngB"),
-    ("Iph C", "_ctr1_phsC", "_ctr1_phsAngC"),
+    ("Iph A", "m_ctr1_phsA", "m_ctr1_phsAngA"),
+    ("Iph B", "m_ctr1_phsB", "m_ctr1_phsAngB"),
+    ("Iph C", "m_ctr1_phsC", "m_ctr1_phsAngC"),
+    ("Bus1 Vph A", "m_v1_pA", "m_v1_aA"),
+    ("Bus1 Vph B", "m_v1_pB", "m_v1_aB"),
+    ("Bus1 Vph C", "m_v1_pC", "m_v1_aC"),
+    ("Bus2 Vph A", "m_v2_pA", "m_v2_aA"),
+    ("Bus2 Vph B", "m_v2_pB", "m_v2_aB"),
+    ("Bus2 Vph C", "m_v2_pC", "m_v2_aC"),
 ]
 
 MEASUREMENTS = [
@@ -195,7 +257,7 @@ INDICATORS_FEED = [
     ("swi2","swi2","swi"),
     ("swi3","swi3","swi"),
     ("swi4","swi4","swi"),
-    ("Loc","_loc","int"),
+    ("Loc","s_loc","int"),
     ("conn", "connected","bool")    
 ]
 
@@ -301,6 +363,27 @@ DIAGRAM_OBJECTS_FEED = [
         "rotation": 180,
         "selectable": True,
     },  
+    {
+        "type": "text",
+        "position": (140, 210),    
+        "formatted_text" : "",
+        "element": "ctr1",
+        "template": "CT 1:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (140, 22),    
+        "formatted_text" : "",
+        "element": "vtr1",
+        "template": "Bus 1:{value:.1f} V",
+    },
+    {
+        "type": "text",
+        "position": (140, 42),    
+        "formatted_text" : "",
+        "element": "vtr2",
+        "template": "Bus 2:{value:.1f} V",
+    },
 ]
 
 DIAGRAM_OBJECTS = [

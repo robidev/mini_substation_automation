@@ -5,7 +5,7 @@ import pygame
 from typing import Optional, List
 
 from config import (
-    SCREEN_WIDTH, SCREEN_HEIGHT, LIGHT_GRAY, SIEMENS_BLUE, WHITE, BLACK, 
+    SCREEN_WIDTH, SCREEN_HEIGHT, LIGHT_GRAY, RELAY_BLUE, WHITE, BLACK, 
     GRAY, YELLOW, GREEN, RED, FG, BG, INDICATORS
 )
 from ui_components import (
@@ -49,7 +49,7 @@ class StartScreen:
         surface.fill(LIGHT_GRAY)
         
         # Draw title bar
-        pygame.draw.rect(surface, SIEMENS_BLUE, (0, 0, self.width, 60))
+        pygame.draw.rect(surface, RELAY_BLUE, (0, 0, self.width, 60))
         title = title_font.render("HS Relay", True, WHITE)
         title_rect = title.get_rect(center=(self.width // 2, 20))
         surface.blit(title, title_rect)

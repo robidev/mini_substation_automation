@@ -6,26 +6,13 @@ from typing import Optional, List, Tuple
 
 from config import (
     FG, BG, INV_FG, INV_BG, WHITE, BLACK, GRAY, DARK_GRAY, YELLOW, GREEN, RED,
-    SIEMENS_BLUE, SETTINGS, MEASUREMENTS, DIAGRAM_OBJECTS, 
+    RELAY_BLUE, SETTINGS, MEASUREMENTS, DIAGRAM_OBJECTS, 
     DBPOS_ON, DBPOS_OFF, DBPOS_INTERMEDIATE, DBPOS_BAD
 )
 from drawing import (
-    draw_single_line, swap_fg_bg, cursor_on, polar_to_xy
+    draw_single_line, swap_fg_bg, cursor_on, polar_to_xy, text, FONT, FONT_H
 )
 
-
-
-# =====================================================
-# FONT UTILITIES
-# =====================================================
-FONT_H = 14
-FONT = pygame.font.SysFont("courier", FONT_H, bold=True)
-
-
-def text(surface, txt, x, y, fg=FG, bg=None):
-    """Render text on surface"""
-    surf = FONT.render(txt, False, fg, bg)
-    surface.blit(surf, (x, y))
 
 
 # =====================================================
@@ -75,7 +62,7 @@ class IconButton(Button):
     """Icon button for the start screen"""
     
     def __init__(self, x: int, y: int, width: int, height: int, text: str, relay_id: int):
-        super().__init__(x, y, width, height, text, SIEMENS_BLUE)
+        super().__init__(x, y, width, height, text, RELAY_BLUE)
         self.relay_id = relay_id
     
     def draw(self, surface: pygame.Surface, font: pygame.font.Font):
@@ -126,7 +113,7 @@ class MeasurementPage(Page):
             stack.pop()
 
     def draw(self, surface):
-        text(surface, "Side 1", 20, 30)
+        self.client.enable_measurements = True
         y = 55
         for v in MEASUREMENTS[self.client.relay_id]:
             mag = self.client.get_measurement(v[1])
@@ -136,9 +123,9 @@ class MeasurementPage(Page):
             if ang == {}:
                 ang = 0
             if v[0][0] == "I":
-                text(surface, f"{v[0]:<8} {mag:>5} A {ang:>6}°", 40, y)
+                text(surface, f"{v[0]:<8} {mag:>5} A {ang:>6}°", 20, y)
             else:
-                text(surface, f"{v[0]:<8} {mag:>5} V {ang:>6}°", 40, y)                
+                text(surface, f"{v[0]:<8} {mag:>5} V {ang:>6}°", 20, y)                
             y += FONT_H + 3
 
 
@@ -156,20 +143,28 @@ class DiagramPage(Page):
                 stack.pop()
 
     def draw(self, surface):
+        self.client.enable_diagram_values = True
         for obj in DIAGRAM_OBJECTS[self.client.relay_id]:
             if "element" in obj:
-                value = self.client.get_switch_state(obj["element"])
-                if obj["type"] == "symbol" and value != "UNKNOWN":
-                    if value == DBPOS_OFF:
-                        obj["state"] = "open"
-                    elif value == DBPOS_ON:
-                        obj["state"] = "closed"
-                    elif value == DBPOS_INTERMEDIATE:
-                        obj["state"] = "intermediate"
-                    else:
-                        obj["state"] = "error"
+                if obj["type"] == "symbol":
+                    value = self.client.get_switch_state(obj["element"])
+                    if value != "UNKNOWN":
+                        if value == DBPOS_OFF:
+                            obj["state"] = "open"
+                        elif value == DBPOS_ON:
+                            obj["state"] = "closed"
+                        elif value == DBPOS_INTERMEDIATE:
+                            obj["state"] = "intermediate"
+                        else:
+                            obj["state"] = "error"
+
+                elif obj["type"] == "text":
+                    raw = self.client.get_measurement(obj["element"])
+                    value = float(raw) if isinstance(raw, (int, float)) else 0.0
+                    obj["formatted_text"] = obj["template"].format(value=value)
                 else:
                     obj["value"] = value
+
 
         draw_single_line(surface, DIAGRAM_OBJECTS[self.client.relay_id], -1)
 
@@ -239,18 +234,25 @@ class ControlPage(Page):
 
 
     def draw(self, surface):
+        self.client.enable_diagram_values = True
         for obj in DIAGRAM_OBJECTS[self.client.relay_id]:
             if "element" in obj:
-                value = self.client.get_switch_state(obj["element"])
-                if obj["type"] == "symbol" and value != "UNKNOWN":
-                    if value == DBPOS_OFF:
-                        obj["state"] = "open"
-                    elif value == DBPOS_ON:
-                        obj["state"] = "closed"
-                    elif value == DBPOS_INTERMEDIATE:
-                        obj["state"] = "intermediate"
-                    else:
-                        obj["state"] = "error"
+                if obj["type"] == "symbol":
+                    value = self.client.get_switch_state(obj["element"])
+                    if value != "UNKNOWN":
+                        if value == DBPOS_OFF:
+                            obj["state"] = "open"
+                        elif value == DBPOS_ON:
+                            obj["state"] = "closed"
+                        elif value == DBPOS_INTERMEDIATE:
+                            obj["state"] = "intermediate"
+                        else:
+                            obj["state"] = "error"
+
+                elif obj["type"] == "text":
+                    raw = self.client.get_measurement(obj["element"])
+                    value = float(raw) if isinstance(raw, (int, float)) else 0.0
+                    obj["formatted_text"] = obj["template"].format(value=value)
                 else:
                     obj["value"] = value
 
@@ -265,7 +267,7 @@ class PhasorPage(Page):
         self.client = client
         self.right = "next"
         self.page = 0
-        self.pages = 1
+        self.pages = (len(MEASUREMENTS[self.client.relay_id]) + 2) // 3
 
     def handle_key(self, key, stack):
         if key == pygame.K_ESCAPE:
@@ -274,25 +276,38 @@ class PhasorPage(Page):
             self.page = (self.page + 1) % self.pages
 
     def draw(self, surface):
+        self.client.enable_measurements = True
         cx, cy = 120, 126
         r = 50
         pygame.draw.circle(surface, FG, (cx, cy), r, 1)
         pygame.draw.line(surface, FG, (cx - r, cy), (cx + r, cy), 1)
         pygame.draw.line(surface, FG, (cx, cy - r), (cx, cy + r), 1)
 
-        for name, mag_ref, ang_ref in MEASUREMENTS[self.client.relay_id][(self.page*3):(self.page*3)+3]:
-            mag = self.client.get_measurement(mag_ref)
-            ang = self.client.get_measurement(ang_ref)
-            if mag == {}:
-                mag = 1.0
-            if ang == {}:
-                ang = 0
-            dx, dy = polar_to_xy(mag, ang, r)
+        vectors = MEASUREMENTS[self.client.relay_id][(self.page*3):(self.page*3)+3]
+
+        # Step 1: read magnitudes
+        mags = []
+        angs = []
+        for _, mag_ref, ang_ref in vectors:
+            mag = self.client.get_measurement(mag_ref) or 1.0
+            ang = self.client.get_measurement(ang_ref) or 0
+            mags.append(mag)
+            angs.append(ang)
+
+        # Step 2: normalize
+        max_mag = max(mags) if max(mags) != 0 else 1.0
+
+        # Step 3: draw
+        for (name, _, _), mag, ang in zip(vectors, mags, angs):
+            norm_mag = (mag / max_mag)
+            dx, dy = polar_to_xy(norm_mag, ang, r)
+
             x, y = int(cx + dx), int(cy + dy)
             pygame.draw.line(surface, FG, (cx, cy), (x, y), 2)
             pygame.draw.circle(surface, FG, (x, y), 3)
             text(surface, name, x + 5, y - 5)
-        
+            text(surface, str(mag), x + 5, y + 5)
+
         text(surface, "Phasor page " + str(self.page + 1) + "/" + str(self.pages), 66, 280)
 
 
@@ -408,7 +423,7 @@ class PopupPage(Page):
         # Draw semi-transparent overlay
         overlay = pygame.Surface((surface.get_width(), surface.get_height()))
         overlay.set_alpha(100)
-        overlay.fill(BLACK)
+        overlay.fill(INV_BG)
         surface.blit(overlay, (0, 0))
 
         # Draw popup box
@@ -416,7 +431,7 @@ class PopupPage(Page):
         box_height = 100
         box_x = (surface.get_width() - box_width) // 2
         box_y = (surface.get_height() - box_height) // 2
-        pygame.draw.rect(surface, WHITE, (box_x, box_y, box_width, box_height))
+        pygame.draw.rect(surface, BG, (box_x, box_y, box_width, box_height))
         pygame.draw.rect(surface, FG, (box_x, box_y, box_width, box_height), 2)
 
         # Draw message (wrapped)

@@ -32,7 +32,7 @@ ARDUINO_TIMEOUT = 5.0
 
 cur_state = ["01" for i in range(NUM_SERVOS)]
 
-current = 90
+current = [90] * NUM_SERVOS
 
 # ---------------- Shared state ----------------
 
@@ -67,13 +67,13 @@ def on_switch_end(channel, state):
 
 def move_servo_smooth(channel, target_angle):
     global current
-    print(f"servo angle {current} at start")
-    step = STEP_DEGREE if target_angle > current else -STEP_DEGREE
+    print(f"servo angle {current[channel]} at start")
+    step = STEP_DEGREE if target_angle > current[channel] else -STEP_DEGREE
 
-    for angle in range(int(current), int(target_angle), step):
+    for angle in range(int(current[channel]), int(target_angle), step):
         time.sleep(MOVE_SPEED)
     print(f"servo angle {target_angle} reached")
-    current = target_angle
+    current[channel] = target_angle
 
 def servo_worker(channel):
     global cur_state
@@ -148,9 +148,9 @@ def format_packet_oneline():
     # ADC values: decimal
     feed1 = "0,0,0,"
     if cur_state[10] == "10":
-        feed1 = "2,1,2,"
+        feed1 = "2,2,2,"
     
-    adc_part = "A" + feed1 + "3,4,5,6,7,8,9,10,11"
+    adc_part = "A" + feed1 + "3,3,3,2,2,2,3,3,3"
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
     short_part = "S01,02,03,04,05,06"
     return adc_part + " " + short_part
