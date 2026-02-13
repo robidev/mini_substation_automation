@@ -204,11 +204,47 @@ ELEMENTS_FEED = {
     },
 }
 
+ELEMENTS_BUS = {
+    # Measurement transformers
+    "ctr1": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 average A"
+    },
+    "ctr2": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 average A"
+    },
+    "ctr3": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 average A"
+    },
+    "ctr4": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 average A"
+    },
+    "vtr1": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 average V"
+    },
+
+
+    # Settings
+    "s_loc": {
+        "type": "setting",
+        "description": "Local/Remote Control"
+    },
+}
+
 ELEMENTS = [
     ELEMENTS_FEED,
     ELEMENTS_FEED,
-    ELEMENTS_FEED,
-    ELEMENTS_FEED,
+    ELEMENTS_BUS,
+    ELEMENTS_BUS,
     ELEMENTS_FEED,
     ELEMENTS_FEED
 ]
@@ -222,11 +258,15 @@ SETTINGS_FEED = [
     ["Local/Remote", "s_loc",    bool,  False],
 ]
 
+SETTINGS_BUS = [
+    ["Local/Remote", "s_loc",    bool,  False],
+]
+
 SETTINGS = [
     SETTINGS_FEED,
     SETTINGS_FEED,
-    SETTINGS_FEED,
-    SETTINGS_FEED,
+    SETTINGS_BUS,
+    SETTINGS_BUS,
     SETTINGS_FEED,
     SETTINGS_FEED
 ]
@@ -243,13 +283,16 @@ MEASUREMENTS_FEED = [
     ("Bus2 Vph C", "m_v2_pC", "m_v2_aC"),
 ]
 
+MEASUREMENTS_BUS = []
+MEASUREMENTS_TR = []
+
 MEASUREMENTS = [
     MEASUREMENTS_FEED,
     MEASUREMENTS_FEED,
-    MEASUREMENTS_FEED,
-    MEASUREMENTS_FEED,
-    MEASUREMENTS_FEED,
-    MEASUREMENTS_FEED
+    MEASUREMENTS_BUS,
+    MEASUREMENTS_BUS,
+    MEASUREMENTS_TR,
+    MEASUREMENTS_TR
 ]
 
 INDICATORS_FEED = [
@@ -262,16 +305,16 @@ INDICATORS_FEED = [
 ]
 
 INDICATORS_BUS = [
-    ("cbr1","cbr1","swi"),
-    ("cbr2","cbr2","swi"),
-    ("cbr3","cbr3","swi"),
-    ("cbr4","cbr4","swi")
+    ("Loc","s_loc","int"),
+    ("conn", "connected","bool")  
 ]
 
 INDICATORS_TR = [
     ("cbr1","cbr1","swi"),
+    ("swi2","swi2","swi"),
     ("swi3","swi3","swi"),
-    ("swi4","swi4","swi")
+    ("Loc","s_loc","int"),
+    ("conn", "connected","bool")  
 ]
 
 INDICATORS = [
@@ -386,13 +429,155 @@ DIAGRAM_OBJECTS_FEED = [
     },
 ]
 
+
+DIAGRAM_OBJECTS_BUS = [
+    {
+        "type": "symbol",
+        "name": "busbar",
+        "position": (124, 40),
+        "rotation": 0,
+    },    
+    {
+        "type": "text",
+        "position": (20, 150),    
+        "formatted_text" : "",
+        "element": "ctr1",
+        "template": "CT 1:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (60, 170),    
+        "formatted_text" : "",
+        "element": "ctr2",
+        "template": "CT 2:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (100, 190),    
+        "formatted_text" : "",
+        "element": "ctr3",
+        "template": "CT 3:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (140, 210),    
+        "formatted_text" : "",
+        "element": "ctr4",
+        "template": "CT 4:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (140, 22),    
+        "formatted_text" : "",
+        "element": "vtr1",
+        "template": "Bus:{value:.1f} V",
+    },
+]
+
+DIAGRAM_OBJECTS_TR = [
+    {
+        "type": "symbol",
+        "name": "busbar",
+        "position": (124, 40),
+        "rotation": 0,
+    },
+    {
+        "type": "symbol",
+        "name": "busbar",
+        "position": (124, 60),
+        "rotation": 0,
+    },        
+    {
+        "type": "primitive",
+        "primitive": {"type": "filled_circle", "center": (80, 41), "radius": 4},
+    },
+    {
+        "type": "primitive",
+        "primitive": {"type": "filled_circle", "center": (160, 61), "radius": 4},
+    },
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (80, 40), "end": (80, 80), "width": 2},
+    },
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (160, 60), "end": (160, 80), "width": 2},
+    },
+    {
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "closed",
+        "element": "swi3",
+        "position": (80, 100),
+        "rotation": 180,
+        "selectable": True,
+    },   
+    {
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "open",
+        "element": "swi4",
+        "position": (160, 100),
+        "rotation": 180,
+        "selectable": True,
+    },  
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (80, 130), "end": (160, 130), "width": 2},
+    }, 
+    {
+        "type": "symbol",
+        "name": "circuit_breaker",
+        "state": "open",
+        "element": "cbr1",
+        "position": (120, 160),
+        "rotation": 180,
+        "selectable": True,
+    },  
+    {
+        "type": "symbol",
+        "name": "current_transformer",
+        "position": (120, 220),
+        "rotation": 0,
+    },  
+    {
+        "type": "symbol",
+        "name": "power_transformer",
+        "position": (120, 270),
+        "rotation": 180,
+    },  
+    {
+        "type": "text",
+        "position": (140, 210),    
+        "formatted_text" : "",
+        "element": "ctr1",
+        "template": "CT 1:{value:.1f} A",
+    },
+    {
+        "type": "text",
+        "position": (140, 22),    
+        "formatted_text" : "",
+        "element": "vtr1",
+        "template": "Bus 1:{value:.1f} V",
+    },
+    {
+        "type": "text",
+        "position": (140, 42),    
+        "formatted_text" : "",
+        "element": "vtr2",
+        "template": "Bus 2:{value:.1f} V",
+    },
+]
+
+
+
 DIAGRAM_OBJECTS = [
     DIAGRAM_OBJECTS_FEED,
     DIAGRAM_OBJECTS_FEED,
-    DIAGRAM_OBJECTS_FEED,
-    DIAGRAM_OBJECTS_FEED,
-    DIAGRAM_OBJECTS_FEED,
-    DIAGRAM_OBJECTS_FEED
+    DIAGRAM_OBJECTS_BUS,
+    DIAGRAM_OBJECTS_BUS,
+    DIAGRAM_OBJECTS_TR,
+    DIAGRAM_OBJECTS_TR
 ]
 
 # =====================================================
