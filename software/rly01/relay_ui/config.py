@@ -190,7 +190,7 @@ ELEMENTS_FEED = {
     },
 
     # Settings
-    "s_loc": {
+    "loc": {
         "type": "setting",
         "description": "Local/Remote Control"
     },
@@ -234,7 +234,7 @@ ELEMENTS_BUS = {
 
 
     # Settings
-    "s_loc": {
+    "loc": {
         "type": "setting",
         "description": "Local/Remote Control"
     },
@@ -255,11 +255,11 @@ ELEMENTS = [
 SETTINGS_FEED = [
     ["I> pickup",    "s_Ilarge", float, 0.0],
     ["T> delay",     "s_Tm",     float, 0.0],
-    ["Local/Remote", "s_loc",    bool,  False],
+    ["Local/Remote", "loc",    bool,  False],
 ]
 
 SETTINGS_BUS = [
-    ["Local/Remote", "s_loc",    bool,  False],
+    ["Local/Remote", "loc",    bool,  False],
 ]
 
 SETTINGS = [
@@ -300,12 +300,12 @@ INDICATORS_FEED = [
     ("swi2","swi2","swi"),
     ("swi3","swi3","swi"),
     ("swi4","swi4","swi"),
-    ("Loc","s_loc","int"),
+    ("Loc","loc","bool"),
     ("conn", "connected","bool")    
 ]
 
 INDICATORS_BUS = [
-    ("Loc","s_loc","int"),
+    ("Loc","loc","bool"),
     ("conn", "connected","bool")  
 ]
 
@@ -313,7 +313,7 @@ INDICATORS_TR = [
     ("cbr1","cbr1","swi"),
     ("swi2","swi2","swi"),
     ("swi3","swi3","swi"),
-    ("Loc","s_loc","int"),
+    ("Loc","loc","bool"),
     ("conn", "connected","bool")  
 ]
 

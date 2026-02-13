@@ -169,9 +169,16 @@ class IEC61850Client:
         """Send command to close switch"""
         return self.send_command("close_switch", {"switch": element})
 
+    def write_loc(self, value: str) -> bool:
+        """Send command to alter local/remote"""
+        return self.send_command("write_loc", {"value": str(value)})
+
     def write_setting(self, element: str, value: str) -> bool:
         """Send command to alter setting"""
-        return self.send_command("write_setting", {"element": element, "value": str(value)})
+        if element == "loc":
+            return self.write_loc(value)
+        else:
+            return self.send_command("write_setting", {"element": element, "value": str(value)})
     
     def get_data(self) -> RelayData:
         """Get the current relay data (thread-safe)"""
