@@ -1,0 +1,35 @@
+[substation software]
+implement local IP -> cmdline arg (migrate to unistd.h with getopt())
+implement proper PDIF
+implement Local/Remote LN/DO.DA and behaviour
+implement IEC61850 single line diagram for IEC61850 client
+
+modbus for IEC61850 client
+add modbus addressing to single-line diagram
+
+[substation config]
+Write software to hw01 and rly01
+write service-handling(cron/restart)
+write client to EEE laptop
+
+[substation hardware]
+make telco-cabinet
+ -dustplate, 
+ -RTU encasing
+frontplate 
+ - update design for micom LED/button placement
+ - add versioning
+ - print
+
+TESTING!!!!
+
+[RTU]
+implement RTU
+write all 104/61850 mappings
+add modbus support
+add modbus mappings
+
+[SCADA]
+make central SCADA display
+update eventlet(and maybe more)
+
