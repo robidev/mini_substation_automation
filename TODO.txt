@@ -1,16 +1,17 @@
 [substation software]
-implement local IP -> cmdline arg (migrate to unistd.h with getopt())
-implement proper PDIF
-implement Local/Remote LN/DO.DA and behaviour -> XSWI.Loc and XCBR.Loc loc are taken from LLN0.Loc
-implement IEC61850 single line diagram for IEC61850 client
+gui+ui_config:
+	implement measurements for all other IED's
 
-modbus for IEC61850 client
-add modbus addressing to single-line diagram
+Client:
+	implement IEC61850 single line diagram for IEC61850 client
+	modbus for IEC61850 client
+	add modbus addressing to single-line diagram
 
 [substation config]
-Write software to hw01 and rly01
-write service-handling(cron/restart)
-write client to EEE laptop
+	add Local/remote mapping to all 5 other IED's
+	Write software to hw01 and rly01
+	write service-handling(cron/restart)
+	write client to EEE laptop
 
 [substation hardware]
 make telco-cabinet
@@ -24,10 +25,12 @@ frontplate
 TESTING!!!!
 
 [RTU]
-implement RTU
+make SD-card, configure ip's and access
+configure iec61850_open_gateway (RTU) on it
 write all 104/61850 mappings
 add modbus support
 add modbus mappings
+create startup service
 
 [SCADA]
 make central SCADA display

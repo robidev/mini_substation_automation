@@ -44,7 +44,7 @@ def analog_data_simulator(data_string):
     Parse sensor data string containing analog and digital measurements.
     
     Args:
-        data_string: String in format "A0,1,2,3,4,5,6,7,8,9,10,11 S01,02,03,04,05,06"
+        data_string: String in format "A0,1,2,3,4,5,6,7,8,9,10,11 S01,02,03,04,05,06" (12 analog measures, and 6 digital matrices for phase-shorts)
   
     Returns:
         dict: Contains 'analog' list of CT and VT values, first 6x input CT, then 6x outgoing CT, then 6x busbar VT
@@ -74,7 +74,8 @@ def analog_data_simulator(data_string):
 
     incoming_ct = analog_values[0:6]
     outgoing_ct = analog_values[6:12]
-    busbar_vt = [0] * 6
+
+    busbar_vt = [0] * 6 # first 3 are busbar1, second 3 are busbar2
 
     ctmap1 = 10
     dismap1 = [2,2,2,3,3,3]
@@ -88,7 +89,7 @@ def analog_data_simulator(data_string):
         if event[ctmap2] == '10' and event[dismap2[i]] == '10':
             busbar_vt[i] = int(incoming_ct[(i % 3) + 3 ])
     
-    # check if busbar is feeding back TODO: feedback also via feeders 1 and 2 possible!!!
+    # check if busbar is feeding back 
     dismap3 = [6,6,6,7,7,7]
     dismap4 = [8,8,8,9,9,9]
     for i in range(6): # calculate VT values from other busbar, if connected, and voltage is 0
@@ -98,31 +99,50 @@ def analog_data_simulator(data_string):
             else:
                 busbar_vt[i - 3] = busbar_vt[i]
 
+    # feedback also via feeders 1 and 2 possible!!!
+    for i in range(6): # calculate VT values from other busbar, if connected, and voltage is 0
+        if event[dismap1[i]] == '10' and event[dismap2[i]] == '10' and busbar_vt[i] > 0:
+            if i < 3:
+                busbar_vt[i + 3] = busbar_vt[i]
+            else:
+                busbar_vt[i - 3] = busbar_vt[i]
+
     # check for short to ground
     # ADC_GND_THRESHOLD = 600;  // ~2.9V (tweak for noise)
     # ADC_SHORT_THRESHOLD = 750; // ~3.6V (tweak for noise)
+    gnd_threshold = 150
     short_to_gnd_threshold = 750
     short_to_gnd_current = 50
     gnd_short_active = [False] * 6
     for i, analog_val in enumerate(incoming_ct):
-        if analog_val < short_to_gnd_threshold:
+        if analog_val < short_to_gnd_threshold and analog_val > gnd_threshold:
             incoming_ct[i] = int(incoming_ct[i] * short_to_gnd_current)
             outgoing_ct[i] = int(outgoing_ct[i] / short_to_gnd_current)
             gnd_short_active[i] = True
 
+    print("gnd short active:" + str(gnd_short_active))
     # Process analog values above threshold, and then, if short is detected, increase current for input to simulate a short, and decrease current to outgoing ct's
     # do not process if gnd-fault is already active, we cannot detect both reliably
     threshold = 100
     short_phase_current = 100
+    phs_short_active = [False] * 6
     for i, analog_val in enumerate(incoming_ct):
         if analog_val > threshold and gnd_short_active[i] == False:
             # Placeholder for further processing
-            if any(digital_matrix[i]):
+            if any(digital_matrix[i]): # if any phases are shorted..
                 incoming_ct[i] = int(incoming_ct[i] * short_phase_current)
                 outgoing_ct[i] = int(outgoing_ct[i] / short_phase_current)
+                phs_short_active[i] = True
 
-    combined = incoming_ct + outgoing_ct + busbar_vt
+    print("phs short active:" + str(phs_short_active))
+
+    incoming_ct_scaled = [int(v * 0.1) for v in incoming_ct]
+    outgoing_ct_scaled = [int(v * 0.1) for v in outgoing_ct]
+    busbar_vt_scaled = [int(v * 10) for v in busbar_vt]
+
+    combined = incoming_ct_scaled + outgoing_ct_scaled + busbar_vt
     output_string = ','.join(map(str, combined))
+    print("--> " + output_string + " <--")
     return "A" + output_string #simulated_values
 
 

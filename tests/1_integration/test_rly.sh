@@ -44,6 +44,7 @@ socat PTY,link=/tmp/ttyV0,raw,echo=0 PTY,link=/tmp/ttyV1,raw,echo=0 \
 pids+=("$!")
 
 start_service "serial_mock" python3 -u "$WORKDIR/tests/0_unit/rly01/serial_mock.py"
+
 start_service "service"     python3 -u "$WORKDIR/software/rly01/service.py"
 
 echo "All services started..."

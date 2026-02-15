@@ -147,12 +147,100 @@ def set_switch(channel, state):
 def format_packet_oneline():
     # ADC values: decimal
     feed1 = "0,0,0,"
-    if cur_state[10] == "10":
-        feed1 = "2,2,2,"
+    feed2 = "0,0,0,"
+    tr1 = "0,0,0,"
+    tr2 = "0,0,0"
+
+#    bus1 = int(0)
+#    bus2 = int(0)
+#    busdiv1 = int(0)
+#    busdiv2 = int(0)
+#
+#    if cur_state[12] == "10" and cur_state[6] == "10": # Tr1 to bus1
+#        bus1 += 900
+#    if cur_state[12] == "10" and cur_state[7] == "10": # Tr1 to bus2
+#        bus2 += 920
+#    if cur_state[13] == "10" and cur_state[8] == "10": # Tr2 to bus1
+#        bus1 += 940
+#    if cur_state[13] == "10" and cur_state[9] == "10": # Tr2 to bus2
+#        bus2 += 960
+#
+#
+#    if cur_state[0] == "10" and cur_state[10] == "10" and cur_state[2] == "10": # bus1 to feed1
+#        busdiv1 += 1
+#    if cur_state[0] == "10" and cur_state[10] == "10" and cur_state[3] == "10": # bus2 to feed1
+#        busdiv2 += 1	
+#    if cur_state[1] == "10" and cur_state[11] == "10" and cur_state[4] == "10": # bus1 to feed2
+#        busdiv1 += 1
+#    if cur_state[1] == "10" and cur_state[11] == "10" and cur_state[5] == "10": # bus2 to feed2
+#        busdiv2 += 1
+#
+#    f1total = int(0)
+#    f2total = int(0)
+#    t1total = int(0)
+#    t2total = int(0)
+#    if busdiv1 > 0: # something is connected to bus1
+#        #feed 1
+#        if cur_state[0] == "10" and cur_state[10] == "10" and cur_state[2] == "10": # feed 1 connected to bus1
+#            f1total += bus1 / busdiv1 # busdiv can be 1 if only connected to feed 1 or 2 if also connected to feed 2, so divide current
+#        if cur_state[1] == "10" and cur_state[11] == "10" and cur_state[4] == "10": # feed 2 connected to bus1
+#            f2total += bus1 / busdiv1 # busdiv can be 1 if only connected to feed 1 or 2 if also connected to feed 2, so divide current
+#        if cur_state[12] == "10" and cur_state[6] == "10": # Tr1 to bus1
+#            t1total += 900
+#        if cur_state[13] == "10" and cur_state[8] == "10": # Tr2 to bus1
+#            t2total += 940
+#
+#
+#    if busdiv2 > 0: # something is connected to bus1
+#        #feed 1
+#        if cur_state[0] == "10" and cur_state[10] == "10" and cur_state[3] == "10": # feed 1 connected to bus2
+#            f1total += bus2 / busdiv2 # busdiv can be 1 if only connected to feed 1 or 2 if also connected to feed 2, so divide current
+#        if cur_state[1] == "10" and cur_state[11] == "10" and cur_state[5] == "10": # feed 2 connected to bus2
+#            f2total += bus2 / busdiv2 # busdiv can be 1 if only connected to feed 1 or 2 if also connected to feed 2, so divide current
+#        if cur_state[12] == "10" and cur_state[7] == "10": # Tr1 to bus2
+#            t1total += 920
+#        if cur_state[13] == "10" and cur_state[9] == "10": # Tr2 to bus2
+#            t2total += 960          
+#
+    f1total = int(0)
+    f2total = int(0)
+    t1total = int(0)
+    t2total = int(0)
+    bus1 = int(0)
+    bus2 = int(0)
+
+    if cur_state[0] == "10" and cur_state[10] == "10":
+        f1total = 900
+    if cur_state[1] == "10" and cur_state[11] == "10":
+        f2total = 910
+
+    if cur_state[2] == "10": # bus1 from feed1
+        bus1 = f1total
+    if cur_state[3] == "10": # bus2 from feed1
+        bus2 = f1total
+    if cur_state[4] == "10": # bus1 from feed2
+        bus1 = f2total
+    if cur_state[5] == "10": # bus2 from feed2
+        bus2 = f2total
     
-    adc_part = "A" + feed1 + "3,3,3,2,2,2,3,3,3"
+    if cur_state[12] == "10" and cur_state[6] == "10": # Tr1 from bus1
+        t1total = bus1
+    if cur_state[12] == "10" and cur_state[7] == "10": # Tr1 from bus2
+        t1total = bus2
+    if cur_state[13] == "10" and cur_state[8] == "10": # Tr2 from bus1
+        t2total = bus1
+    if cur_state[13] == "10" and cur_state[9] == "10": # Tr2 from bus2
+        t2total = bus2
+
+    feed1 = (str(int(f1total)) + ",") * 3
+    feed2 = (str(int(f2total)) + ",") * 3
+    tr1 = (str(int(t1total)) + ",") * 3
+    tr2 = (str(int(t2total)) + ",") * 3
+    tr2 = tr2[:-1]
+
+    adc_part = "A" + feed1 + feed2 + tr1 + tr2
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
-    short_part = "S01,02,03,04,05,06"
+    short_part = "S00,00,00,00,00,00"
     return adc_part + " " + short_part
 
 def serial1_reader_mock():
