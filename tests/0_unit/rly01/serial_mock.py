@@ -241,7 +241,10 @@ def format_packet_oneline():
     adc_part = "A" + feed1 + feed2 + tr1 + tr2
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
     short_part = "S00,00,00,00,00,00"
-    return adc_part + " " + short_part
+
+    current = "C100,100,100,0,0,0"
+
+    return adc_part + " " + short_part + " " + current
 
 def serial1_reader_mock():
     global serial1_data
@@ -252,7 +255,7 @@ def serial1_reader_mock():
             serial1_data = processed
             data = serial1_data or ""
             serial2_event_q.put(f"DATA B {data}\n")
-        time.sleep(10)
+        time.sleep(1)
 
 # ---------------- Serial2 API (slave) ----------------
 

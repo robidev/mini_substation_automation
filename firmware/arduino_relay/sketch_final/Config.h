@@ -90,6 +90,8 @@ constexpr uint8_t TYPE_RELAY_INCOMING_INDEX = 0;
 constexpr uint8_t TYPE_MEASURE_INDEX = 1;
 constexpr uint8_t TYPE_RELAY_OUTGOING_INDEX = 2;
 
+const uint8_t IN_RELAY_CHANNELS = 6;  // 3 phases × 2 input relays
+
 const unsigned long RLOAD[RELAY_ROWS][3] = {
     {5, 6, 4},
     {5, 4, 2}

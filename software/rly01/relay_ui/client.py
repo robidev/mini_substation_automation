@@ -88,29 +88,30 @@ class IEC61850Client:
             return False
     
     def receive_data(self) -> Optional[Dict]:
-        """Receive data from the IEC61850 server"""
         if not self.connected or not self.sock:
             return None
         
         try:
-            # Receive data (assuming newline-delimited JSON)
-            buffer = b""
-            while b"\n" not in buffer:
-                chunk = self.sock.recv(1024)
+            if not hasattr(self, "_recv_buffer"):
+                self._recv_buffer = b""
+
+            while b"\n" not in self._recv_buffer:
+                chunk = self.sock.recv(4096)
                 if not chunk:
                     raise ConnectionError("Connection closed")
-                buffer += chunk
-            
-            data = buffer.split(b"\n")[0]
-            return json.loads(data.decode())
+                self._recv_buffer += chunk
+
+            line, self._recv_buffer = self._recv_buffer.split(b"\n", 1)
+            return json.loads(line.decode())
+        
         except socket.timeout:
             return None
         except Exception as e:
             print(f"Error receiving data from {self.socket_path}: {e}")
-            print(data)
             self.disconnect()
             return None
     
+
     def update_loop(self):
         """Background thread to continuously update data"""
         while self.running:
@@ -159,7 +160,7 @@ class IEC61850Client:
                                     if value is not None:
                                         self.data.set_element_value(element_name, value)
             
-            time.sleep(0.5)  # Update every 500ms
+            time.sleep(0.3)  # Update every 300ms
     
     def open_switch(self, element: str) -> bool:
         """Send command to open switch"""

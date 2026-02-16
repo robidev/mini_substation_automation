@@ -60,6 +60,9 @@ def analog_data_simulator(data_string):
     digital_part = parts[1][1:]  # Remove 'S' prefix
     hex_values = digital_part.split(',')
     
+    ms_current_part = parts[2][1:]  # Remove 'C' prefix, should contain 6 values, 3 from each MS phase as reported via HS from the arduino(MS simulator, calculated load currents)
+    # TODO: process these load currents as input for the transformer currents and such...
+
     # Convert hex values to 6x6 boolean matrix
     digital_matrix = []
     for hex_val in hex_values:
@@ -251,7 +254,7 @@ def handle_client(conn, addr):
                             conn.sendall((f"EVENT IO: {ch} {state_t}\n").encode())
                     client_init = True
                 try:
-                    data = conn.recv(1024)
+                    data = conn.recv(4096)
                     if not data:
                         break
                     cmd = data.decode(errors="ignore").strip().split()

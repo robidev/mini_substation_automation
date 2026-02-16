@@ -32,7 +32,7 @@ SERIAL2_DEV = "/dev/ttyAMA0" # serial to second pi
 BAUD1 = 115200
 BAUD2 = 115200
 
-RECEIVE_FRAMES = 1
+RECEIVE_FRAMES = 1 # modify to get much more frames in a second (max 100), time between frames is 10ms
 ARDUINO_TIMEOUT = 5.0
 ADC_NUM_CHANNELS = 12
 ADC_WIRE_COUNT = 6
@@ -128,7 +128,7 @@ def gpio_worker(channel):
         else: # close switch: slow
             servo_busy[channel].set()
             on_switch_start(channel, state)
-            time.sleep(3.0)
+            time.sleep(MOVE_SPEED * 3.0) # arming the breaker is a bit slower
         
             GPIO.output(cbr_gpio_pins[channel],state) #set pin
 
@@ -178,7 +178,7 @@ def serial1_writer(ser):
         ser.write(cmd)
         time.sleep(1) # sleep for 1 second
 
-def read_adc_packet(ser):
+def read_adc_packet_old(ser):
     # Sync on header 0xAA 0x55
     while True:
         b = ser.read(1)
@@ -222,12 +222,81 @@ def read_adc_packet(ser):
 
     return adc, short_matrix
 
+def read_adc_packet(ser):
+    # Sync on header 0xAA 0x55
+    while True:
+        b = ser.read(1)
+        if not b:
+            return None
+        if b == b'\xAA':
+            if ser.read(1) == b'\x55':
+                break
+    
+    length = ser.read(1)
+    if not length:
+        return None
+
+    payload_len = length[0]
+    payload = ser.read(payload_len)
+    crc_rx = ser.read(1)
+    tail = ser.read(2)
+    
+    if len(payload) != payload_len or len(crc_rx) != 1:
+        return None
+    if tail != b'\r\n':
+        print("Invalid packet tail")
+        return None
+    
+    crc_calc = crc8(length + payload)
+    if crc_calc != crc_rx[0]:
+        print("CRC error")
+        return None
+    
+    idx = 0
+    
+    # Decode ADCs
+    adc = []
+    for _ in range(ADC_NUM_CHANNELS):
+        val = payload[idx] | (payload[idx + 1] << 8)
+        adc.append(val)
+        idx += 2
+    
+    # Decode short matrix (bitmasks)
+    short_matrix = payload[idx:idx + ADC_WIRE_COUNT]
+    idx += ADC_WIRE_COUNT
+    
+    # Decode relay measurements (6 channels)
+    relay_measurements = []
+    for _ in range(6):
+        # WATCH OUT: Ensure there's enough data left
+        if idx + 1 < len(payload):
+            val = payload[idx] | (payload[idx + 1] << 8)
+            relay_measurements.append(val)
+            idx += 2
+        else:
+            print("Warning: Incomplete relay data")
+            break
+    
+    return adc, short_matrix, relay_measurements
+
+
+
+
 def format_packet_oneline(adc, short_matrix):
     # ADC values: decimal
     adc_part = "A" + ",".join(str(v) for v in adc)
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
     short_part = "S" + ",".join(f"{b:02x}" for b in short_matrix)
     return adc_part + " " + short_part
+
+def format_packet_oneline2(adc, short_matrix, relay_currents):
+    # ADC values: decimal
+    adc_part = "A" + ",".join(str(v) for v in adc)
+    # Short matrix: 6 bytes as lowercase hex, 2 chars each
+    short_part = "S" + ",".join(f"{b:02x}" for b in short_matrix)
+
+    currents = "C" + ",".join(str(c) for c in relay_currents)
+    return adc_part + " " + short_part + " " + currents
 
 def serial1_reader(ser):
     global serial1_data
@@ -236,9 +305,9 @@ def serial1_reader(ser):
         if not pkt:
             continue
 
-        adc, shorts = pkt
+        adc, shorts, relay_currents = pkt # adc, shorts = pkt
         #print_packet(adc, shorts)
-        processed = format_packet_oneline(adc, shorts)
+        processed = format_packet_oneline2(adc, shorts, relay_currents)
         #print(processed)
 
         with serial1_lock:

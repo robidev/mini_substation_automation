@@ -95,7 +95,7 @@ void detectShorts(uint8_t packed[ADC_WIRE_COUNT]) {
 }
 
 
-void sendADCPacket() {
+void sendADCPacket_old() {
   const uint8_t payloadLen = (ADC_NUM_CHANNELS * 2) + ADC_WIRE_COUNT;
   uint8_t packet[1 + payloadLen]; // LEN + payload
 
@@ -120,6 +120,55 @@ void sendADCPacket() {
     Serial.write(0x0A);
   }
 }
+
+
+void sendADCPacket() {
+
+  const uint8_t payloadLen = (ADC_NUM_CHANNELS * 2) + ADC_WIRE_COUNT + (IN_RELAY_CHANNELS * 2);
+  uint8_t packet[1 + payloadLen]; // LEN + payload
+  packet[0] = payloadLen;
+  
+  uint8_t idx = 1;
+  
+  // Pack existing ADC values
+  for (uint8_t i = 0; i < ADC_NUM_CHANNELS; i++) {
+    packet[idx++] = adcValues[i] & 0xFF;        // LSB
+    packet[idx++] = adcValues[i] >> 8;          // MSB
+  }
+  
+  // Pack short matrix
+  for (uint8_t j = 0; j < ADC_WIRE_COUNT; j++) {
+    packet[idx++] = shortMatrix[j];
+  }
+  
+  // Pack relay measurements
+  relay_state* relay1 = getRelayData(0, TYPE_RELAY_INCOMING_INDEX);
+  relay_state* relay2 = getRelayData(1, TYPE_RELAY_INCOMING_INDEX);
+  
+  for (uint8_t i = 0; i < 3; i++) {
+    uint16_t val1 = (uint16_t)relay1->Measurement[i];
+    packet[idx++] = val1 & 0xFF;        // LSB
+    packet[idx++] = val1 >> 8;          // MSB
+  }
+  for (uint8_t i = 0; i < 3; i++) {
+    uint16_t val2 = (uint16_t)relay2->Measurement[i];
+    packet[idx++] = val2 & 0xFF;        // LSB
+    packet[idx++] = val2 >> 8;          // MSB
+  }
+  
+  uint8_t crc = crc8(packet, sizeof(packet));
+  
+  // Ensure buffer space before sending (important!)
+  if (Serial.availableForWrite() >= (2 + sizeof(packet) + 1 + 2)) {
+    Serial.write(0xAA);
+    Serial.write(0x55);
+    Serial.write(packet, sizeof(packet));
+    Serial.write(crc);
+    Serial.write(0x0D);
+    Serial.write(0x0A);
+  }
+}
+
 
 void handleSerialCommand(StreamControl& sc) {
   static char buf[32];

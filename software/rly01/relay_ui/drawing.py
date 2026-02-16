@@ -106,7 +106,9 @@ def draw_single_line(surface, object_list, highlighted_object):
                 if index != -1 and index == highlighted_object and cursor_on():
                     swap_fg_bg(surface, pygame.Rect(obj["position"][0]-15, obj["position"][1]-15, 30, 30), FG, (185, 200, 215))
         elif obj["type"] == "text":
-            text(surface, obj["formatted_text"], obj["position"][0],obj["position"][1])
+            text_list = obj["formatted_text"].split('\n')
+            for idx, line in enumerate(text_list):
+                text(surface, line, obj["position"][0],obj["position"][1] + (idx * FONT_H))
         elif obj["type"] == "primitive":
             draw_primitive(surface, obj["primitive"])
 
