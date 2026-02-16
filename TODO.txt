@@ -1,16 +1,14 @@
 [substation software]
 gui+ui_config:
 	implement measurements for all other IED's
+        remote printf's
 
 Client:
-	implement IEC61850 single line diagram for IEC61850 client
 	modbus for IEC61850 client
 	add modbus addressing to single-line diagram
 
 [substation config]
-	add Local/remote mapping to all 5 other IED's
 	Write software to hw01 and rly01
-	write service-handling(cron/restart)
 	write client to EEE laptop
 
 [substation hardware]

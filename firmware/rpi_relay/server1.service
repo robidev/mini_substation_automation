@@ -1,0 +1,30 @@
+# /etc/systemd/system/server1.service
+[Unit]
+Description=C++ server 1
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+WorkingDirectory=/opt/iec61850_open_server
+
+ExecStart=/opt/iec61850_open_server/open_server \
+		-e eth0 \
+		-i 172.16.1.20 \
+		-p 102 \
+		-c cfg/FEED1.cfg \
+		-x cfg/FEED1.ext \
+		-t L
+
+Restart=on-failure
+RestartSec=5
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

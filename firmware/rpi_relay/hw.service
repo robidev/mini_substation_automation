@@ -1,0 +1,26 @@
+# /etc/systemd/system/hw.service
+[Unit]
+Description=Python hw socket service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+
+WorkingDirectory=/opt/hw_service
+
+Environment=PYTHONUNBUFFERED=1
+
+ExecStart=/usr/bin/python3 /opt/hw_service/service.py
+
+Restart=on-failure
+RestartSec=15
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
