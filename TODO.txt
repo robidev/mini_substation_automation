@@ -1,7 +1,9 @@
 [substation software]
 gui+ui_config:
-	implement measurements for all other IED's
-        remote printf's
+	implement measurements for all other IED's in ui
+        remove printf's
+	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated
+	ensure GOOSE is working for pdif/cilo/ptrc
 
 Client:
 	modbus for IEC61850 client
