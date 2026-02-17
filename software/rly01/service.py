@@ -49,6 +49,9 @@ def analog_data_simulator(data_string):
     Returns:
         dict: Contains 'analog' list of CT and VT values, first 6x input CT, then 6x outgoing CT, then 6x busbar VT
     """
+    gnd_threshold = 150
+    transformer_factor = 5
+
     # Split the string into analog and digital parts
     parts = data_string.strip().split(' ')
     
@@ -59,10 +62,6 @@ def analog_data_simulator(data_string):
     # Parse digital hex values (after 'S')
     digital_part = parts[1][1:]  # Remove 'S' prefix
     hex_values = digital_part.split(',')
-    
-    ms_current_part = parts[2][1:]  # Remove 'C' prefix, should contain 6 values, 3 from each MS phase as reported via HS from the arduino(MS simulator, calculated load currents)
-    # TODO: process these load currents as input for the transformer currents and such...
-
     # Convert hex values to 6x6 boolean matrix
     digital_matrix = []
     for hex_val in hex_values:
@@ -74,11 +73,57 @@ def analog_data_simulator(data_string):
             row.append(bool(value & (1 << bit_pos)))
         digital_matrix.append(row)
     
+    ms_current_part = parts[2][1:]  # Remove 'C' prefix, should contain 6 values, 3 from each MS phase as reported via HS from the arduino(MS simulator, calculated load currents)
+    ms_current_values = [int(x) for x in ms_current_part.split(',')]
 
-    incoming_ct = analog_values[0:6]
-    outgoing_ct = analog_values[6:12]
-
+    incoming_vt = analog_values[0:6] # measured from arduino
     busbar_vt = [0] * 6 # first 3 are busbar1, second 3 are busbar2
+    outgoing_vt = analog_values[6:12] # measured from arduino
+
+    incoming_ct = [int(0)] * 6 # first 3 are feed1, second 3 are feed2
+    busbar_ct =   [int(0)] * 6 # first 3 are busbar1, second 3 are busbar2
+    outgoing_ct = [int(0)] * 6 # first 3 are tr1, second 3 are tr2
+    # calculate current on outgoing CT, based on the MS current, converted by the transformer, as reported by the arduino via the HS pi over serial
+    for i in range(6): 
+        outgoing_ct[i] = int(ms_current_values[i] / transformer_factor)
+
+    # calculate incoming CT, based on outgoing_ct current, and the way the busbar is connected
+    if event[12] == "10" and event[6] == "10": # Tr1 to bus1
+        busbar_ct[0] +=  outgoing_ct[0]
+        busbar_ct[1] +=  outgoing_ct[1]
+        busbar_ct[2] +=  outgoing_ct[2]
+    if event[12] == "10" and event[7] == "10": # Tr1 to bus2
+        busbar_ct[3] +=  outgoing_ct[0]
+        busbar_ct[4] +=  outgoing_ct[1]
+        busbar_ct[5] +=  outgoing_ct[2]
+    if event[13] == "10" and event[8] == "10": # Tr2 to bus1
+        busbar_ct[0] +=  outgoing_ct[3]
+        busbar_ct[1] +=  outgoing_ct[4]
+        busbar_ct[2] +=  outgoing_ct[5]
+    if event[13] == "10" and event[9] == "10": # Tr2 to bus2
+        busbar_ct[3] +=  outgoing_ct[3]
+        busbar_ct[4] +=  outgoing_ct[4]
+        busbar_ct[5] +=  outgoing_ct[5]
+
+    if event[0] == "10" and event[10] == "10" and event[2] == "10": # bus1 to feed1
+        incoming_ct[0] += busbar_ct[0]
+        incoming_ct[1] += busbar_ct[1]
+        incoming_ct[2] += busbar_ct[2]
+    if event[0] == "10" and event[10] == "10" and event[3] == "10": # bus2 to feed1
+        incoming_ct[3] += busbar_ct[0]
+        incoming_ct[4] += busbar_ct[1]
+        incoming_ct[5] += busbar_ct[2]
+    if event[1] == "10" and event[11] == "10" and event[4] == "10": # bus1 to feed2
+        incoming_ct[0] += busbar_ct[3]
+        incoming_ct[1] += busbar_ct[4]
+        incoming_ct[2] += busbar_ct[5]
+    if event[1] == "10" and event[11] == "10" and event[5] == "10": # bus2 to feed2
+        incoming_ct[3] += busbar_ct[3]
+        incoming_ct[4] += busbar_ct[4]
+        incoming_ct[5] += busbar_ct[5]
+
+
+
 
     ctmap1 = 10
     dismap1 = [2,2,2,3,3,3]
@@ -88,9 +133,9 @@ def analog_data_simulator(data_string):
     for i in range(6): # calculate VT values
         busbar_vt[i] = 0
         if event[ctmap1] == '10' and event[dismap1[i]] == '10':
-            busbar_vt[i] = int(incoming_ct[i % 3])
+            busbar_vt[i] = int(incoming_vt[i % 3])
         if event[ctmap2] == '10' and event[dismap2[i]] == '10':
-            busbar_vt[i] = int(incoming_ct[(i % 3) + 3 ])
+            busbar_vt[i] = int(incoming_vt[(i % 3) + 3 ])
     
     # check if busbar is feeding back 
     dismap3 = [6,6,6,7,7,7]
@@ -113,11 +158,11 @@ def analog_data_simulator(data_string):
     # check for short to ground
     # ADC_GND_THRESHOLD = 600;  // ~2.9V (tweak for noise)
     # ADC_SHORT_THRESHOLD = 750; // ~3.6V (tweak for noise)
-    gnd_threshold = 150
+
     short_to_gnd_threshold = 750
     short_to_gnd_current = 50
     gnd_short_active = [False] * 6
-    for i, analog_val in enumerate(incoming_ct):
+    for i, analog_val in enumerate(incoming_vt):
         if analog_val < short_to_gnd_threshold and analog_val > gnd_threshold:
             incoming_ct[i] = int(incoming_ct[i] * short_to_gnd_current)
             outgoing_ct[i] = int(outgoing_ct[i] / short_to_gnd_current)
@@ -129,7 +174,7 @@ def analog_data_simulator(data_string):
     threshold = 100
     short_phase_current = 100
     phs_short_active = [False] * 6
-    for i, analog_val in enumerate(incoming_ct):
+    for i, analog_val in enumerate(incoming_vt):
         if analog_val > threshold and gnd_short_active[i] == False:
             # Placeholder for further processing
             if any(digital_matrix[i]): # if any phases are shorted..
