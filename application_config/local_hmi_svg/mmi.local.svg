@@ -457,8 +457,8 @@
         <line x1="-160" y1="140" x2="218" y2="140" class="busbar"/>
         <text x="290" y="145" class="voltage-label" style="text-anchor:start;">BUS_PT2_MV</text>
         
-        <circle cx="230" cy="140" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
-        <circle cx="242" cy="140" r="10" style="fill: none; stroke: black; stroke-width: 2;"/>
+        <circle cx="230" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
+        <circle cx="242" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
         <text x="236" y="165" class="equipment-label" style="text-anchor:middle;">VTR_4</text>
       </g>
       
