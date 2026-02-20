@@ -32,17 +32,19 @@ mbpoll -m tcp -a 1 -t 3 -0 -r 0 -c 50 172.16.1.12
 
 | Address | Name            | Type | Description           | Values                                  |
 | ------- | --------------- | ---- | --------------------- | --------------------------------------- |
-| 40001   | Breaker Control | RW   | Command to breaker    | 0 = No action, , 1 = Open, 2 = Close      |
+| 40001   | Breaker Control | RW   | Command to breaker    | 0 = No action, , 1 = Open, 2 = Close    |
 | 40002   | Trip Reset      | RW   | Clears a trip         | 0 = No action, 1 = Reset trip           |
 | 40004   | Local/Remote    | RW   | set to local/remote   | 0 = Local, 1 = Remote(cannot be written)|
 
 
-| Address | Name          | Type | Description           | Values                            |
-| ------- | ------------- | ---- | --------------------- | --------------------------------- |
-| 30001   | Breaker State | RO   | Current breaker state | 0 = OPEN, 1 = CLOSED, 2 = TRIPPED |
-| 30002   | Trip Status   | RO   | Trip flag             | 0 = OK, 1 = TRIPPED               |
-| 30003   | Fault Status  | RO   | Fault detected        | 0 = None, 1 = FAULT               |
-| 30004   | Local/Remote  | RO   | local/remote status   | 0 = Local, 1 = Remote             |
+| Address | Name          | Type | Description           | Values                               |
+| ------- | ------------- | ---- | --------------------- | -------------------------------------|
+| 30001   | Breaker State | RO   | Current breaker state | 0 = OPEN, 1 = CLOSED, 2 = TRIPPED    |
+| 30002   | Trip Status   | RO   | Trip flag             | 0 = OK, 1 = TRIPPED                  |
+| 30003   | Fault Status  | RO   | Fault detected        | 0 = None, 1 = FAULT                  |
+| 30004   | Local/Remote  | RO   | local/remote status   | 0 = Local, 1 = Remote                |
+| 30005   | DeviceType    | RO   | The device type       | 0 = infeed, 1 = measure, 2 = outfeed |
+| 30006   | Device index  | RO   | unique device index   | 0-9 for all devices                  |
 
 
 | Address | Name | Type | Description                         | Notes                 |
