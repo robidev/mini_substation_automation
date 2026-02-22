@@ -5,10 +5,6 @@ gui+ui_config:
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated
 	ensure GOOSE is working for pdif/cilo/ptrc
 
-Client:
-	modbus for IEC61850 gateway
-        modbus to 104 mapping
-	add 104 addressing to single-line diagram
 
 [substation config]
 	Write software to hw01 and rly01
