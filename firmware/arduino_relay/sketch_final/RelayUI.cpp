@@ -453,7 +453,7 @@ void actionShowAbout() {
   len += lcd.print(currentRTU+1, DEC);
   lcd_print(" ",16-len);
   lcd.setCursor(0, 1);
-  lcd_print("(c) 2025");
+  lcd_print("(c) 2026");
 }
 
 /* ------------------------------------------------------
