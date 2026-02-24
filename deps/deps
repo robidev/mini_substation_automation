@@ -1,0 +1,45 @@
+packages:
+socat
+arduino-cli
+
+Python:
+ serial
+ queue
+ threading
+ socket
+ math
+ dataclasses
+ typing
+ pygame
+ adafruit_servokit
+ RPi.GPIO 
+
+iec61850_open_server
+  - libiec61850
+iec61850_open_gateway
+  - pymodbus
+  - lib60870
+  - libiec61850
+iec61850_open_client
+  - lib60870
+  - libiec61850
+  - flask
+  - flask-socketio
+  - gevent
+
+hardware:
+arduino-mega
+ethernet shield
+3 raspberry-pies
+16x servo hat
+custom wires and boards:
+ - connectors
+ - relay drivers
+ - relays
+ - pin headers (male/female)
+ - cpacitors
+ - ressistors
+ - buttons
+ - leds
+20W 5v PSU
+servos

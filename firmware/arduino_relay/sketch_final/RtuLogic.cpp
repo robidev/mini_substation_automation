@@ -278,11 +278,11 @@ void updateBreakerOutput(relay_state *relay, uint8_t state)
     relay->breakerState = state;
     if(relay->breakerState == true) {
       digitalWrite(ms_output_array[(relay->index % MS_OUT_NUM_CHANNELS)], HIGH);       // sets the digital pin on
-      Serial.println("BRRR");
+      //Serial.println("BRRR");
     }
     else {
       digitalWrite(ms_output_array[(relay->index % MS_OUT_NUM_CHANNELS)], LOW);        // sets the digital pin off
-      Serial.println("BANG");
+      //Serial.println("BANG");
     }
   }
 }

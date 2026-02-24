@@ -38,53 +38,55 @@ void updateModbusRegisters(uint8_t index)
   //inputs
   if(relay->deviceType == TYPE_MEASURE) {
     //clear all registers
-    //TODO values should be 32 bit instead of 16
-    modbusTCP.inputRegisterWrite(20,(uint16_t)relay->Measurement[0]);
-    modbusTCP.inputRegisterWrite(21,(uint16_t)relay->Measurement[1]);
-    modbusTCP.inputRegisterWrite(22,(uint16_t)relay->Measurement[2]);
-    modbusTCP.inputRegisterWrite(23,(uint16_t)relay->Measurement[3]);
+    //TODO values should be 32 bit instead of 16                        Human / wire
+    modbusTCP.inputRegisterWrite(20,(uint16_t)relay->Measurement[0]); //30021 / 20
+    modbusTCP.inputRegisterWrite(21,(uint16_t)relay->Measurement[1]); //30022 / 21
+    modbusTCP.inputRegisterWrite(22,(uint16_t)relay->Measurement[2]); //30023 / 22
+    modbusTCP.inputRegisterWrite(23,(uint16_t)relay->Measurement[3]); //30024 / 23
   }
   else { // TYPE BREAKER
     //reset measurement regs
     //holding regs
-    uint8_t breaker = modbusTCP.holdingRegisterRead(1); // | 40001 / 00  | Breaker Control | RW   | Command to breaker    | 0 = No action, 1 = Open, 2 = Close      |
+    uint8_t breaker = modbusTCP.holdingRegisterRead(00); // | 40001 / 00  | Breaker Control | RW   | Command to breaker    | 0 = No action, 1 = Open, 2 = Close      |
     if(breaker) {
       process_breaker(relay, breaker, REMOTE);
-      modbusTCP.holdingRegisterWrite(4,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
+      modbusTCP.holdingRegisterWrite(00,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
     }
 
-    uint8_t trip = modbusTCP.holdingRegisterRead(2);    // | 40002 / 01  | Trip Reset      | RW   | Clears a trip         | 0 = No action, 1 = Reset trip     
+    uint8_t trip = modbusTCP.holdingRegisterRead(01);    // | 40002 / 01  | Trip Reset      | RW   | Clears a trip         | 0 = No action, 1 = Reset trip     
     if(trip) {
       process_trip(relay, trip, REMOTE);
-      modbusTCP.holdingRegisterWrite(4,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
+      modbusTCP.holdingRegisterWrite(01,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
     }   
 
     // no holding register for fault value (40003)
-    uint8_t control = modbusTCP.holdingRegisterRead(4); // | 40004 / 03  | Local/Remote    | RW   | set to local/remote   | 0 = No action, 1= Local, 2 = Remote(cannot be written)|
+    // ...
+
+    uint8_t control = modbusTCP.holdingRegisterRead(03); // | 40004 / 03  | Local/Remote    | RW   | set to local/remote   | 0 = No action, 1= Local, 2 = Remote(cannot be written)|
     if(control) {
       relay->remote = control -1; // 0=local 1=remote, but 'control' is 1 or 2 
-      modbusTCP.holdingRegisterWrite(4,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
+      modbusTCP.holdingRegisterWrite(03,0); // TODO return error if failed, with additional status(idle/success/fail/)/failure-code registers
     }
+    //                                                                Human / wire
+    modbusTCP.inputRegisterWrite(0,(uint16_t)relay->breakerState + 1); // 30001 / 00, breaker return 1 for false(OPEN), and 2 for true(CLOSED)
+    modbusTCP.inputRegisterWrite(1,(uint16_t)relay->tripState);    // 30002 / 01
+    modbusTCP.inputRegisterWrite(2,(uint16_t)relay->faultState);   // 30003 / 02
+    modbusTCP.inputRegisterWrite(3,(uint16_t)relay->remote + 1);   // 30004 / 03
+    modbusTCP.inputRegisterWrite(4,(uint16_t)relay->deviceType);   // 30005 / 04
+    modbusTCP.inputRegisterWrite(5,(uint16_t)relay->index);        // 30006 / 05
 
-    modbusTCP.inputRegisterWrite(1,(uint16_t)relay->breakerState); // 30001 / 00
-    modbusTCP.inputRegisterWrite(2,(uint16_t)relay->tripState);    // 30002 / 01
-    modbusTCP.inputRegisterWrite(3,(uint16_t)relay->faultState);   // 30003 / 02
-    modbusTCP.inputRegisterWrite(4,(uint16_t)relay->remote + 1);   // 30004 / 03
-    modbusTCP.inputRegisterWrite(5,(uint16_t)relay->deviceType);   // 30005 / 04
-    modbusTCP.inputRegisterWrite(6,(uint16_t)relay->index);   // 30006 / 05
-
-    //TODO some values should be 32 bit instead of 16
-    modbusTCP.inputRegisterWrite(10,(uint16_t)relay->Measurement[0]);
-    modbusTCP.inputRegisterWrite(11,(uint16_t)relay->Measurement[1]);
-    modbusTCP.inputRegisterWrite(12,(uint16_t)relay->Measurement[2]);
-    modbusTCP.inputRegisterWrite(13,(uint16_t)relay->Measurement[3]);
-
-    modbusTCP.inputRegisterWrite(30,(uint16_t)relay->faultEvent);
-    modbusTCP.inputRegisterWrite(31,(uint16_t)relay->faultTime);
-
-    modbusTCP.inputRegisterWrite(40,(uint16_t)relay->PIOC_setting_pickup_current);
-    modbusTCP.inputRegisterWrite(41,(uint16_t)relay->PTOC_setting_pickup_current);
-    modbusTCP.inputRegisterWrite(42,(uint16_t)relay->PTOC_setting_time_multiplier);
+    //TODO some values should be 32 bit instead of 16                   Human / wire
+    modbusTCP.inputRegisterWrite(10,(uint16_t)relay->Measurement[0]); //30011 / 10
+    modbusTCP.inputRegisterWrite(11,(uint16_t)relay->Measurement[1]); //30012 / 11
+    modbusTCP.inputRegisterWrite(12,(uint16_t)relay->Measurement[2]); //30013 / 12
+    modbusTCP.inputRegisterWrite(13,(uint16_t)relay->Measurement[3]); //30014 / 13
+    //                                                              Human / wire
+    modbusTCP.inputRegisterWrite(30,(uint16_t)relay->faultEvent); //30031 / 30
+    modbusTCP.inputRegisterWrite(31,(uint16_t)relay->faultTime);  //30032 / 31
+    //                                                                                Human / wire
+    modbusTCP.inputRegisterWrite(40,(uint16_t)relay->PIOC_setting_pickup_current);  //30041 / 40
+    modbusTCP.inputRegisterWrite(41,(uint16_t)relay->PTOC_setting_pickup_current);  //30042 / 41
+    modbusTCP.inputRegisterWrite(42,(uint16_t)relay->PTOC_setting_time_multiplier); //30043 / 42
   }
 }
 

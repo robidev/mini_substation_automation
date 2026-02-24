@@ -383,66 +383,102 @@
         <circle cx="-182" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
         <circle cx="-170" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
         <text x="-176" y="165" class="equipment-label" style="text-anchor:middle;">VTR_3</text>
+        <text x="-196" y="125" id="iec60870://127.0.0.1:2404/11/101" class="MEAS" data-text="VTR: {value} V" fill="#ffffff" stroke="#ffffff" font-size="12">VTR: {value} V</text>
       </g>
 
       <g id="PT1_MV_Incomer">
         <circle cx="0" cy="18" r="10" class="conductor"/>
         <text x="25" y="23" class="equipment-label">CTR_PT1_IN</text>
+        <text x="-70" y="23" id="iec60870://127.0.0.1:2404/11/100" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
 
         <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
         <circle cx="0" cy="50" r="10" class="disconnector"/>
         <line x1="0" y1="60" x2="0" y2="80" class="conductor"/>
         <text x="25" y="55" class="equipment-label">DIS_PT1_IN</text>
         
-        <rect x="-12" y="80" width="24" height="24" class="cbr"/>
+        <!--<rect x="-12" y="80" width="24" height="24" class="cbr"/>-->
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6000" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://127.0.0.1:2404/3/300" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+          <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+          <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+          <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+          <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+        </rect>
         <line x1="0" y1="104" x2="0" y2="140" class="conductor"/>
         <text x="25" y="92" class="equipment-label">CBR_PT1_IN</text>
         <circle cx="0" cy="140" r="8" class="disconnector"/>
       </g>
 
       <g id="PT1_Feeders" transform="translate(-140, 140)">
-        <g id="PT2_Fdr1" transform="translate(-120, 0)">
+        <g id="PT1_Fdr1" transform="translate(-120, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6002" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/302" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+        </g>
+        <g id="PT1_Fdr1_txt" transform="translate(-120, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/102" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F1</text>
           <text x="20" y="52" class="equipment-label">CBR_F1</text>
           <text x="20" y="92" class="equipment-label">DIS_F1</text>
           <text x="0" y="220" class="equipment-label" style="text-anchor:middle; font-weight:bold;">FEEDER 1</text>
         </g>
         
-        <g id="PT2_Fdr2" transform="translate(-30, 0)">
+        <g id="PT1_Fdr2" transform="translate(-30, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6003" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/303" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+        </g>
+        <g id="PT1_Fdr2_txt"  transform="translate(-30, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/103" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F2</text>
           <text x="20" y="52" class="equipment-label">CBR_F2</text>
           <text x="20" y="92" class="equipment-label">DIS_F2</text>
           <text x="0" y="220" class="equipment-label" style="text-anchor:middle; font-weight:bold;">FEEDER 2</text>
         </g>
         
-        <g id="PT2_Fdr3" transform="translate(60, 0)">
+        <g id="PT1_Fdr3" transform="translate(60, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6004" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/304" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+        </g>
+        <g id="PT1_Fdr3_txt"  transform="translate(60, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/104" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F3</text>
           <text x="20" y="52" class="equipment-label">CBR_F3</text>
           <text x="20" y="92" class="equipment-label">DIS_F3</text>
@@ -460,67 +496,103 @@
         <circle cx="230" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
         <circle cx="242" cy="140" r="10" style="fill: none; stroke: white; stroke-width: 2;"/>
         <text x="236" y="165" class="equipment-label" style="text-anchor:middle;">VTR_4</text>
+        <text x="216" y="125" id="iec60870://127.0.0.1:2404/11/106" class="MEAS" data-text="VTR: {value} V" fill="#ffffff" stroke="#ffffff" font-size="12">VTR: {value} V</text>
       </g>
       
       <g id="PT2_MV_Incomer">
         <circle cx="0" cy="18" r="10" class="conductor"/>
         <text x="25" y="23" class="equipment-label">CTR_PT2_IN</text>
+        <text x="-70" y="23" id="iec60870://127.0.0.1:2404/11/105" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
 
         <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
         <circle cx="0" cy="50" r="10" class="disconnector"/>
         <line x1="0" y1="60" x2="0" y2="80" class="conductor"/>
         <text x="25" y="55" class="equipment-label">DIS_PT2_IN</text>
         
-        <rect x="-12" y="80" width="24" height="24" class="cbr"/>
+        <!--<rect x="-12" y="80" width="24" height="24" class="cbr"/>-->
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6005" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://127.0.0.1:2404/3/305" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+          <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+          <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+          <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+          <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+        </rect>
+
         <line x1="0" y1="104" x2="0" y2="140" class="conductor"/>
         <text x="25" y="92" class="equipment-label">CBR_PT2_IN</text>
         <circle cx="0" cy="140" r="8" class="disconnector"/>
       </g>
 
-
       <g id="PT2_Feeders" transform="translate(210, 140)">
-        <g id="PT2_Fdr1" transform="translate(-120, 0)">
+        <g id="PT2_Fdr4" transform="translate(-120, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6007" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/307" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+      </g>
+      <g id="PT2_Fdr4_txt" transform="translate(-120, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/107" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F4</text>
           <text x="20" y="52" class="equipment-label">CBR_F4</text>
           <text x="20" y="92" class="equipment-label">DIS_F4</text>
           <text x="0" y="220" class="equipment-label" style="text-anchor:middle; font-weight:bold;">FEEDER 4</text>
         </g>
         
-        <g id="PT2_Fdr2" transform="translate(-30, 0)">
+        <g id="PT2_Fdr5" transform="translate(-30, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6008" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/308" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+        </g>
+        <g id="PT2_Fdr5_txt"  transform="translate(-30, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/108" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F5</text>
           <text x="20" y="52" class="equipment-label">CBR_F5</text>
           <text x="20" y="92" class="equipment-label">DIS_F5</text>
           <text x="0" y="220" class="equipment-label" style="text-anchor:middle; font-weight:bold;">FEEDER 5</text>
         </g>
         
-        <g id="PT2_Fdr3" transform="translate(60, 0)">
+        <g id="PT2_Fdr6" transform="translate(60, 0)">
           <line x1="0" y1="0" x2="0" y2="40" class="conductor"/>
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
-          <rect x="-12" y="40" width="24" height="24" class="cbr"/>
-
+          <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/46/6009" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://127.0.0.1:2404/3/309" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
+            <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
+            <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
+            <animate id="close" attributeName="fill" attributeType="XML"  to="white" dur="100ms" fill="freeze" /> 
+            <animate id="error" attributeName="fill" attributeType="XML"  to="red" dur="10ms" fill="freeze" />           
+          </rect>
           <line x1="0" y1="96" x2="0" y2="180" class="conductor"/>
           <circle cx="0" cy="88" r="8" class="disconnector"/>
           <circle cx="0" cy="124" r="8" class="conductor"/>
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
+        </g>
+        <g id="PT2_Fdr6_txt"  transform="translate(60, 0)">
+          <text x="0" y="148" id="iec60870://127.0.0.1:2404/11/109" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F6</text>
           <text x="20" y="52" class="equipment-label">CBR_F6</text>
           <text x="20" y="92" class="equipment-label">DIS_F6</text>
