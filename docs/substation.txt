@@ -22,6 +22,19 @@ HS hardware: rp3 - 8gb sd - hs01 - raspberry pi os - user,Rs.......
 192.168.101.26/ 192.168.178.85
 6 stuck
 
+MS hardware: Arduino mega 2560 - ms01
+172.16.1.12
+
+HMI asus EEEpc, 12gb - hmi01
+172.16.1.20
+
+gateway: 172.16.1.254
+
+
+
+
+SERVOS:
+
 
   "8": {    "lower": 70,    "upper": 135  },
   "9": {    "lower": 45,    "upper": 120  }
@@ -124,16 +137,14 @@ gpio_pins = [27, 18, 5, 6, 12, 13, 16, 19, 20, 21, 24, 22, 23, 25]
 13 - cb1    zwart
 
 
+IEC61850 I/O mapping!!!
+DbPos: ON, int=1, (dbpos=2)
+DbPos: INTERMEDIATE, int=0, (dbpos=0)
+DbPos: OFF, int=2, (dbpos=1)
 
 
 
 
 
 
-MS hardware: Arduino mega 2560 - ms01
-172.16.1.12
 
-HMI asus EEEpc, 12gb - hmi01
-172.16.1.20
-
-gateway: 172.16.1.254

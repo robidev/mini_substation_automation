@@ -5,41 +5,47 @@ gui+ui_config:
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated
 	ensure GOOSE is working for pdif/cilo/ptrc
 
-arduino modus address 01 corresponds with 02 on gateway (off by 1)
-arduino on/off switch needs to be 1/2, not 0/1
+[arduino]
+	micom leds do not do anything atm
 
-crash in gateway when disconnected with modbus?
-
-ensure all mappings are similar between tests and real sw
-improve operate command for 104 in client
+[client]
+	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
 
 [substation config]
 	Write software to hw01 and rly01
 	write client to EEE laptop
+
+[RTU]
+	make SD-card, configure ip's and access
+	configure iec61850_open_gateway (RTU) on it
+	create startup service
+
 
 [substation hardware]
 make telco-cabinet
  -dustplate, 
  -RTU encasing
 frontplate 
- - update design for micom LED/button placement (cancel should be bottom right, leds 2.6 mm down, on-led of outputs is 5.8mm up, and 1-2mm right, left side 2mm wider)
-buttons: top = 17(hart) from lcd bottom(yellow) (leds left, are aligned with lcd-left) from leds-left, top = 42mm(hart), top-to-btm = 20mm(hart), left-to-right = 20mm
- - bottom aligned
-left to right: 6,5mm,[micom] 28-28.5mm, [ied] 20-21mm, [out] 25-26mm [switch] 24-25mm 
- - add versioning
  - print
 
 TESTING!!!!
 
-[RTU]
-make SD-card, configure ip's and access
-configure iec61850_open_gateway (RTU) on it
-write all 104/61850 mappings
-add modbus support
-add modbus mappings
-create startup service
+
 
 [SCADA]
 make central SCADA display
 update eventlet(and maybe more)
 
+
+
+
+
+
+
+
+NOTES:
+ - update design for micom LED/button placement (cancel should be bottom right, leds 2.6 mm down, on-led of outputs is 5.8mm up, and 1-2mm right, left side 2mm wider)
+buttons: top = 17(hart) from lcd bottom(yellow) (leds left, are aligned with lcd-left) from leds-left, top = 42mm(hart), top-to-btm = 20mm(hart), left-to-right = 20mm
+ - bottom aligned
+left to right: 6,5mm,[micom] 28-28.5mm, [ied] 20-21mm, [out] 25-26mm [switch] 24-25mm 
+ - add versioning
