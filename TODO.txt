@@ -1,12 +1,13 @@
 [substation software]
 gui+ui_config:
 	implement measurements for all other IED's in ui
-        remove printf's
-	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated
+	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
+	display cilo status in PDIF diagram in ui as switch for ctr's
 	ensure GOOSE is working for pdif/cilo/ptrc
+        remove printf's
 
 [arduino]
-	micom leds do not do anything atm
+	micom leds do not do anything atm?
 
 [client]
 	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
@@ -19,14 +20,11 @@ gui+ui_config:
 	make SD-card, configure ip's and access
 	configure iec61850_open_gateway (RTU) on it
 	create startup service
-
+        -RTU encasing
 
 [substation hardware]
-make telco-cabinet
- -dustplate, 
- -RTU encasing
-frontplate 
- - print
+	make telco-cabinet
+	 -dustplate
 
 TESTING!!!!
 
