@@ -4,7 +4,8 @@ gui+ui_config:
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
 	display cilo status in PDIF diagram in ui as switch for ctr's
 	ensure GOOSE is working for pdif/cilo/ptrc
-        remove printf's
+        remove some printf's (analog reporting)
+        indicate succesfull socket conn to ui/hw on display
 
 [arduino]
 	micom leds do not do anything atm?
@@ -13,7 +14,6 @@ gui+ui_config:
 	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
 
 [substation config]
-	Write software to hw01 and rly01
 	write client to EEE laptop
 
 [RTU]
@@ -27,7 +27,12 @@ gui+ui_config:
 	 -dustplate
 
 TESTING!!!!
-
+issues:
+servo-reset! bij open naar closed?
+interlock melding geven in UI
+short matrix werkt anders
+MS leds kloppen niet
+phasor werkt wat vreemd, goed doortesten 
 
 
 [SCADA]

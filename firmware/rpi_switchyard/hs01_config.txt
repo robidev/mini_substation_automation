@@ -52,3 +52,10 @@ dtoverlay=dwc2,dr_mode=host
 [all]
 dtoverlay=disable-bt
 enable_uart=1
+su
+mkdir -p /opt/hw_service
+cp service.py /opt/hw_service/
+
+cp hw.service /etc/systemd/system/
+systemctl daemon-reload
+systemctl start hw.service

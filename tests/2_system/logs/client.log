@@ -1,0 +1,139 @@
+2026-02-25 23:38:12,426 webserver    INFO     started
+2026-02-25 23:38:20,011 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET / HTTP/1.1" 200 1934 0.002194
+2026-02-25 23:38:20,035 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/css/layout.css HTTP/1.1" 304 181 0.002557
+2026-02-25 23:38:20,036 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/lib/svg-pan-zoom.min.js HTTP/1.1" 304 195 0.000441
+2026-02-25 23:38:20,036 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/lib/pop.js HTTP/1.1" 304 181 0.000293
+2026-02-25 23:38:20,037 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/lib/socket.io.js HTTP/1.1" 304 187 0.000267
+2026-02-25 23:38:20,037 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/lib/tdi.tabs.js HTTP/1.1" 304 185 0.000277
+2026-02-25 23:38:20,038 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/client.js HTTP/1.1" 200 21864 0.000325
+2026-02-25 23:38:20,054 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:20] "GET /static/mmi.local.svg HTTP/1.1" 304 189 0.000484
+2026-02-25 23:38:27,196 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET / HTTP/1.1" 200 1934 0.000302
+2026-02-25 23:38:27,203 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/css/layout.css HTTP/1.1" 304 181 0.000443
+2026-02-25 23:38:27,204 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/lib/svg-pan-zoom.min.js HTTP/1.1" 304 195 0.000336
+2026-02-25 23:38:27,204 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/lib/socket.io.js HTTP/1.1" 304 187 0.000261
+2026-02-25 23:38:27,205 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/lib/pop.js HTTP/1.1" 304 181 0.000261
+2026-02-25 23:38:27,205 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/client.js HTTP/1.1" 304 185 0.000278
+2026-02-25 23:38:27,206 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/lib/tdi.tabs.js HTTP/1.1" 304 185 0.000285
+2026-02-25 23:38:27,219 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:27] "GET /static/mmi.local.svg HTTP/1.1" 304 189 0.000433
+2026-02-25 23:38:35,193 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET / HTTP/1.1" 200 1934 0.000320
+2026-02-25 23:38:35,204 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/css/layout.css HTTP/1.1" 304 181 0.000646
+2026-02-25 23:38:35,206 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/lib/socket.io.js HTTP/1.1" 304 187 0.000457
+2026-02-25 23:38:35,206 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/client.js HTTP/1.1" 304 185 0.000315
+2026-02-25 23:38:35,207 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/lib/tdi.tabs.js HTTP/1.1" 304 185 0.000275
+2026-02-25 23:38:35,207 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/lib/pop.js HTTP/1.1" 304 181 0.000300
+2026-02-25 23:38:35,208 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/lib/svg-pan-zoom.min.js HTTP/1.1" 304 195 0.000310
+2026-02-25 23:38:35,219 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:38:35] "GET /static/mmi.local.svg HTTP/1.1" 304 189 0.000494
+2026-02-25 23:38:41,268 webserver    INFO     getIED2: 127.0.0.1:2102
+2026-02-25 23:38:44,373 webserver    INFO       DS: Feed1SwiPos, not Deletable
+2026-02-25 23:38:48,763 webserver    ERROR    RPT: could not find dataset for ref: FEED1LD1/MMXU2.AvPhVPhs.mag.f
+2026-02-25 23:38:48,764 webserver    INFO     worker treat started
+2026-02-25 23:38:48,767 webserver    ERROR    RPT: could not find dataset for ref: FEED1LD1/MMXU3.AvPhVPhs.mag.f
+2026-02-25 23:38:48,768 webserver    INFO     DATASET found! Ref:FEED1LD1/XSWI2.Pos.stVal in DSref: FEED1LD1/XSWI2.Pos.stVal
+2026-02-25 23:38:48,768 webserver    INFO       DSRef:FEED1LD1/LLN0.Feed1SwiPos
+2026-02-25 23:38:48,768 webserver    INFO     RPT found! Ref:FEED1LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:48,783 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:48,783 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:48,784 webserver    ERROR    RPT: could not find dataset for ref: FEED1LD1/MMXU1.AvAPhs.mag.f
+2026-02-25 23:38:48,784 webserver    INFO     DATASET found! Ref:FEED1LD1/XCBR1.Pos.stVal in DSref: FEED1LD1/XCBR1.Pos.stVal
+2026-02-25 23:38:48,784 webserver    INFO       DSRef:FEED1LD1/LLN0.Feed1SwiPos
+2026-02-25 23:38:48,784 webserver    INFO     RPT found! Ref:FEED1LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:48,804 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:48,804 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:48,804 webserver    INFO     DATASET found! Ref:FEED1LD1/XSWI3.Pos.stVal in DSref: FEED1LD1/XSWI3.Pos.stVal
+2026-02-25 23:38:48,804 webserver    INFO       DSRef:FEED1LD1/LLN0.Feed1SwiPos
+2026-02-25 23:38:48,805 webserver    INFO     RPT found! Ref:FEED1LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:48,806 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:48,806 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:48,806 webserver    INFO     DATASET found! Ref:FEED1LD1/XSWI4.Pos.stVal in DSref: FEED1LD1/XSWI4.Pos.stVal
+2026-02-25 23:38:48,806 webserver    INFO       DSRef:FEED1LD1/LLN0.Feed1SwiPos
+2026-02-25 23:38:48,807 webserver    INFO     RPT found! Ref:FEED1LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:48,807 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:48,807 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:48,837 webserver    INFO     getIED2: 127.0.0.1:3102
+2026-02-25 23:38:53,142 webserver    INFO       DS: Feed2SwiPos, not Deletable
+2026-02-25 23:38:59,116 webserver    INFO     DATASET found! Ref:FEED2LD1/XSWI2.Pos.stVal in DSref: FEED2LD1/XSWI2.Pos.stVal
+2026-02-25 23:38:59,116 webserver    INFO       DSRef:FEED2LD1/LLN0.Feed2SwiPos
+2026-02-25 23:38:59,116 webserver    INFO     RPT found! Ref:FEED2LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:59,136 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:59,136 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:59,137 webserver    ERROR    RPT: could not find dataset for ref: FEED2LD1/MMXU1.AvAPhs.mag.f
+2026-02-25 23:38:59,137 webserver    INFO     DATASET found! Ref:FEED2LD1/XCBR1.Pos.stVal in DSref: FEED2LD1/XCBR1.Pos.stVal
+2026-02-25 23:38:59,137 webserver    INFO       DSRef:FEED2LD1/LLN0.Feed2SwiPos
+2026-02-25 23:38:59,137 webserver    INFO     RPT found! Ref:FEED2LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:59,156 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:59,156 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:59,157 webserver    INFO     DATASET found! Ref:FEED2LD1/XSWI3.Pos.stVal in DSref: FEED2LD1/XSWI3.Pos.stVal
+2026-02-25 23:38:59,157 webserver    INFO       DSRef:FEED2LD1/LLN0.Feed2SwiPos
+2026-02-25 23:38:59,157 webserver    INFO     RPT found! Ref:FEED2LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:59,176 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:59,176 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:59,177 webserver    INFO     DATASET found! Ref:FEED2LD1/XSWI4.Pos.stVal in DSref: FEED2LD1/XSWI4.Pos.stVal
+2026-02-25 23:38:59,177 webserver    INFO       DSRef:FEED2LD1/LLN0.Feed2SwiPos
+2026-02-25 23:38:59,177 webserver    INFO     RPT found! Ref:FEED2LD1/LLN0.ReportControl_00101
+2026-02-25 23:38:59,196 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:38:59,197 webserver    ERROR    could not find report for dataset
+2026-02-25 23:38:59,219 webserver    INFO     getIED2: 127.0.0.1:6102
+2026-02-25 23:39:03,002 webserver    INFO       DS: Trafo1SwiPos, not Deletable
+2026-02-25 23:39:08,530 webserver    INFO     DATASET found! Ref:TR1LD1/XSWI2.Pos.stVal in DSref: TR1LD1/XSWI2.Pos.stVal
+2026-02-25 23:39:08,530 webserver    INFO       DSRef:TR1LD1/LLN0.Trafo1SwiPos
+2026-02-25 23:39:08,530 webserver    INFO     RPT found! Ref:TR1LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:08,550 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:08,550 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:08,550 webserver    INFO     DATASET found! Ref:TR1LD1/XSWI3.Pos.stVal in DSref: TR1LD1/XSWI3.Pos.stVal
+2026-02-25 23:39:08,550 webserver    INFO       DSRef:TR1LD1/LLN0.Trafo1SwiPos
+2026-02-25 23:39:08,551 webserver    INFO     RPT found! Ref:TR1LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:08,570 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:08,570 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:08,570 webserver    INFO     DATASET found! Ref:TR1LD1/XCBR1.Pos.stVal in DSref: TR1LD1/XCBR1.Pos.stVal
+2026-02-25 23:39:08,571 webserver    INFO       DSRef:TR1LD1/LLN0.Trafo1SwiPos
+2026-02-25 23:39:08,571 webserver    INFO     RPT found! Ref:TR1LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:08,572 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:08,572 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:08,572 webserver    ERROR    RPT: could not find dataset for ref: TR1LD1/MMXU1.AvAPhs.mag.f
+2026-02-25 23:39:08,603 webserver    INFO     getIED2: 127.0.0.1:7102
+2026-02-25 23:39:12,396 webserver    INFO       DS: Trafo2SwiPos, not Deletable
+2026-02-25 23:39:17,903 webserver    INFO     DATASET found! Ref:TR2LD1/XSWI2.Pos.stVal in DSref: TR2LD1/XSWI2.Pos.stVal
+2026-02-25 23:39:17,903 webserver    INFO       DSRef:TR2LD1/LLN0.Trafo2SwiPos
+2026-02-25 23:39:17,903 webserver    INFO     RPT found! Ref:TR2LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:17,923 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:17,923 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:17,924 webserver    INFO     DATASET found! Ref:TR2LD1/XSWI3.Pos.stVal in DSref: TR2LD1/XSWI3.Pos.stVal
+2026-02-25 23:39:17,924 webserver    INFO       DSRef:TR2LD1/LLN0.Trafo2SwiPos
+2026-02-25 23:39:17,924 webserver    INFO     RPT found! Ref:TR2LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:17,943 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:17,944 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:17,944 webserver    INFO     DATASET found! Ref:TR2LD1/XCBR1.Pos.stVal in DSref: TR2LD1/XCBR1.Pos.stVal
+2026-02-25 23:39:17,944 webserver    INFO       DSRef:TR2LD1/LLN0.Trafo2SwiPos
+2026-02-25 23:39:17,944 webserver    INFO     RPT found! Ref:TR2LD1/LLN0.ReportControl_00101
+2026-02-25 23:39:17,964 webserver    INFO     RPT allready enabled by another client
+2026-02-25 23:39:17,964 webserver    ERROR    could not find report for dataset
+2026-02-25 23:39:17,964 webserver    ERROR    RPT: could not find dataset for ref: TR2LD1/MMXU1.AvAPhs.mag.f
+2026-02-25 23:39:17,966 webserver    INFO     connecting:127.0.0.1:2404
+2026-02-25 23:39:20,077 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:39:20] "GET /static/img/close.png HTTP/1.1" 304 183 0.000456
+2026-02-25 23:39:28,797 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:39:28] "GET /static/lib/socket.io.min.js.map HTTP/1.1" 404 331 0.000422
+2026-02-25 23:40:55,788 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET / HTTP/1.1" 200 1934 0.000354
+2026-02-25 23:40:55,806 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/css/layout.css HTTP/1.1" 304 181 0.000738
+2026-02-25 23:40:55,807 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/lib/pop.js HTTP/1.1" 304 181 0.000359
+2026-02-25 23:40:55,807 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/lib/svg-pan-zoom.min.js HTTP/1.1" 304 195 0.000268
+2026-02-25 23:40:55,808 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/lib/socket.io.js HTTP/1.1" 304 187 0.000265
+2026-02-25 23:40:55,808 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/client.js HTTP/1.1" 200 21871 0.000311
+2026-02-25 23:40:55,809 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/lib/tdi.tabs.js HTTP/1.1" 304 185 0.000406
+2026-02-25 23:40:55,858 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/mmi.local.svg HTTP/1.1" 304 189 0.000442
+2026-02-25 23:40:55,931 geventwebsocket.handler INFO     127.0.0.1 - - [2026-02-25 23:40:55] "GET /static/img/close.png HTTP/1.1" 304 183 0.000403
+2026-02-25 23:41:11,270 webserver    INFO     control object: enhanced security
+2026-02-25 23:41:11,290 webserver    INFO     select: true returned succesfull
+2026-02-25 23:41:12,560 webserver    INFO     operate: true returned succesfull
+2026-02-25 23:41:16,321 webserver    INFO     object:TR1LD1/CSWI1.Pos Received CommandTermination+
+2026-02-25 23:41:24,867 webserver    INFO     Send operate command C_DC_NA_1
+2026-02-25 23:41:38,985 webserver    INFO     Send operate command C_DC_NA_1
+2026-02-25 23:41:50,203 webserver    INFO     Send operate command C_DC_NA_1
+2026-02-25 23:42:13,520 webserver    ERROR    could not read DA: FEED1LD1/XCBR1.Pos.stVal from device
+2026-02-25 23:42:13,520 webserver    ERROR    model not updated for iec61850://127.0.0.1:2102/FEED1LD1/XCBR1.Pos.stVal with error: 20
+2026-02-25 23:42:13,520 webserver    ERROR    could not read DA: FEED1LD1/XSWI3.Pos.stVal from device
+2026-02-25 23:42:13,520 webserver    ERROR    model not updated for iec61850://127.0.0.1:2102/FEED1LD1/XSWI3.Pos.stVal with error: 3
+2026-02-25 23:42:13,540 webserver    ERROR    could not read DA: FEED2LD1/XSWI2.Pos.stVal from device
+2026-02-25 23:42:13,540 webserver    ERROR    model not updated for iec61850://127.0.0.1:3102/FEED2LD1/XSWI2.Pos.stVal with error: 3
+2026-02-25 23:42:13,591 webserver    ERROR    could not read DA: TR1LD1/XSWI2.Pos.stVal from device
+2026-02-25 23:42:13,592 webserver    ERROR    model not updated for iec61850://127.0.0.1:6102/TR1LD1/XSWI2.Pos.stVal with error: 3
+2026-02-25 23:42:13,629 webserver    ERROR    could not read DA: TR2LD1/XSWI2.Pos.stVal from device
+2026-02-25 23:42:13,629 webserver    ERROR    model not updated for iec61850://127.0.0.1:7102/TR2LD1/XSWI2.Pos.stVal with error: 3

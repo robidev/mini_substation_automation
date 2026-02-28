@@ -1,26 +1,29 @@
-# /etc/systemd/system/ui.service
 [Unit]
-Description=Python ui App
-After=network.target
+Description=Python Pygame UI
+# Wait until the user’s graphical session exists
+After=graphical-session.target
+Wants=graphical-session.target
 
 [Service]
 Type=simple
-User=root
-Group=root
+
+# Optional but recommended for clean restarts
+KillMode=process
 
 WorkingDirectory=/opt/ui_service
 
-Environment=PYTHONUNBUFFERED=1
-
+# ExecStartPre=/usr/bin/pkill -f relay_320x480.py || true
+# Use venv if you have one (strongly recommended)
 ExecStart=/usr/bin/python3 /opt/ui_service/relay_320x480.py
 
+# Restart if pygame crashes
 Restart=on-failure
-RestartSec=5
-StartLimitIntervalSec=60
-StartLimitBurst=3
+RestartSec=3
 
+# Clean stdout/stderr into the user journal
 StandardOutput=journal
 StandardError=journal
 
 [Install]
-WantedBy=multi-user.target
+# Start automatically for this user
+WantedBy=default.target

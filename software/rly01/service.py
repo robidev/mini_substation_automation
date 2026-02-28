@@ -17,8 +17,8 @@ UNIX_SOCKETS = [
     "/tmp/api_sock6",
 ]
 
-#SERIAL_DEV = "/dev/ttyAMA5"
-SERIAL_DEV = "/tmp/ttyV0"
+SERIAL_DEV = "/dev/ttyAMA5"
+#SERIAL_DEV = "/tmp/ttyV0"
 BAUD = 115200
 NUM_CHANNELS = 14
 

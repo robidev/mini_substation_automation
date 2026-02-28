@@ -1,7 +1,99 @@
-# ensure only my app starts
-copy .xsession to ~/.xsession
-
 # set splashscreen to custom
 sudo cp -r myspi /usr/share/plymouth/themes/
 sudo plymouth-set-default-theme myspi
 sudo plymouth-set-default-theme myspi -R
+
+# ensure only my app starts
+copy .xsession to ~/.xsession
+
+copy the 7 *.service files to /etc/systemd/system
+copy the python files from software
+
+copy ui.service to
+.config/systemd/user/ui.service 
+
+checking:
+journalctl -u x.service -e
+systemctl list-unit-files --state=enabled
+UNIT FILE                          STATE   PRESET 
+accounts-daemon.service            enabled enabled
+apparmor.service                   enabled enabled
+console-setup.service              enabled enabled
+cron.service                       enabled enabled
+e2scrub_reap.service               enabled enabled
+getty@.service                     enabled enabled
+hw.service                         enabled enabled
+keyboard-setup.service             enabled enabled
+lightdm.service                    enabled enabled
+NetworkManager-dispatcher.service  enabled enabled
+NetworkManager-wait-online.service enabled enabled
+NetworkManager.service             enabled enabled
+regenerate_ssh_host_keys.service   enabled enabled
+rpi-eeprom-update.service          enabled enabled
+server1.service                    enabled enabled
+server2.service                    enabled enabled
+server3.service                    enabled enabled
+server4.service                    enabled enabled
+server5.service                    enabled enabled
+server6.service                    enabled enabled
+ssh.service                        enabled enabled
+sshd-keygen.service                enabled enabled
+sshswitch.service                  enabled enabled
+systemd-pstore.service             enabled enabled
+systemd-timesyncd.service          enabled enabled
+udisks2.service                    enabled enabled
+wpa_supplicant.service             enabled enabled
+remote-fs.target                   enabled enabled
+e2scrub_all.timer                  enabled enabled
+fstrim.timer                       enabled enabled
+logrotate.timer                    enabled enabled
+man-db.timer                       enabled enabled
+
+
+
+
+systemctl --user status pipewire pipewire-pulse
+
+
+vcgencmd measure_temp
+
+sudo nmcli connection modify "Wired connection 1" \
+ipv4.addresses "172.16.1.20/24,172.16.1.21/24",172.16.1.30/24",172.16.1.31/24",172.16.1.40/24",172.16.1.41/24" \
+ipv4.method manual
+
+sudo ifconfig eth0:0 172.16.1.20 netmask 255.255.255.0 up
+sudo ifconfig eth0:1 172.16.1.21 netmask 255.255.255.0 up
+sudo ifconfig eth0:2 172.16.1.30 netmask 255.255.255.0 up
+sudo ifconfig eth0:3 172.16.1.31 netmask 255.255.255.0 up
+sudo ifconfig eth0:4 172.16.1.40 netmask 255.255.255.0 up
+sudo ifconfig eth0:5 172.16.1.41 netmask 255.255.255.0 up
+
+sudo systemctl start server1.service
+sudo systemctl start server2.service
+sudo systemctl start server3.service
+sudo systemctl start server4.service
+sudo systemctl start server5.service
+sudo systemctl start server6.service
+
+
+
+
+
+cd /opt
+git clone -bv1.6 https://github.com/mz-automation/libiec61850
+cd libiec61850
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX:PATH=/opt/libiec61850_release ..
+make
+make install
+
+
+git clone https://github.com/robidev/iec61850_open_server
+cd iec61850_open_server
+mkdir build
+cd build
+cmake -DIEC61850_ROOT=/opt/libiec61850_release ..
+make
+cp open_server ..
+cp plugin/*.* ../plugin/

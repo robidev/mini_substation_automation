@@ -3,6 +3,9 @@
 Description=Python hw service
 After=network.target
 
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
 [Service]
 Type=simple
 User=root
@@ -16,8 +19,7 @@ ExecStart=/usr/bin/python3 /opt/hw_service/service.py
 
 Restart=on-failure
 RestartSec=15
-StartLimitIntervalSec=60
-StartLimitBurst=3
+
 
 StandardOutput=journal
 StandardError=journal

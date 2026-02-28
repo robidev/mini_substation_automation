@@ -41,12 +41,12 @@ DBPOS_BAD = 3 # error
 # UNIX SOCKETS
 # =====================================================
 SOCKET_PATHS = [
-    "/tmp/iec61850_relay_1.sock",
-    "/tmp/iec61850_relay_2.sock",
-    "/tmp/iec61850_relay_3.sock",
-    "/tmp/iec61850_relay_4.sock",
-    "/tmp/iec61850_relay_5.sock",
-    "/tmp/iec61850_relay_6.sock",
+    "/run/iec61850_ui/iec61850_relay_1.sock",
+    "/run/iec61850_ui/iec61850_relay_2.sock",
+    "/run/iec61850_ui/iec61850_relay_3.sock",
+    "/run/iec61850_ui/iec61850_relay_4.sock",
+    "/run/iec61850_ui/iec61850_relay_5.sock",
+    "/run/iec61850_ui/iec61850_relay_6.sock",
 ]
 
 # =====================================================

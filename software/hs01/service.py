@@ -14,9 +14,8 @@ swi_gpio_pins = [27, 18, 5, 6, 12, 13, 16, 19, 20, 21, 24, 22, 23, 25]
 
 """
 SET <channel> <0|1>    -> OK | ERR BUSY
-GET SERIAL1            -> DATA <processed>
-
-SERVO <ch> <state>     -> event of position
+GET DATA               -> DATA <processed>
+GET IO <ch>            -> get switch position
 
 """
 
@@ -49,6 +48,8 @@ with open(LIMITS_FILE, "r") as f:
 
 # ---------------- Shared state ----------------
 
+current_io_state = ["01" for i in range(NUM_SERVOS)]
+
 servo_queues = [Queue() for _ in range(NUM_SERVOS)]
 servo_busy   = [threading.Event() for _ in range(NUM_SERVOS)]
 
@@ -56,21 +57,26 @@ servo_event_q = Queue()
 
 serial1_data = None
 serial1_lock = threading.Lock()
+adc_packet_counter = 0
 
 shutdown = threading.Event()
 
 # ---------------- Callbacks ----------------
 
 def on_switch_start(channel):
+    global current_io_state
     servo_event_q.put(f"IO B {channel} 00\n")
+    current_io_state[channel] = "00"
 
 def on_switch_end(channel, state):
+    global current_io_state
     pos = "00"
     if state == True:
         pos = "10"
     else:
         pos = "01"
     servo_event_q.put(f"IO B {channel} {pos}\n")
+    current_io_state[channel] = pos
 
 # ---------------- Servo logic ----------------
 
@@ -86,17 +92,17 @@ def move_servo_smooth(channel, target_angle):
     servo.angle = target_angle
 
 def servo_worker(channel):
+    global current_io_state
     q = servo_queues[channel]
-    cur_state = False
 
     while not shutdown.is_set():
         target,state = q.get()
-        if cur_state == state:  # skip if state reached
-            continue
+        if (state == False and current_io_state[channel] == "01") or (state == True and current_io_state[channel] == "10"):
+            continue # new state same as current
 
         servo_busy[channel].set()
 
-        on_switch_start(channel, state)
+        on_switch_start(channel)
         move_servo_smooth(channel, target)
         
         GPIO.output(swi_gpio_pins[channel],state) #set pin
@@ -106,31 +112,24 @@ def servo_worker(channel):
 
 # ---------------- gpio logic ----------------
 
-#def gpio_worker():
-#    q = gpio_queue
-
-#    while not shutdown.is_set():
-#        channel,state = q.get()
-#        GPIO.output(cbr_gpio_pins[channel + 10],state)
-
 def gpio_worker(channel):
+    global current_io_state
     q = servo_queues[channel]
-    cur_state = False
 
     while not shutdown.is_set():
         target,state = q.get()
-        if cur_state == state: # skip if state reached
+        if (state == False and current_io_state[channel] == "01") or (state == True and current_io_state[channel] == "10"):
             continue
 
         if state == False: # open switch: fast
-            GPIO.output(cbr_gpio_pins[channel],state)
+            GPIO.output(swi_gpio_pins[channel],state)
             on_switch_end(channel, state)
         else: # close switch: slow
             servo_busy[channel].set()
-            on_switch_start(channel, state)
+            on_switch_start(channel)
             time.sleep(MOVE_SPEED * 3.0) # arming the breaker is a bit slower
         
-            GPIO.output(cbr_gpio_pins[channel],state) #set pin
+            GPIO.output(swi_gpio_pins[channel],state) #set pin
 
             on_switch_end(channel, state)
 
@@ -145,14 +144,16 @@ def set_switch(channel, state):
 
     if servo_busy[channel].is_set():
         return "ERR BUSY\n"
+    
+    target = None
+    if channel < 10:
+        limits = servo_limits.get(str(channel))
+        if not limits:
+            return "ERR NO_LIMITS\n"
 
-    limits = servo_limits.get(str(channel))
-    if not limits:
-        return "ERR NO_LIMITS\n"
-
-    target = limits["upper"] if state else limits["lower"]
-    if target is None:
-        return "ERR BAD_LIMIT\n"
+        target = limits["upper"] if state else limits["lower"]
+        if target is None:
+            return "ERR BAD_LIMIT\n"
 
     servo_queues[channel].put((target,state))
     return "OK\n"
@@ -171,58 +172,15 @@ def crc8(data: bytes) -> int:
     return crc
 
 
-def serial1_writer(ser):
+def serial1_writer(ser): # send message to the arduino we want some ADC packets
     n = RECEIVE_FRAMES
     while not shutdown.is_set():
         cmd = f"@ADC:{n}\n".encode()
         ser.write(cmd)
         time.sleep(1) # sleep for 1 second
 
-def read_adc_packet_old(ser):
-    # Sync on header 0xAA 0x55
-    while True:
-        b = ser.read(1)
-        if not b:
-            return None
-        if b == b'\xAA':
-            if ser.read(1) == b'\x55':
-                break
 
-    length = ser.read(1)
-    if not length:
-        return None
-
-    payload_len = length[0]
-    payload = ser.read(payload_len)
-    crc_rx = ser.read(1)
-    tail = ser.read(2)
-
-    if len(payload) != payload_len or len(crc_rx) != 1:
-        return None
-
-    if tail != b'\r\n':
-        print("Invalid packet tail")
-        return None
-
-    crc_calc = crc8(length + payload)
-    if crc_calc != crc_rx[0]:
-        print("CRC error")
-        return None
-
-    # Decode ADCs
-    adc = []
-    idx = 0
-    for _ in range(ADC_NUM_CHANNELS):
-        val = payload[idx] | (payload[idx + 1] << 8)
-        adc.append(val)
-        idx += 2
-
-    # Decode short matrix (bitmasks)
-    short_matrix = payload[idx:idx + ADC_WIRE_COUNT]
-
-    return adc, short_matrix
-
-def read_adc_packet(ser):
+def read_adc_packet(ser): # read message from arduino with ADC packets
     # Sync on header 0xAA 0x55
     while True:
         b = ser.read(1)
@@ -280,16 +238,7 @@ def read_adc_packet(ser):
     return adc, short_matrix, relay_measurements
 
 
-
-
-def format_packet_oneline(adc, short_matrix):
-    # ADC values: decimal
-    adc_part = "A" + ",".join(str(v) for v in adc)
-    # Short matrix: 6 bytes as lowercase hex, 2 chars each
-    short_part = "S" + ",".join(f"{b:02x}" for b in short_matrix)
-    return adc_part + " " + short_part
-
-def format_packet_oneline2(adc, short_matrix, relay_currents):
+def format_packet_oneline(adc, short_matrix, relay_currents):
     # ADC values: decimal
     adc_part = "A" + ",".join(str(v) for v in adc)
     # Short matrix: 6 bytes as lowercase hex, 2 chars each
@@ -298,24 +247,29 @@ def format_packet_oneline2(adc, short_matrix, relay_currents):
     currents = "C" + ",".join(str(c) for c in relay_currents)
     return adc_part + " " + short_part + " " + currents
 
-def serial1_reader(ser):
+def serial1_reader(ser): # receive info from arduino
     global serial1_data
+    global adc_packet_counter
     while not shutdown.is_set():
         pkt = read_adc_packet(ser)
         if not pkt:
             continue
 
         adc, shorts, relay_currents = pkt # adc, shorts = pkt
-        #print_packet(adc, shorts)
-        processed = format_packet_oneline2(adc, shorts, relay_currents)
-        #print(processed)
+        processed = format_packet_oneline(adc, shorts, relay_currents)
+        if adc_packet_counter % (10 * RECEIVE_FRAMES) == 0: # print very 10 seconds a packet
+            print("ADC packet to be send: " + processed)
+        adc_packet_counter += 1
 
         with serial1_lock:
             serial1_data = processed
+            data = serial1_data or ""
+            servo_event_q.put(f"DATA B {data}\n")
 
 # ---------------- Serial2 API (slave) ----------------
 
-def serial2_api(ser):
+def serial2_api(ser): # raspberry pi command receiver
+    global current_io_state
     while not shutdown.is_set():
         line = ser.readline()
         if not line:
@@ -325,40 +279,57 @@ def serial2_api(ser):
 
         if not cmd:
             continue
-
         if cmd[0] == "SET" and len(cmd) == 3:
             ch = int(cmd[1])
             state = cmd[2] == "1"
             #ser.write(set_switch(ch, state).encode())
             servo_event_q.put(set_switch(ch, state))
 
-        elif cmd[0] == "GET" and cmd[1] == "SERIAL1":
+        elif cmd[0] == "GET" and cmd[1] == "DATA":
             with serial1_lock:
                 data = serial1_data or ""
             #ser.write(f"DATA {data}\n".encode())
-            servo_event_q.put(f"DATA {data}\n")
+            servo_event_q.put(f"DATA G {data}\n")
+
+        elif cmd[0] == "GET" and cmd[1] == "IO":
+            ch = int(cmd[2])
+            if  (0 <= ch < NUM_SERVOS):
+                state = current_io_state[ch]
+                servo_event_q.put(f"IO G {ch} {state}\n") # 
+            else:
+                servo_event_q.put(f"ERR {ch} INVALID_CHANNEL\n") #
+
 
         else:
-            msg= b"ERR UNKNOWN_CMD\n"
+            msg= "ERR UNKNOWN_CMD\n"
+            print("Unknown command: \'" + str(cmd) + "\'")
             servo_event_q.put(msg)
+    GPIO.cleanup() 
 
 # ---------------- Event reporter ----------------
 
-def serial2_writer(ser):
+def serial2_writer(ser): # response to raspberry pi
     while not shutdown.is_set():
         msg = servo_event_q.get()
         ser.write(msg.encode())
-
+    GPIO.cleanup()
 
 # ---------------- Startup ----------------
 
 def main():
-    ser1 = serial.Serial(SERIAL1_DEV, BAUD1, timeout=1)
-    ser2 = serial.Serial(SERIAL2_DEV, BAUD2, timeout=1)
+    ser1 = serial.Serial(SERIAL1_DEV, BAUD1, timeout=1) # arduino
+    ser2 = serial.Serial(SERIAL2_DEV, BAUD2, timeout=1) # rly raspberry pi
 
     print("sleeping until arduino has been reset")
     time.sleep(ARDUINO_TIMEOUT)
     print("starting daemons")
+
+    GPIO.setmode(GPIO.BCM)
+    GPIO.setwarnings(False)
+    for pin in swi_gpio_pins:
+        GPIO.setup(pin, GPIO.OUT)
+        GPIO.output(pin, GPIO.LOW)  # Initialize as OFF
+
 
     for ch in range(NUM_SERVOS):
         if ch < 10:
@@ -374,10 +345,10 @@ def main():
                 daemon=True
             ).start()
 
-    threading.Thread(target=serial1_reader, args=(ser1,), daemon=True).start()
-    threading.Thread(target=serial1_writer, args=(ser1,), daemon=True).start()
+    threading.Thread(target=serial1_reader, args=(ser1,), daemon=True).start() # arduino comm threats
+    threading.Thread(target=serial1_writer, args=(ser1,), daemon=True).start() # 
 
-    threading.Thread(target=serial2_api, args=(ser2,), daemon=True).start()
+    threading.Thread(target=serial2_api, args=(ser2,), daemon=True).start() # rly raspberry pi comm threats
     threading.Thread(target=serial2_writer, args=(ser2,), daemon=True).start()
 
     try:
@@ -385,6 +356,10 @@ def main():
             time.sleep(1)
     except KeyboardInterrupt:
         shutdown.set()
+    finally:
+        GPIO.cleanup()
+
+
 
 # ---------------- Entry ----------------
 
