@@ -1,0 +1,40 @@
+sudo apt install git cmake build-essential
+
+git clone https://github.com/robidev/iec61850_open_gateway
+
+git clone https://github.com/mz-automation/lib60870
+cd lib60870/lib60870-C
+mkdir build
+cd build
+cmake ..
+make
+cd src
+cp liblib60870.* ~/iec61850_open_gateway/
+
+git clone https://github.com/mz-automation/libiec61850
+cd ~/libiec61850
+mkdir build
+cd build
+cmake ..
+make
+cd src
+cp libiec61850.* ~/iec61850_open_gateway/
+
+cd ~/iec61850_open_gateway/
+mv liblib60870.so libiec60870.so
+python3 -m venv .venv
+. .venv/bin/activate
+pip install -r requirements.txt
+python3 app.py
+
+
+cp gateway.service /etc/systemd/system/
+
+sudo systemctl daemon-reload
+sudo systemctl enable gateway.service
+sudo systemctl start gateway.service
+
+sudo nmcli connection modify "netplan-eth0" ipv4.addresses "172.16.1.1/24" ipv4.method manual
+
+
+

@@ -5,9 +5,10 @@ Arduino ethernet shield 2
 wt32-eth01 wsp32
 dolatek Ads1256 24bit 8 Channel SPI
 
-gateway: rpi2 B V1.1 - ..sd - rtu01
+gateway: rpi2 B V1.1 - ..sd - gtw01
 172.16.0.1 - wan
 172.16.1.1 - station
+192.168.178.88
 
 switch - sw01
 172.16.1.2
@@ -26,7 +27,8 @@ MS hardware: Arduino mega 2560 - ms01
 172.16.1.12
 
 HMI asus EEEpc, 12gb - hmi01
-172.16.1.20
+172.16.1.100
+static ip via ifupdown, eth0 blacklist in connman
 
 gateway: 172.16.1.254
 

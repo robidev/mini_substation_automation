@@ -1,0 +1,35 @@
+[Unit]
+Description=IEC 61850 Open Gateway
+After=network.target
+Wants=network.target
+
+# Restart limit: 3 crashes within 60s, then give up
+StartLimitIntervalSec=60
+StartLimitBurst=3
+
+[Service]
+Type=simple
+
+User=root
+Group=root
+
+Environment=PYTHONUNBUFFERED=1
+
+WorkingDirectory=/opt/iec61850_open_gateway
+
+# Use venv Python directly (no shell, no activation needed)
+ExecStart=/opt/iec61850_open_gateway/.venv/bin/python app.py config.remote.py
+
+Restart=on-failure
+RestartSec=5
+
+KillSignal=SIGTERM
+TimeoutStopSec=30
+
+# Log stdout/stderr to journald
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=iec61850-open-gateway
+
+[Install]
+WantedBy=multi-user.target

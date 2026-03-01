@@ -33,7 +33,7 @@ void RtuLogic_init()
       relay[i][j].faultState = false;                // No fault
       relay[i][j].faultEvent = None;
       relay[i][j].faultTime = 0;
-      relay[i][j].remote = false;                    // Local
+      relay[i][j].remote = true;                    // default is Remote, not Local
       relay[i][j].PTOC_setting_pickup_current = 5000; //500.0A
       relay[i][j].PTOC_setting_time_multiplier = 15; //0.15-0.25 
       relay[i][j].PIOC_setting_pickup_current = 50000; //5000.0 A

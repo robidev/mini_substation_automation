@@ -1,42 +1,37 @@
-[substation software]
-gui+ui_config:
+[gui+ui_config]
 	implement measurements for all other IED's in ui
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
 	display cilo status in PDIF diagram in ui as switch for ctr's
 	ensure GOOSE is working for pdif/cilo/ptrc
         remove some printf's (analog reporting)
         indicate succesfull socket conn to ui/hw on display
+        lower back-button on ui
+        local/remote setting default?
 
 [arduino]
-	micom leds do not do anything atm?
+        set default remote operation (upload code)
 
 [client]
 	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
 
-[substation config]
-	write client to EEE laptop
-
-[RTU]
-	make SD-card, configure ip's and access
-	configure iec61850_open_gateway (RTU) on it
-	create startup systemd service
-        -RTU encasing
-
 [substation hardware]
 	make telco-cabinet
-	 -dustplate+fixate
-         -rtu+fixate
+	 -make dustplate+fixate
          -fixate switch
-        PSU? too many external PSU
+         -rtu encasing+fixate
+        PSU? too many external PSU!
 
-TESTING!!!!
 issues:
+iec61850server soms niet online bij boot?
 servo-reset! bij open naar closed?
 interlock melding geven in UI
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
+micom leds do not do anything atm?
 
+
+NEXT:
 
 [SCADA]
 make central SCADA display
