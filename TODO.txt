@@ -31,7 +31,6 @@ issues:
 servo-reset! bij open naar closed?
 interlock melding geven in UI
 short matrix werkt anders
-MS leds kloppen niet
 phasor werkt wat vreemd, goed doortesten 
 
 
@@ -41,14 +40,3 @@ update eventlet(and maybe more)
 
 
 
-
-
-
-
-
-NOTES:
- - update design for micom LED/button placement (cancel should be bottom right, leds 2.6 mm down, on-led of outputs is 5.8mm up, and 1-2mm right, left side 2mm wider)
-buttons: top = 17(hart) from lcd bottom(yellow) (leds left, are aligned with lcd-left) from leds-left, top = 42mm(hart), top-to-btm = 20mm(hart), left-to-right = 20mm
- - bottom aligned
-left to right: 6,5mm,[micom] 28-28.5mm, [ied] 20-21mm, [out] 25-26mm [switch] 24-25mm 
- - add versioning

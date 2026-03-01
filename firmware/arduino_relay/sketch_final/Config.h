@@ -78,8 +78,8 @@ const int32_t buttonPairs[6][2] = {
 ------------------------------------------------------ */
 constexpr unsigned long RTU_SWI_INTERVAL = 500;
 //output pin order
-constexpr uint8_t MS_OUT_NUM_CHANNELS = 8;
-const uint8_t ms_output_array[MS_OUT_NUM_CHANNELS] = { RED1, RED2, RED3, RED4, BLUE1, BLUE2, BLUE3, BLUE4};
+constexpr uint8_t MS_OUT_NUM_CHANNELS = 10;
+const uint8_t ms_output_array[MS_OUT_NUM_CHANNELS] = { BLUE1, BLUE1, BLUE2, BLUE3, BLUE4, RED1, RED1, RED2, RED3, RED4};
 //input pin order
 constexpr uint8_t MS_IN_NUM_CHANNELS = 6;
 const uint8_t ms_input_array[MS_IN_NUM_CHANNELS] = { PIN_MS_IN_RED2, PIN_MS_IN_RED3, PIN_MS_IN_RED4, PIN_MS_IN_BLUE2, PIN_MS_IN_BLUE3, PIN_MS_IN_BLUE4};

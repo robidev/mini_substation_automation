@@ -2,15 +2,15 @@
 #include <Arduino.h>
 
 /* ================= MS LED OUTPUTS ================= */
-constexpr uint8_t RED1 = 3;  // in
-constexpr uint8_t RED2 = 43; // out1
-constexpr uint8_t RED3 = 5;  // out2
-constexpr uint8_t RED4 = 42; // out3
 constexpr uint8_t BLUE1 = 7; // in
 constexpr uint8_t BLUE2 = 9; // out1
 constexpr uint8_t BLUE3 = 6; // out2
 constexpr uint8_t BLUE4 = 8; // out3
 
+constexpr uint8_t RED1 = 42; // in
+constexpr uint8_t RED2 = 5;  // out1
+constexpr uint8_t RED3 = 43; // out2
+constexpr uint8_t RED4 = 3;  // out3
 
 /* ================= MS INPUTS (short sense for outgoing MS feeder) ================= */
 constexpr uint8_t PIN_MS_IN_RED2  = 30; // pin-assignment not final
