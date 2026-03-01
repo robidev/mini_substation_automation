@@ -19,12 +19,15 @@ gui+ui_config:
 [RTU]
 	make SD-card, configure ip's and access
 	configure iec61850_open_gateway (RTU) on it
-	create startup service
+	create startup systemd service
         -RTU encasing
 
 [substation hardware]
 	make telco-cabinet
-	 -dustplate
+	 -dustplate+fixate
+         -rtu+fixate
+         -fixate switch
+        PSU? too many external PSU
 
 TESTING!!!!
 issues:
@@ -32,6 +35,7 @@ servo-reset! bij open naar closed?
 interlock melding geven in UI
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
+VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
 
 
 [SCADA]
