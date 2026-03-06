@@ -320,6 +320,20 @@ def main():
     ser1 = serial.Serial(SERIAL1_DEV, BAUD1, timeout=1) # arduino
     ser2 = serial.Serial(SERIAL2_DEV, BAUD2, timeout=1) # rly raspberry pi
 
+    # prevent servo from moving quickly at init
+    for chnl in range(NUM_SERVOS):
+        limits = servo_limits.get(str(chnl))
+        if not limits:
+            print(f"Error: no limit found for channel {chnl}")
+            continue
+        default_angle = limits["lower"] # default is lower (off-state)
+        if default_angle is None:
+            print(f"Error: no lower limit for channel {chnl}")
+            continue
+        kit.servo[chnl].angle = int(default_angle)
+        
+
+
     print("sleeping until arduino has been reset")
     time.sleep(ARDUINO_TIMEOUT)
     print("starting daemons")

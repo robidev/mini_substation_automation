@@ -1,15 +1,12 @@
 [gui+ui_config]
-	implement measurements for all other IED's in ui
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
 	display cilo status in PDIF diagram in ui as switch for ctr's
-	ensure GOOSE is working for pdif/cilo/ptrc
-        remove some printf's (analog reporting)
-        indicate succesfull socket conn to ui/hw on display
-        lower back-button on ui
-        local/remote setting default?
+        indicate succesfull socket conn to srv/hw on display
+	interlock melding geven in UI
 
 [arduino]
         set default remote operation (upload code)
+	3 micom leds do not do anything atm?
 
 [client]
 	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
@@ -19,16 +16,14 @@
 	 -make dustplate+fixate
          -fixate switch
          -rtu encasing+fixate
-        PSU? too many external PSU!
 
 issues:
 iec61850server soms niet online bij boot?
-servo-reset! bij open naar closed?
-interlock melding geven in UI
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
-micom leds do not do anything atm?
+ensure GOOSE is working for pdif/cilo/ptrc
+
 
 
 NEXT:

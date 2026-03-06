@@ -88,33 +88,34 @@ ELEMENTS_FEED = {
     "m_ctr1_phsA": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1a"
     },
     "m_ctr1_phsB": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1b"
     },
     "m_ctr1_phsC": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1c"
     },
     "m_ctr1_phsAngA": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1 angleA"
     },
     "m_ctr1_phsAngB": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
+        "description": "Current Transformer 1 angleB"
     },
     "m_ctr1_phsAngC": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1"
-    },
+        "description": "Current Transformer 1 angleC"
+    },    
+
     "vtr1": {
         "type": "measurement",
         "measurement_type": "voltage",
@@ -124,32 +125,32 @@ ELEMENTS_FEED = {
     "m_v1_pA": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 angleA"
     },
     "m_v1_pB": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 angleB"
     },
     "m_v1_pC": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 angleC"
     },
     "m_v1_aA": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 amplitude A"
     },
     "m_v1_aB": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 amplitude B"
     },
     "m_v1_aC": {
         "type": "measurement",
         "measurement_type": "voltage",
-        "description": "Voltage Transformer 1"
+        "description": "Voltage Transformer 1 amplitude C"
     },
 
     "vtr2": {
@@ -206,32 +207,185 @@ ELEMENTS_FEED = {
 
 ELEMENTS_BUS = {
     # Measurement transformers
-    "ctr1": {
+   "ctr1": {
         "type": "measurement",
         "measurement_type": "current",
         "description": "Current Transformer 1 average A"
     },
+    "m_ctr1_phsA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1a"
+    },
+    "m_ctr1_phsB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1b"
+    },
+    "m_ctr1_phsC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1c"
+    },
+    "m_ctr1_phsAngA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 angleA"
+    },
+    "m_ctr1_phsAngB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 angleB"
+    },
+    "m_ctr1_phsAngC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 1 angleC"
+    },    
+
     "ctr2": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1 average A"
+        "description": "Current Transformer 2 average A"
     },
+    "m_ctr2_phsA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2a"
+    },
+    "m_ctr2_phsB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2b"
+    },
+    "m_ctr2_phsC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2c"
+    },
+    "m_ctr2_phsAngA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2 angleA"
+    },
+    "m_ctr2_phsAngB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2 angleB"
+    },
+    "m_ctr2_phsAngC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 2 angleC"
+    },
+
     "ctr3": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1 average A"
+        "description": "Current Transformer 3 average A"
     },
+    "m_ctr3_phsA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3a"
+    },
+    "m_ctr3_phsB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3b"
+    },
+    "m_ctr3_phsC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3c"
+    },
+    "m_ctr3_phsAngA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3 angleA"
+    },
+    "m_ctr3_phsAngB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3 angleB"
+    },
+    "m_ctr3_phsAngC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 3 angleC"
+    },
+
     "ctr4": {
         "type": "measurement",
         "measurement_type": "current",
-        "description": "Current Transformer 1 average A"
+        "description": "Current Transformer 4 average A"
     },
+    "m_ctr4_phsA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4a"
+    },
+    "m_ctr4_phsB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4b"
+    },
+    "m_ctr4_phsC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4c"
+    },
+    "m_ctr4_phsAngA": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4 angleA"
+    },
+    "m_ctr4_phsAngB": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4 angleB"
+    },
+    "m_ctr4_phsAngC": {
+        "type": "measurement",
+        "measurement_type": "current",
+        "description": "Current Transformer 4 angleC"
+    },    
+
     "vtr1": {
         "type": "measurement",
         "measurement_type": "voltage",
         "description": "Voltage Transformer 1 average V"
     },
-
+    "m_v1_pA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 angleA"
+    },
+    "m_v1_pB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 angleB"
+    },
+    "m_v1_pC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 angleC"
+    },
+    "m_v1_aA": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 amplitude A"
+    },
+    "m_v1_aB": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 amplitude B"
+    },
+    "m_v1_aC": {
+        "type": "measurement",
+        "measurement_type": "voltage",
+        "description": "Voltage Transformer 1 amplitude C"
+    },
 
     # Settings
     "loc": {
@@ -262,13 +416,19 @@ SETTINGS_BUS = [
     ["Local/Remote", "loc",    bool,  False],
 ]
 
+SETTINGS_TR = [
+    ["I> pickup",    "s_Ilarge", float, 0.0],
+    ["T> delay",     "s_Tm",     float, 0.0],
+    ["Local/Remote", "loc",    bool,  False],
+]
+
 SETTINGS = [
     SETTINGS_FEED,
     SETTINGS_FEED,
     SETTINGS_BUS,
     SETTINGS_BUS,
-    SETTINGS_FEED,
-    SETTINGS_FEED
+    SETTINGS_TR,
+    SETTINGS_TR
 ]
 
 MEASUREMENTS_FEED = [
@@ -283,8 +443,35 @@ MEASUREMENTS_FEED = [
     ("Bus2 Vph C", "m_v2_pC", "m_v2_aC"),
 ]
 
-MEASUREMENTS_BUS = []
-MEASUREMENTS_TR = []
+MEASUREMENTS_BUS = [
+    ("Iph 1A", "m_ctr1_phsA", "m_ctr1_phsAngA"),
+    ("Iph 1B", "m_ctr1_phsB", "m_ctr1_phsAngB"),
+    ("Iph 1C", "m_ctr1_phsC", "m_ctr1_phsAngC"),
+    ("Iph 2A", "m_ctr2_phsA", "m_ctr2_phsAngA"),
+    ("Iph 2B", "m_ctr2_phsB", "m_ctr2_phsAngB"),
+    ("Iph 2C", "m_ctr2_phsC", "m_ctr2_phsAngC"),
+    ("Iph 3A", "m_ctr3_phsA", "m_ctr3_phsAngA"),
+    ("Iph 3B", "m_ctr3_phsB", "m_ctr3_phsAngB"),
+    ("Iph 3C", "m_ctr3_phsC", "m_ctr3_phsAngC"),
+    ("Iph 4A", "m_ctr4_phsA", "m_ctr4_phsAngA"),
+    ("Iph 4B", "m_ctr4_phsB", "m_ctr4_phsAngB"),
+    ("Iph 4C", "m_ctr4_phsC", "m_ctr4_phsAngC"),
+    ("Bus Vph A", "m_v1_pA", "m_v1_aA"),
+    ("Bus Vph B", "m_v1_pB", "m_v1_aB"),
+    ("Bus Vph C", "m_v1_pC", "m_v1_aC"),
+]
+
+MEASUREMENTS_TR = [
+    ("Iph A", "m_ctr1_phsA", "m_ctr1_phsAngA"),
+    ("Iph B", "m_ctr1_phsB", "m_ctr1_phsAngB"),
+    ("Iph C", "m_ctr1_phsC", "m_ctr1_phsAngC"),
+    ("Bus1 Vph A", "m_v1_pA", "m_v1_aA"),
+    ("Bus1 Vph B", "m_v1_pB", "m_v1_aB"),
+    ("Bus1 Vph C", "m_v1_pC", "m_v1_aC"),
+    ("Bus2 Vph A", "m_v2_pA", "m_v2_aA"),
+    ("Bus2 Vph B", "m_v2_pB", "m_v2_aB"),
+    ("Bus2 Vph C", "m_v2_pC", "m_v2_aC"),
+]
 
 MEASUREMENTS = [
     MEASUREMENTS_FEED,

@@ -130,7 +130,7 @@ class IEC61850Client:
 
                     response = self.receive_data()
                     if response:
-                        print("response: " + str(response))
+                        #print("response: " + str(response))
                         with self.lock:
                             self.data.set_element_value("connected", True)
                             # Populate elements from response data

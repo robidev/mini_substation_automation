@@ -99,7 +99,7 @@ class RelayScreen:
         spacing = 5
         
         # Back button (top-left)
-        self.back_button = Button(5, 5, button_width, 20, "← Back", GRAY, BLACK)
+        self.back_button = Button(5, 10, button_width, 20, "← Back", GRAY, BLACK)
         
         # Status panel dimensions
         self.status_panel_x = 7

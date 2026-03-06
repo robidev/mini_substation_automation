@@ -475,10 +475,11 @@ void RelayUI_init() {
   }
 
   //UI leds
-  for(int pin = 0; pin < 4; pin++){
+  for(int pin = 0; pin < 3; pin++){
     pinMode(ledarray[pin], OUTPUT);          // sets the digital pin as output
     digitalWrite(ledarray[pin], HIGH);        // sets the digital pins off
   }
+  digitalWrite(ledarray[4], LOW);        // sets the digital pins on for healthy
 
   needsRedraw = true;
 }
