@@ -55,10 +55,10 @@ constexpr uint8_t LCD_SDC = 21; // D21
 
 
 /* ================= UI LED OUTPUTS ================= */
-constexpr uint8_t LED1 = 46; // Trip
-constexpr uint8_t LED2 = 47; // Alarm
-constexpr uint8_t LED3 = 48; // Warning
-constexpr uint8_t LED4 = 49; // Healthy
+constexpr uint8_t LED1 = 49; // Trip
+constexpr uint8_t LED2 = 48; // Alarm
+constexpr uint8_t LED3 = 47; // Warning
+constexpr uint8_t LED4 = 46; // Healthy
 
 
 /* ================= ETHERNET W5500 ================= */

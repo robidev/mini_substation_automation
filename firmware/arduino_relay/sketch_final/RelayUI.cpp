@@ -119,6 +119,7 @@ void renderMenuMain() {
 
   lcd.setCursor(currentIndex+3, 0);
   lcd.write((uint8_t)0);
+
 }
 
 void renderMenuRTU() {
@@ -131,6 +132,7 @@ void renderMenuRTU() {
 
   const MenuItem &item = currentMenu->items[currentIndex];
   printFromPROGMEM(item.label, 16-len);
+
 }
 
 void renderConfirmMenu() {
@@ -153,6 +155,29 @@ void renderMenu() {
       needsRedraw = true; // redraw the menu
       delayedRedraw = 0;
     }
+  }
+
+  if(currentMenu == &mainMenu) {
+    digitalWrite(ledarray[PIN_TRIP], HIGH);        // sets the digital pins off for trip
+    digitalWrite(ledarray[PIN_ALARM], HIGH);        // sets the digital pins off for alarm
+    digitalWrite(ledarray[PIN_WARNING], HIGH);        // sets the digital pins off for warn
+  }
+  else {
+    relay_state *relay = getRelayDataByIndex(currentRTU);
+    if(relay->tripState == true)
+      digitalWrite(ledarray[PIN_TRIP], LOW);        // sets the digital pins off for trip
+    else
+      digitalWrite(ledarray[PIN_TRIP], HIGH);        // sets the digital pins off for trip
+
+    if(relay->faultState == true)
+      digitalWrite(ledarray[PIN_ALARM], LOW);        // sets the digital pins off for alarm
+    else
+      digitalWrite(ledarray[PIN_ALARM], HIGH);        // sets the digital pins off for alarm
+
+    if(relay->remote == true)
+      digitalWrite(ledarray[PIN_WARNING], LOW);        // sets the digital pins off for warn
+    else
+      digitalWrite(ledarray[PIN_WARNING], HIGH);        // sets the digital pins off for warn
   }
 
   if (!needsRedraw) return;
@@ -475,11 +500,11 @@ void RelayUI_init() {
   }
 
   //UI leds
-  for(int pin = 0; pin < 3; pin++){
+  for(int pin = 0; pin < 4; pin++){
     pinMode(ledarray[pin], OUTPUT);          // sets the digital pin as output
     digitalWrite(ledarray[pin], HIGH);        // sets the digital pins off
   }
-  digitalWrite(ledarray[4], LOW);        // sets the digital pins on for healthy
+  digitalWrite(ledarray[PIN_HEALTHY], LOW);        // sets the digital pins on for healthy
 
   needsRedraw = true;
 }

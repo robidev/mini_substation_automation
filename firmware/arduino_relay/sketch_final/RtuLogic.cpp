@@ -252,7 +252,7 @@ relay_state* getRelayDataByIndex(uint8_t index)
 
 void process_breaker(relay_state *relay, uint8_t breaker, Origin origin) //, 1 = Open, 2 = Close  
 {
-  if(origin == relay->remote) // if operarion is allowed
+  if(origin == LOCAL || relay->remote == true) // if operarion is allowed
   {
     updateBreakerOutput(relay, (breaker - 1));
   }

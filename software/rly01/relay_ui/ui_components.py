@@ -114,7 +114,7 @@ class MeasurementPage(Page):
 
     def draw(self, surface):
         self.client.enable_measurements = True
-        y = 55
+        y = 35
         for v in MEASUREMENTS[self.client.relay_id]:
             mag = self.client.get_measurement(v[1])
             ang = self.client.get_measurement(v[2])

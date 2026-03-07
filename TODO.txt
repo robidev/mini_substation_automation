@@ -1,21 +1,15 @@
 [gui+ui_config]
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
 	display cilo status in PDIF diagram in ui as switch for ctr's
-        indicate succesfull socket conn to srv/hw on display
 	interlock melding geven in UI
-
-[arduino]
-        set default remote operation (upload code)
-	3 micom leds do not do anything atm?
+NICE:   indicate succesfull socket conn to srv/hw on main display (icon green(ok)/yellow(no hw)/red(no conn))
 
 [client]
 	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
 
 [substation hardware]
-	make telco-cabinet
-	 -make dustplate+fixate
-         -fixate switch
-         -rtu encasing+fixate
+         -rtu encasing+undervolt?
+	 -stickers?
 
 issues:
 iec61850server soms niet online bij boot?

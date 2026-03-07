@@ -57,6 +57,10 @@ const byte lcd_upArrow[8] = {
 
 //   Ledarray with Trip, Alarm, Warning, Healthy (local/remote?)
 const uint8_t ledarray[4] = {LED1,LED2,LED3,LED4};
+const uint8_t PIN_TRIP = 0;
+const uint8_t PIN_ALARM = 1;
+const uint8_t PIN_WARNING = 2;
+const uint8_t PIN_HEALTHY = 3;
 
 // CHARLIEPLEXED BUTTON SETUP
 const uint32_t charlieplexed_buttons[3] = {BTN1, BTN2, BTN3};// three I/O pins used for charlieplexing
