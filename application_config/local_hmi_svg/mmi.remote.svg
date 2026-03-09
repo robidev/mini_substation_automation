@@ -397,7 +397,7 @@
         <text x="25" y="55" class="equipment-label">DIS_PT1_IN</text>
         
         <!--<rect x="-12" y="80" width="24" height="24" class="cbr"/>-->
-        <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6000" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6000" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
         <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/3/300" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
           <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
           <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -415,7 +415,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6002" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6002" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/302" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -440,7 +440,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6003" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6003" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/303" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -465,7 +465,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6004" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6004" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/304" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -510,7 +510,7 @@
         <text x="25" y="55" class="equipment-label">DIS_PT2_IN</text>
         
         <!--<rect x="-12" y="80" width="24" height="24" class="cbr"/>-->
-        <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6005" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+        <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6005" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
         <rect x="-12" y="80" width="24" height="24" id="iec60870://172.16.1.1:2404/3/305" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
           <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
           <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -529,7 +529,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6007" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6007" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/307" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -554,7 +554,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6008" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6008" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/308" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />
@@ -579,7 +579,7 @@
           <line x1="0" y1="64" x2="0" y2="80" class="conductor"/>
           <circle cx="0" cy="0" r="8" class="disconnector"/>
           <!--<rect x="-12" y="40" width="24" height="24" class="cbr"/>-->
-          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6009" class="CBR"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
+          <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/46/6009" class="CSWI"  stroke-width="1.5" stroke="white" fill="#ff0000"/>
           <rect x="-12" y="40" width="24" height="24" id="iec60870://172.16.1.1:2404/3/309" class="XCBR"  stroke-width="1.5" stroke="white" fill="#ff0000">
             <animate id="open" attributeName="fill" attributeType="XML" to="black" dur="100ms" fill="freeze" />
             <animate id="transition" attributeName="fill" attributeType="XML" to="url(#diagSplit)" dur="10ms" fill="freeze" />

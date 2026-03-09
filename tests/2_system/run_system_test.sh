@@ -14,6 +14,11 @@ PID_DIR="$(pwd)/pids"
 TTY_A="/tmp/ttyV0"
 TTY_B="/tmp/ttyV1"
 
+# create unix socket directory
+if [ ! -d /run/iec61850_ui ]; then
+    sudo mkdir -p /run/iec61850_ui
+    sudo chmod 777 /run/iec61850_ui
+fi
 
 #sudo setcap 'cap_net_bind_service=+ep' /usr/bin/python3.12 <- needs to be the binary, not the symlink /usr/bin/python3, else u get
 #Invalid file '/usr/bin/python3' for capability operation
@@ -79,7 +84,7 @@ start_bg serial_mock \
 # 3️⃣ SERIAL SERVICE
 ###############################################################################
 start_bg serial_service \
-    python3 -u "$BASE_MINI/software/rly01/service.py"
+    python3 -u "$BASE_MINI/software/rly01/service.py" -d
 
 sleep 15
 ###############################################################################

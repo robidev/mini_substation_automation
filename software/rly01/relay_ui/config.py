@@ -75,9 +75,25 @@ ELEMENTS_FEED = {
         "type": "switch",
         "description": "Switch 3"
     },
+    "s_swi3_blkopn": {
+        "type": "status",
+        "description": "Switch 3 interlock condition for switch OPEN"
+    },
+    "s_swi3_blkcls": {
+        "type": "status",
+        "description": "Switch 3 interlock condition for switch CLOSE"
+    },
     "swi4": {
         "type": "switch",
         "description": "Switch 4"
+    },
+    "s_swi4_blkopn": {
+        "type": "status",
+        "description": "Switch 4 interlock condition for switch OPEN"
+    },
+    "s_swi4_blkcls": {
+        "type": "status",
+        "description": "Switch 4 interlock condition for switch CLOSE"
     },
     # Measurement transformers
     "ctr1": {
@@ -550,6 +566,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "closed",
         "element": "swi3",
+        "BlkOpn": "s_swi3_blkopn",
+        "BlkCls": "s_swi3_blkcls",
         "position": (80, 100),
         "rotation": 180,
         "selectable": True,
@@ -559,6 +577,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "open",
         "element": "swi4",
+        "BlkOpn": "s_swi4_blkopn",
+        "BlkCls": "s_swi4_blkcls",
         "position": (160, 100),
         "rotation": 180,
         "selectable": True,
@@ -587,8 +607,8 @@ DIAGRAM_OBJECTS_FEED = [
         "name": "disconnector",
         "state": "open",
         "element": "swi2",
-        "BlkOpn": "_swi2_blkopn",
-        "BlkCls": "_swi2_blkcls",
+        "BlkOpn": "s_swi2_blkopn",
+        "BlkCls": "s_swi2_blkcls",
         "position": (120, 270),
         "rotation": 180,
         "selectable": True,
@@ -711,6 +731,8 @@ DIAGRAM_OBJECTS_TR = [
         "name": "disconnector",
         "state": "closed",
         "element": "swi2",
+        "BlkOpn": "s_swi2_blkopn",
+        "BlkCls": "s_swi2_blkcls",
         "position": (80, 100),
         "rotation": 180,
         "selectable": True,
@@ -720,6 +742,8 @@ DIAGRAM_OBJECTS_TR = [
         "name": "disconnector",
         "state": "open",
         "element": "swi3",
+        "BlkOpn": "s_swi3_blkopn",
+        "BlkCls": "s_swi3_blkcls",
         "position": (160, 100),
         "rotation": 180,
         "selectable": True,

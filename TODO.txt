@@ -1,14 +1,12 @@
 [gui+ui_config]
-	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
 	display cilo status in PDIF diagram in ui as switch for ctr's
-	interlock melding geven in UI
-NICE:   indicate succesfull socket conn to srv/hw on main display (icon green(ok)/yellow(no hw)/red(no conn))
-
-[client]
-	improve operate command for 104 in client (1 is True, 0 is False, and smartly present the toggle value)
+	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
+NICE:   indicate succesfull srv online on main display (icon green(ok)/red(no srv process))
+NICE:   indicate connected clients to hw
+NICE:   indicate hw-pi service running????
 
 [substation hardware]
-         -rtu encasing+undervolt?
+         -make RTU front with led-holes, connect-print, and brackets+glue
 	 -stickers?
 
 issues:
@@ -17,14 +15,71 @@ short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
 ensure GOOSE is working for pdif/cilo/ptrc
-
-
+gateway undervolts...
+value scaling
 
 NEXT:
 
 [SCADA]
 make central SCADA display
 update eventlet(and maybe more)
+
+######
+UNIX_SOCKETS = [
+    "/tmp/api_sock1",
+    "/tmp/api_sock2",
+    "/tmp/api_sock3",
+    "/tmp/api_sock4",
+    "/tmp/api_sock5",
+    "/tmp/api_sock6",
+    "/run/iec61850_ui/iec61850_relay_1.sock",
+    "/run/iec61850_ui/iec61850_relay_2.sock",
+    "/run/iec61850_ui/iec61850_relay_3.sock",
+    "/run/iec61850_ui/iec61850_relay_4.sock",
+    "/run/iec61850_ui/iec61850_relay_5.sock",
+    "/run/iec61850_ui/iec61850_relay_6.sock",
+]
+
+def get_socket_connection_state(socket_paths):
+    counts = {name: 0 for name in socket_paths}
+
+    with open("/proc/net/unix") as f:
+        for line in f:
+            for name, path in socket_paths.items():
+                if path in line:
+                    counts[name] += 1
+
+    return {name: counts[name] > 1 for name in socket_paths}
+
+
+
+import subprocess
+
+services = [
+    "client1.service",
+    "client2.service",
+    "client3.service",
+    "client4.service",
+    "client5.service",
+    "client6.service",
+    "hw.service"
+]
+
+def get_service_states(services):
+    result = subprocess.run(
+        ["systemctl", "is-active"] + services,
+        capture_output=True,
+        text=True
+    )
+
+    lines = result.stdout.strip().splitlines()
+
+    return {
+        service: (state == "active")
+        for service, state in zip(services, lines)
+    }
+
+
 
 
 

@@ -180,12 +180,12 @@ class ControlPage(Page):
         self.right = "Switch"
         self.selected_obj = None
 
-    def action_callback_OPEN(self,result):
+    def action_callback_OPEN(self,result, stack):
         if result == True:
             print("clicked OK, OPENING")   
             if self.selected_obj:
                 if 'BlkOpn' in self.selected_obj and self.client.get_element_value(self.selected_obj['BlkOpn'],False) == True:
-                    #stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
+                    stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
                     print("OPEN " + str(self.selected_obj["element"]) + " blocked by interlocking")
                 else:
                     self.client.open_switch(self.selected_obj["element"])
@@ -194,12 +194,12 @@ class ControlPage(Page):
             print("clicked CANCEL")
         self.selected_obj = None
 
-    def action_callback_CLOSE(self,result):
+    def action_callback_CLOSE(self,result, stack):
         if result == True:
             print("clicked OK, CLOSING")   
             if self.selected_obj:
                 if 'BlkCls' in self.selected_obj and self.client.get_element_value(self.selected_obj['BlkCls'],False) == True:
-                    #stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
+                    stack.append(PopupPage(str(self.selected_obj["element"]) + " blocked by interlocking", "error"))
                     print("CLOSE " + str(self.selected_obj["element"]) + " blocked by interlocking")
                 else:
                     self.client.close_switch(self.selected_obj["element"])
@@ -409,15 +409,17 @@ class PopupPage(Page):
 
     def handle_key(self, key, stack):
         if key == pygame.K_ESCAPE:
-            if self.on_result:
-                self.on_result(False)
             if len(stack) > 1:
                 stack.pop()
+            if self.on_result:
+                self.on_result(False,stack)
+
         if key == pygame.K_RETURN:
-            if self.on_result:
-                self.on_result(True)
             if len(stack) > 1:
                 stack.pop()
+            if self.on_result:
+                self.on_result(True,stack)
+
 
     def draw(self, surface):
         # Draw semi-transparent overlay

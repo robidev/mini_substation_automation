@@ -1,5 +1,6 @@
 #!/bin/env python3
 import os
+import sys
 import socket
 import threading
 from queue import Queue
@@ -17,8 +18,8 @@ UNIX_SOCKETS = [
     "/tmp/api_sock6",
 ]
 
+
 SERIAL_DEV = "/dev/ttyAMA5"
-#SERIAL_DEV = "/tmp/ttyV0"
 BAUD = 115200
 NUM_CHANNELS = 14
 
@@ -362,6 +363,13 @@ def start_unix_socket(path):
 # ---------------- Main ----------------
 
 def main():
+    global SERIAL_DEV
+    if "-d" in sys.argv:
+        print("Debug is ON")
+        SERIAL_DEV = "/tmp/ttyV0"
+    
+    print("using SERIAL_DEV:" + SERIAL_DEV)
+
     # Start serial thread
     threading.Thread(target=serial_thread, daemon=True).start()
 
