@@ -157,6 +157,14 @@ class DiagramPage(Page):
                             obj["state"] = "intermediate"
                         else:
                             obj["state"] = "error"
+                    else: # try a different data type, only defaulting in true/false position
+                        retry = self.client.get_element_value(obj["element"], "UNKNOWN")
+                        if retry != "UNKNOWN":
+                            if retry: # True or 1?
+                                obj["state"] = "closed"
+                            else:
+                                obj["state"] = "open"
+
 
                 elif obj["type"] == "text":
                     raw = self.client.get_measurement(obj["element"])

@@ -6,7 +6,7 @@ import pygame
 import threading
 from typing import Optional, List
 
-from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, SOCKET_PATHS
+from config import SCREEN_WIDTH, SCREEN_HEIGHT, FPS, SOCKET_PATHS, UNIX_SOCKETS, RELAY_BLUE, GRAY, YELLOW, RED
 from client import IEC61850Client
 
 # Pygame initialization
@@ -25,6 +25,7 @@ class Application:
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pygame.NOFRAME)
         pygame.display.set_caption("Relay interface - Combined IED")
         self.clock = pygame.time.Clock()
+        self.timer = 0.0
         
         # Fonts
         self.title_font = pygame.font.Font(None, 28)
@@ -55,8 +56,21 @@ class Application:
         while self.running:
             self.handle_events()
             self.draw()
-            self.clock.tick(FPS)
+            self.timer += self.clock.tick(FPS) / 1000.0
         
+            if self.timer >= 1.0:
+                hw_conns = self.get_socket_connection_state(UNIX_SOCKETS)
+                for i, _ in enumerate(self.relay_screens):
+                    if self.relay_screens[i].client.connected == True and hw_conns[i] == True: # all is well
+                        self.start_screen.status[i] = RELAY_BLUE
+                    elif self.relay_screens[i].client.connected == False and hw_conns[i] == True: # no connection to server
+                        self.start_screen.status[i] = YELLOW
+                    elif self.relay_screens[i].client.connected == True and hw_conns[i] == False: # no connection to hardware
+                        self.start_screen.status[i] = RED
+                    else: # no connection to hardware and server
+                        self.start_screen.status[i] = GRAY
+                self.timer -= 1.0
+
         self.cleanup()
     
     def handle_events(self):
@@ -97,6 +111,18 @@ class Application:
         for client in self.clients:
             client.stop()
         pygame.quit()
+
+
+    def get_socket_connection_state(self, socket_paths):
+        counts = {name: 0 for name in socket_paths}
+
+        with open("/proc/net/unix") as f:
+            for line in f:
+                for name in socket_paths:
+                    if name in line:
+                        counts[name] += 1
+
+        return [counts[name] > 1 for name in socket_paths]
 
 
 def main():

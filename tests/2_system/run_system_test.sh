@@ -104,12 +104,12 @@ start_bg modbus_sim \
 ###############################################################################
 (
     cd "$BASE_SERVER"
-    ./open_server lo 2102 cfg/FEED1.cfg cfg/FEED1.ext L 65000 &
-    ./open_server lo 3102 cfg/FEED2.cfg cfg/FEED2.ext L 65001 &
-    ./open_server lo 4102 cfg/BUS1.cfg  cfg/BUS1.ext  L 65002 &
-    ./open_server lo 5102 cfg/BUS2.cfg  cfg/BUS2.ext  L 65003 &
-    ./open_server lo 6102 cfg/TR1.cfg   cfg/TR1.ext   L 65004 &
-    ./open_server lo 7102 cfg/TR2.cfg   cfg/TR2.ext   L 65005
+    sudo ./open_server veth1 2102 cfg/FEED1.cfg cfg/FEED1.ext L 65000 &
+    sudo ./open_server veth1 3102 cfg/FEED2.cfg cfg/FEED2.ext L 65001 &
+    sudo ./open_server veth1 4102 cfg/BUS1.cfg  cfg/BUS1.ext  L 65002 &
+    sudo ./open_server veth1 5102 cfg/BUS2.cfg  cfg/BUS2.ext  L 65003 &
+    sudo ./open_server veth1 6102 cfg/TR1.cfg   cfg/TR1.ext   L 65004 &
+    sudo ./open_server veth1 7102 cfg/TR2.cfg   cfg/TR2.ext   L 65005
 ) >"$LOG_DIR/iec61850_servers.log" 2>&1 &
 echo $! >"$PID_DIR/iec61850_servers.pid"
 

@@ -49,6 +49,15 @@ SOCKET_PATHS = [
     "/run/iec61850_ui/iec61850_relay_6.sock",
 ]
 
+UNIX_SOCKETS = [
+    "/tmp/api_sock1",
+    "/tmp/api_sock2",
+    "/tmp/api_sock3",
+    "/tmp/api_sock4",
+    "/tmp/api_sock5",
+    "/tmp/api_sock6"
+]
+
 # =====================================================
 # ELEMENT DEFINITIONS (IEC61850 MAPPING)
 # =====================================================
@@ -222,6 +231,22 @@ ELEMENTS_FEED = {
 }
 
 ELEMENTS_BUS = {
+    "s_cilo1": {
+        "type": "status",
+        "description": "Switch 1 interlock EnaOpn value"
+    },
+    "s_cilo2": {
+        "type": "status",
+        "description": "Switch 2 interlock EnaOpn value"
+    },
+    "s_cilo3": {
+        "type": "status",
+        "description": "Switch 3 interlock EnaOpn value"
+    },
+    "s_cilo4": {
+        "type": "status",
+        "description": "Switch 4 interlock EnaOpn value"
+    },
     # Measurement transformers
    "ctr1": {
         "type": "measurement",
@@ -646,20 +671,76 @@ DIAGRAM_OBJECTS_BUS = [
     },    
     {
         "type": "primitive",
-        "primitive": {"type": "line", "start": (20, 40), "end": (20, 140), "width": 2},
+        "primitive": {"type": "line", "start": (20, 40), "end": (20, 60), "width": 2},
     },
     {
-        "type": "primitive",
-        "primitive": {"type": "line", "start": (80, 40), "end": (80, 140), "width": 2},
-    },
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "open",
+        "element": "s_cilo1",
+        "position": (20, 90),
+        "rotation": 180,
+        "selectable": False,
+    },  
     {
         "type": "primitive",
-        "primitive": {"type": "line", "start": (140, 40), "end": (140, 140), "width": 2},
-    },
+        "primitive": {"type": "line", "start": (20, 120), "end": (20, 140), "width": 2},
+    }, 
+
     {
         "type": "primitive",
-        "primitive": {"type": "line", "start": (200, 40), "end": (200, 140), "width": 2},
+        "primitive": {"type": "line", "start": (80, 40), "end": (80, 60), "width": 2},
     },
+    {
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "open",
+        "element": "s_cilo1",
+        "position": (80, 90),
+        "rotation": 180,
+        "selectable": False,
+    },  
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (80, 120), "end": (80, 140), "width": 2},
+    },
+
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (140, 40), "end": (140, 60), "width": 2},
+    },
+    {
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "open",
+        "element": "s_cilo1",
+        "position": (140, 90),
+        "rotation": 180,
+        "selectable": False,
+    },  
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (140, 120), "end": (140, 140), "width": 2},
+    },
+
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (200, 40), "end": (200, 60), "width": 2},
+    },
+    {
+        "type": "symbol",
+        "name": "disconnector",
+        "state": "open",
+        "element": "s_cilo1",
+        "position": (200, 90),
+        "rotation": 180,
+        "selectable": False,
+    },  
+    {
+        "type": "primitive",
+        "primitive": {"type": "line", "start": (200, 120), "end": (200, 140), "width": 2},
+    },
+
     {
         "type": "text",
         "position": (10, 150),    

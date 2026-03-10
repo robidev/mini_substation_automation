@@ -27,6 +27,7 @@ class StartScreen:
         self.height = height
         self.buttons: List[IconButton] = []
         self._create_buttons()
+        self.status = [GRAY,GRAY,GRAY,GRAY,GRAY,GRAY]
     
     def _create_buttons(self):
         """Create the 3x2 grid of icon buttons"""
@@ -59,8 +60,11 @@ class StartScreen:
         surface.blit(subtitle, subtitle_rect)
         
         # Draw buttons
+        index = 0
         for button in self.buttons:
+            button.color = self.status[index]
             button.draw(surface, font)
+            index += 1
     
     def handle_event(self, event: pygame.event.Event) -> Optional[int]:
         """Handle events, return relay_id if a button is clicked"""
@@ -68,7 +72,6 @@ class StartScreen:
             if button.handle_event(event):
                 return button.relay_id
         return None
-
 
 # =====================================================
 # RELAY SCREEN
