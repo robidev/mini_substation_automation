@@ -1475,19 +1475,19 @@
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="2" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS1" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="2" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="3" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS1" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="3" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="4" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS1" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS1" ldInst="LD1" lnClass="CILO" lnInst="4" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 
@@ -1644,19 +1644,19 @@
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="2" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS2" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="2" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="3" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS2" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="3" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 					<LN lnClass="PTRC" lnType="PTRC$oscd$_a60344357bbc2c12" inst="4" prefix="">
 						<Inputs>
 							<ExtRef intAddr="Op1" desc="PDIF_trip" iedName="BUS2" ldInst="LD1" lnClass="PDIF" lnInst="1" doName="Op" daName="general" serviceType="Poll"/>
-							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="1" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
+							<ExtRef intAddr="EnaOpn" desc="CILO_EnaOpn" iedName="BUS2" ldInst="LD1" lnClass="CILO" lnInst="4" doName="EnaOpn" daName="stVal" serviceType="Poll"/>
 						</Inputs>
 					</LN>
 
