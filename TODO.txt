@@ -1,6 +1,5 @@
 [gui+ui_config]
 	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
-NICE:   indicate hw-pi service running????
 
 [substation hardware]
          -make RTU front with led-holes, connect-print, and brackets+glue
@@ -11,9 +10,11 @@ iec61850server soms niet online bij boot?
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
-ensure GOOSE is working for pdif/cilo/ptrc -> it is not, seems subscriber has an issue
 gateway undervolts...
 value scaling
+
+NICE:   indicate hw-pi service running????
+        NTP timeserver op gtw
 
 NEXT:
 

@@ -695,7 +695,7 @@ DIAGRAM_OBJECTS_BUS = [
         "type": "symbol",
         "name": "disconnector",
         "state": "open",
-        "element": "s_cilo1",
+        "element": "s_cilo2",
         "position": (80, 90),
         "rotation": 180,
         "selectable": False,
@@ -713,7 +713,7 @@ DIAGRAM_OBJECTS_BUS = [
         "type": "symbol",
         "name": "disconnector",
         "state": "open",
-        "element": "s_cilo1",
+        "element": "s_cilo3",
         "position": (140, 90),
         "rotation": 180,
         "selectable": False,
@@ -731,7 +731,7 @@ DIAGRAM_OBJECTS_BUS = [
         "type": "symbol",
         "name": "disconnector",
         "state": "open",
-        "element": "s_cilo1",
+        "element": "s_cilo4",
         "position": (200, 90),
         "rotation": 180,
         "selectable": False,
@@ -746,28 +746,28 @@ DIAGRAM_OBJECTS_BUS = [
         "position": (10, 150),    
         "formatted_text" : "",
         "element": "ctr1",
-        "template": "CT 1:\n{value:.1f}\nAmp",
+        "template": "FEED1\nCT 1:\n{value:.1f}\nAmp",
     },
     {
         "type": "text",
         "position": (70, 150),    
         "formatted_text" : "",
         "element": "ctr2",
-        "template": "CT 2:\n{value:.1f}\nAmp",
+        "template": "FEED2\nCT 2:\n{value:.1f}\nAmp",
     },
     {
         "type": "text",
         "position": (130, 150),    
         "formatted_text" : "",
         "element": "ctr3",
-        "template": "CT 3:\n{value:.1f}\nAmp",
+        "template": "TR1\nCT 3:\n{value:.1f}\nAmp",
     },
     {
         "type": "text",
         "position": (190, 150),    
         "formatted_text" : "",
         "element": "ctr4",
-        "template": "CT 4:\n{value:.1f}\nAmp",
+        "template": "TR2\nCT 4:\n{value:.1f}\nAmp",
     },
     {
         "type": "text",
@@ -882,8 +882,16 @@ DIAGRAM_OBJECTS_TR = [
 DIAGRAM_OBJECTS = [
     DIAGRAM_OBJECTS_FEED,
     DIAGRAM_OBJECTS_FEED,
-    DIAGRAM_OBJECTS_BUS,
-    DIAGRAM_OBJECTS_BUS,
+    DIAGRAM_OBJECTS_BUS + [{
+        "type": "text",
+        "position": (40, 22),    
+        "formatted_text" : "Busbar 1"
+    }],
+    DIAGRAM_OBJECTS_BUS + [{
+        "type": "text",
+        "position": (40, 22),    
+        "formatted_text" : "Busbar 2"
+    }],
     DIAGRAM_OBJECTS_TR,
     DIAGRAM_OBJECTS_TR
 ]

@@ -102,19 +102,20 @@ start_bg modbus_sim \
 ###############################################################################
 # 6️⃣ IEC 61850 OPEN SERVERS
 ###############################################################################
+sudo ./goose-bridge-setup.sh
 (
     cd "$BASE_SERVER"
-    sudo ./open_server veth1 2102 cfg/FEED1.cfg cfg/FEED1.ext L 65000 &
-    sudo ./open_server veth1 3102 cfg/FEED2.cfg cfg/FEED2.ext L 65001 &
-    sudo ./open_server veth1 4102 cfg/BUS1.cfg  cfg/BUS1.ext  L 65002 &
-    sudo ./open_server veth1 5102 cfg/BUS2.cfg  cfg/BUS2.ext  L 65003 &
-    sudo ./open_server veth1 6102 cfg/TR1.cfg   cfg/TR1.ext   L 65004 &
-    sudo ./open_server veth1 7102 cfg/TR2.cfg   cfg/TR2.ext   L 65005
+    sudo ./open_server veth1p 2102 cfg/FEED1.cfg cfg/FEED1.ext L 65000 &
+    sudo ./open_server veth2p 3102 cfg/FEED2.cfg cfg/FEED2.ext L 65001 &
+    sudo ./open_server veth3p 4102 cfg/BUS1.cfg  cfg/BUS1.ext  L 65002 &
+    sudo ./open_server veth4p 5102 cfg/BUS2.cfg  cfg/BUS2.ext  L 65003 &
+    sudo ./open_server veth5p 6102 cfg/TR1.cfg   cfg/TR1.ext   L 65004 &
+    sudo ./open_server veth6p 7102 cfg/TR2.cfg   cfg/TR2.ext   L 65005
 ) >"$LOG_DIR/iec61850_servers.log" 2>&1 &
 echo $! >"$PID_DIR/iec61850_servers.pid"
 
 sleep 5
-
+sudo chmod 777 /run/iec61850_ui/*.sock
 ###############################################################################
 # 7️⃣ IEC 61850 GATEWAY (venv)
 ###############################################################################
