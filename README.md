@@ -39,7 +39,7 @@ The project integrates **Raspberry Pi**, **Arduino**, **Linux PCs**, and multipl
 
 - **Gateway / RTU**
   - Raspberry Pi
-  - Runs IEC 61850 ↔ IEC 60870-5-104 gateway
+  - Runs IEC 61850/Modbus ↔ IEC 60870-5-104 gateway
 
 - **HMI**
   - Asus EEE PC running Linux
