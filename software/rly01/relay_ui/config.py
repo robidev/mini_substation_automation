@@ -433,6 +433,19 @@ ELEMENTS_BUS = {
         "type": "setting",
         "description": "Local/Remote Control"
     },
+    "s_LoSet": {
+        "type": "setting",
+        "description": "Low operate value"
+    },
+    "s_HiSet": {
+        "type": "setting",
+        "description": "High operate value"
+    },
+    "s_MinOpTmms": {
+        "type": "setting",
+        "description": "Minimum operate time"
+    },
+
 }
 
 ELEMENTS = [
@@ -454,6 +467,9 @@ SETTINGS_FEED = [
 ]
 
 SETTINGS_BUS = [
+    ["Lo setting",    "s_LoSet", float, 0.0],
+    ["Hi setting",    "s_HiSet", float, 0.0],
+    ["Min. delay",    "s_MinOpTmms", int, 0],
     ["Local/Remote", "loc",    bool,  False],
 ]
 

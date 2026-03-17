@@ -1,16 +1,14 @@
-[gui+ui_config]
-	config protection settings for all ieds and ensure PDIF and PTOC settings are sane and propagated from scd
-        config network bridge for GOOSE propagation
+server, ui, client, gateway updaten
 
-[substation hardware]
-	 -stickers?
+[rly]                 -config network bridge on pi for GOOSE propagation
+[substation hardware] -stickers?
 
 issues:
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
-gateway undervolts...
 value scaling
+
 
 NICE:   indicate hw-pi service running????
         NTP timeserver op gtw
