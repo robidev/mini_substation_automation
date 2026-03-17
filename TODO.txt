@@ -6,7 +6,6 @@
 	 -stickers?
 
 issues:
-iec61850server soms niet online bij boot?
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
@@ -21,33 +20,5 @@ NEXT:
 [SCADA]
 make central SCADA display
 update eventlet(and maybe more)
-
-
-
-
-./mk geeft op gateway:
-
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]: Traceback (most recent call last):
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/app.py", line 258, in <module>
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     _client.poll()
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     ~~~~~~~~~~~~^^
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/libmodbusmaster.py", line 173, in poll
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     self.ReadValue(key)
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     ~~~~~~~~~~~~~~^^^^^
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/libmodbusmaster.py", line 160, in ReadValue
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     value = self.readinputregister(con, address, device_id)
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/libmodbusmaster.py", line 202, in readinputregister
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     result = con.read_input_registers(proto_address, count=1, slave=device_id)
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/.venv/lib/python3.13/site-packages/pymodbus/client/mixin.py", line 136, in read_input_registers
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     return self.execute(no_response_expected, pdu_reg.ReadInputRegistersRequest(address=address, count=count, dev_id=slave))
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:            ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/.venv/lib/python3.13/site-packages/pymodbus/client/base.py", line 203, in execute
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     return self.transaction.sync_execute(no_response_expected, request)
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:   File "/opt/iec61850_open_gateway/.venv/lib/python3.13/site-packages/pymodbus/transaction/transaction.py", line 147, in sync_execute
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]:     raise ModbusIOException(txt)
-Mar 09 23:35:59 gtw01 iec61850-open-gateway[1498]: pymodbus.exceptions.ModbusIOException: Modbus Error: [Input/Output] No response received after 3 retries, continue with next request
-
-client verbint na restart niet met 104 gateway
 
 
