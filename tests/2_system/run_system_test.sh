@@ -84,14 +84,14 @@ start_bg serial_mock \
 # 3️⃣ SERIAL SERVICE
 ###############################################################################
 start_bg serial_service \
-    python3 -u "$BASE_MINI/software/rly01/service.py" -d
+    python3 -u "$BASE_MINI/software/rly01/opt/hw_service/service.py" -d
 
 sleep 15
 ###############################################################################
 # 4️⃣ UI SERVICE
 ###############################################################################
 start_bg ui_service \
-    python3 -u "$BASE_MINI/software/rly01/relay_ui/relay_320x480.py"
+    python3 -u "$BASE_MINI/software/rly01/opt/ui_service/relay_320x480.py"
 
 ###############################################################################
 # 5️⃣ MODBUS SIMULATOR

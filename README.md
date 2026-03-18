@@ -1,61 +1,40 @@
-# Miniature Substation Automation Project  
-*A complete IEC 61850-enabled training, testing, and demonstration platform.*
+# Miniature IEC 61850 Substation
 
 This project implements a fully automated **miniature high-voltage substation**, including switchyard, protection relay, CT simulation, medium-voltage switchgear, an IEC 61850/IEC 60870-5-104 gateway, HMI, and a central SCADA system.
 
-The goal is to create a realistic environment for experimenting with:
-
-- IEC 61850 servers/clients  
-- GOOSE and MMS communication  
-- Protection-relay logic and interlocking  
-- SCADA integration  
-- Mixed-protocol environments (Modbus, IEC 104, IEC 61850)  
-- Hardware–software co-simulation  
-- Educational and research applications  
-
-The project integrates **Raspberry Pi**, **Arduino**, **Linux PCs**, and multiple open-source automation components.
+It implements a hardware–software co-simulation implementing IEC 61850 communication using Raspberry Pi devices, an Arduino-based measurement unit, and a Linux HMI. The project combines physical components (servos, relay UI, Arduino I/O) with IEC 61850 servers, clients, and a gateway to simulate a realistic substation environment.
 
 ---
 
-## 🔌 System Overview
+## 📸 Build Overview
 
-**Components:**
+![Mini substation build](docs/build_steps/5_front/20260307_203248.jpg)
 
-- **Switchyard Model**
-  - Raspberry Pi with servo-hat
-  - 4 miniature circuit breakers
-  - 10 disconnectors (motorized/servo)
-  - Local I/O logic
+![Baseplate and mechanics](docs/build_steps/3_baseplate/20251004_214522.min.jpg)
 
-- **Protection Relay Model**
-  - Raspberry Pi with LCD display
-  - Receives CT readings from Arduino
-  - Implements simplified protection logic (overcurrent, interlocking, trip commands)
+---
 
-- **CT Measurement Unit**
-  - Arduino with analog inputs
-  - Sends current readings over serial to relay
-  - Provides Modbus TCP interface for MS switchgear I/O
+## 🎯 Project Scope
 
-- **Gateway / RTU**
-  - Raspberry Pi
-  - Runs IEC 61850/Modbus ↔ IEC 60870-5-104 gateway
+This repository provides:
 
-- **HMI**
-  - Asus EEE PC running Linux
-  - Uses IEC 61850 client for SCADA-style interface
+* A **miniature substation model** with moving switchgear
+* A **protection relay simulation** with local UI
+* A **measurement unit (Arduino)** with Modbus + serial interfaces
+* A **gateway** bridging systems using IEC 61850
+* A **local HMI** using IEC 61850 client functionality
+* Configuration and data models for IEC 61850 (SCL-based)
 
-- **Central SCADA**
-  - Multi-feeder overview
-  - Alarm/event lists
-  - Real-time topology view
-  - Integration via IEC 61850 and IEC 104
+It is designed for:
+
+* IEC 61850 experimentation
+* Hardware/software integration
+* Substation modeling and visualization
+* Educational and demonstration purposes
 
 ---
 
 ## 🏗️ Architecture (High-Level)
-
-```
 
 ```
                 +------------------------+
@@ -78,8 +57,6 @@ The project integrates **Raspberry Pi**, **Arduino**, **Linux PCs**, and multipl
  +--------------------------+--------------------------+
  |                          |                          |
  v                          v                          v
-```
-
 +------------+         +----------------+         +------------------+
 | Switchyard |         | Protection     |         | HMI (EEE PC)     |
 | (Servo Pi) |<------->| Relay (LCD Pi) |<------->| IEC61850 Client  |
@@ -92,171 +69,308 @@ v
 +-----------+
 
 ```
+---
+
+## 🧱 System Components
+
+### 📟 Measurement Unit (Arduino)
+
+* Reads analog inputs (simulated current/measurements)
+* Implements:
+
+  * Serial communication with the switchyard for passing analog measurements
+  * Modbus server (`ModbusSrv`)
+* Firmware located in `firmware/arduino_relay`
+
+### 🔌 Switchyard (Raspberry Pi)
+
+* Controls servos representing disconnectors and breakers
+* Runs a hardware service (`hw_service`)
+* Interfaces with the arduino and other raspberry pi via serial
+
+### ⚡ Protection Relay (Raspberry Pi)
+
+* Runs:
+
+  * Hardware service to interface with switchyrd over serial
+  * 6 IEC 61850 servers connected to the switchyard for measurements and I/O 
+  * UI service (LCD-based interface) for all 6 IEC 61850 servers
+* Displays status and allows interaction
+* Receives CT readings from Arduino
+* Implements protection logic (overcurrent, interlocking, trip commands)
+
+
+### 🌐 Gateway (Raspberry Pi)
+
+* Runs IEC 61850 gateway service that supports an IEC 60870-5-104 server and IEC 61850 and modbus clients
+* Uses:
+
+  * `iec61850_open_gateway`
+* Configured via:
+  * `application_config/gateway_config_ini/`
+
+### 🖥️ HMI (EEE PC)
+
+* Runs IEC 61850/IEC 60870-5-104 client
+* Displays SVG-based single line UI:
+
+  * `application_config/local_hmi_svg/`
 
 ---
 
-## 📁 Repository Structure
-
-```
-
-mini_substation_automation/
-│
-├── docs/
-│   ├── architecture/
-│   ├── communication_maps/
-│   ├── SCL_files/
-│   └── hardware/
-│
-├── hardware/
-│   ├── switchyard/
-│   ├── protection_relay/
-│   ├── ct_arduino/
-│   ├── ms_switchgear/
-│   └── hmi_pc/
-│
-├── firmware/
-│   ├── arduino_ct/
-│   ├── arduino_modbus/
-│   ├── rpi_switchyard/
-│   └── rpi_relay/
-│
-├── software/
-│   ├── iec61850/
-│   │   ├── servers/
-│   │   ├── clients/
-│   │   ├── gateway_rtu/
-│   │   └── utils/
-│   ├── scada/
-│   │   ├── central_scada/
-│   │   ├── hmi_app/
-│   │   └── data_models/
-│   └── tools/
-│
-├── config/
-│   ├── iec61850/
-│   ├── modbus/
-│   ├── hmi/
-│   ├── scada/
-│   └── gateway/
-│
-├── deps/
-│   ├── libiec61850/
-│   ├── iec61850_open_server/
-│   ├── iec61850_open_client/
-│   ├── iec61850_open_gateway/
-│   └── open_scada_dms/
-│
-├── scripts/
-├── tests/
-├── .gitmodules
-└── README.md
-
-````
-
----
-
-## 🧩 Included External Projects (Git Submodules)
-
-The following upstream projects are included as **read-only Git submodules**:
-
-- **libiec61850**  
-- **iec61850_open_server**  
-- **iec61850_open_client**  
-- **iec61850_open_gateway**  
-- **open_scada_dms**
-
-All custom extensions or plugins for these live **inside this repository**, not inside the upstream code.
-
-You may create local branches for experiments if needed.
-
----
-
-## 🛠️ Building
-
-### Clone with submodules:
-
-```bash
-git clone --recursive https://github.com/<yourname>/mini_substation_automation.git
-````
-
-If you forgot `--recursive`:
-
-```bash
-git submodule update --init --recursive
-```
-
-### Building the software stack
-
-Each subcomponent has its own `README.md` under:
-
-* `software/iec61850/servers/`
-* `software/iec61850/clients/`
-* `software/iec61850/gateway_rtu/`
-* `software/scada/*`
-* `firmware/*`
-* `hardware/*`
-
-Most IEC 61850 components follow:
-
-```bash
-mkdir build && cd build
-cmake ..
-make -j4
-```
-
----
 
 ## 📡 Protocols Used
 
-| Subsystem              | Protocols                          |
-| ---------------------- | ---------------------------------- |
-| IEC61850 Server/Client | MMS, GOOSE                         |
-| Gateway/RTU            | IEC60870-5-104 → IEC61850 bridging |
-| CT Arduino Unit        | Serial + Modbus TCP                |
-| Switchyard RPi         | GOOSE (commands)                   |
-| SCADA & HMI            | IEC61850 Client                    |
+| Subsystem              | Protocols                                 |
+| ---------------------- | ----------------------------------------- |
+| IEC61850 Server/Client | MMS, GOOSE                                |
+| Gateway/RTU            | IEC60870-5-104 → IEC61850/Modbus bridging |
+| CT Arduino Unit        | Serial + Modbus TCP                       |
+| Switchyard RPi         | Serial (commands)                         |
+| SCADA & HMI            | IEC61850/IEC60870-5-104 Client            |
+
+---
+
+## 🧠 IEC 61850 Stack
+
+This project depends on three external components (in `deps/`):
+
+* `iec61850_open_server`
+* `iec61850_open_client`
+* `iec61850_open_gateway`
+* `open_scada_dms`
+
+These are expected to be cloned into:
+
+```
+deps/
+├── iec61850_open_server
+├── iec61850_open_client
+├── iec61850_open_gateway
+└── open_scada_dms
+```
+
+Configuration for these components is provided in:
+
+```
+application_config/iec61850_open_server_config/
+```
+
+Including:
+
+* `.cfg` and `.ext` files (IED + data models)
+* connector configs (`ui_connector.config`, `hw_connector.config`)
+
+---
+
+## 🗂️ Repository Structure
+
+```
+.
+├── application_config/
+│   ├── iec61850_open_server_config/
+│   ├── gateway_config_ini/
+│   ├── local_hmi_svg/
+│   ├── SCL_files/
+│   └── modbus_model/
+│
+├── firmware/
+│   ├── arduino_relay/
+│   ├── rpi_relay/
+│   ├── rpi_switchyard/
+│   └── rpi_gateway/
+│
+├── software/
+│   ├── rly01/        # relay node software (UI + HW service)
+│   └── hs01/         # switchyard node software
+│
+├── docs/
+│   ├── architecture/
+│   ├── hardware/
+│   ├── communication_maps/
+│   └── build_steps/
+│
+├── tests/
+│   ├── 0_unit/
+│   ├── 1_integration/
+│   └── 2_system/
+│
+├── deps/
+└── scripts/
+```
+
+---
+
+## 🏗️ Architecture
+
+### Hardware & System Views
+
+#### Substation Overview
+
+![Substation single line](docs/architecture/substation_single_line_with_ieds_view.png)
+
+#### Station Bus Network
+
+![Station bus network](docs/architecture/stationbus_network_view.png)
+
+#### IEC 61850 Logical Nodes
+
+![Logical nodes](docs/architecture/IEC61850_Logical_node_mapping_view.png)
+
+#### GOOSE Mapping
+
+![GOOSE mapping](docs/architecture/GOOSE_mapping.png)
+
+#### Hardware Schematic
+
+![Hardware schematic](docs/architecture/simulation_hardware_schematic_view.png)
+
+#### Data Model View
+
+![Datapoint model](docs/architecture/datapoint_element_in_svg_view.png)
+
+> Source: `docs/architecture/mini_substation.drawio`
+
+---
+
+## ⚙️ Configuration
+
+### IEC 61850
+
+Located in:
+
+```
+application_config/iec61850_open_server_config/
+```
+
+Includes:
+
+* IED configurations (`BUS`, `TR`, `FEED`)
+* Connector configurations:
+
+  * `hw_connector.config`
+  * `ui_connector.config`
+
+### Gateway
+
+```
+application_config/gateway_config_ini/
+└── config.remote.ini
+```
+
+### HMI
+
+```
+application_config/local_hmi_svg/
+└── mmi.remote.svg
+```
 
 ---
 
 ## 🧪 Testing
 
-The `tests/` directory contains:
+The repository includes multiple levels of testing:
 
-* Unit tests (firmware & C code)
-* IEC61850 simulation tools
-* Protocol fuzzing utilities
-* End-to-end system tests (substation → SCADA)
+### Unit Tests
 
-Example:
-
-```bash
-cd tests/integration
-./run_switchyard_sim.sh
+```
+tests/0_unit/
 ```
 
+* Hardware connector mocks
+* Serial and Modbus testing
+* Arduino interaction scripts
+
+### Integration Tests
+
+```
+tests/1_integration/
+```
+
+* Relay and Modbus integration
+
+### System Tests
+
+```
+tests/2_system/
+```
+
+* Full system orchestration:
+
+  * IEC 61850 servers
+  * Gateway
+  * UI service
+  * Serial mocks
+* Includes:
+
+  * `run_system_test.sh`
+  * `stop_system_test.sh`
+  * Logs and PID tracking
+
 ---
 
-## 🤝 Contributing
+## 🚀 Setup Notes
 
-Contributions are welcome, especially in:
+### Clone dependencies
 
-* IEC61850 data modeling
-* SCL engineering
-* Protection logic algorithms
-* SCADA visualizations
-* Hardware integration (servos, sensors, UI)
+```bash
+git clone <repo>
+cd deps
 
-Please follow branching guidelines:
+# clone required projects manually
+git clone <iec61850_open_server>
+git clone <iec61850_open_client>
+git clone <iec61850_open_gateway>
+git clone <open_scada_dms>
+```
 
-* `main` → stable project
-* `dev` → active changes
-* Feature branches: `feature/<name>`
+### Firmware & Services
 
-Submodules should **not** be modified unless working on a dedicated branch.
+Each platform has its own setup steps:
+
+* Arduino:
+
+  * `firmware/arduino_relay/`
+* Relay Pi:
+
+  * `firmware/rpi_relay/`
+* Switchyard Pi:
+
+  * `firmware/rpi_switchyard/`
+* Gateway Pi:
+
+  * `firmware/rpi_gateway/`
+
+Systemd service files are included (`*.service`).
 
 ---
 
-## 📝 License
+## 🛠️ Software Components
+
+### Relay Node (`software/rly01`)
+
+* `hw_service/` → hardware interaction
+* `ui_service/` → local UI rendering
+
+### Switchyard Node (`software/hs01`)
+
+* Hardware service controlling servos
+* Servo limits configuration (`servo_limits.json`)
+
+---
+
+## 📚 Documentation
+
+Additional documentation:
+
+* `docs/hardware/` → wiring and pinouts
+* `docs/communication_maps/` → protocol mapping notes
+* `docs/substation.txt` → general system description
+* `docs/frontpanel_design/` → enclosure and panel design
+
+---
+
+## 📜 License
 
 Apache 2.0
 
@@ -267,12 +381,8 @@ Apache 2.0
 For questions, ideas, or collaboration:
 
 * Project owner: Robin
-* GitHub: [https://github.com/](https://github.com/)robidev
+[https://github.com/robidev](https://github.com/robidev)
 
 ---
 
-Enjoy experimenting with your very own **miniature digital substation**! ⚡
-This project aims to bring IEC61850 automation into a fun, hands-on, hardware-rich environment.
-
-```
 

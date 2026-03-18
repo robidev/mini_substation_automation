@@ -981,6 +981,11 @@
 							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
 							<RptEnabled max="1"/>
 						</ReportControl>
+						<ReportControl name="ReportControl_002" buffered="true" rptID="Feed1Swi2" bufTime="100" confRev="1" datSet="Feed1SwiPos" intgPd="2000">
+							<TrgOps dchg="true" period="true" gi="true"/>
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
+							<RptEnabled max="1"/>
+						</ReportControl>
 						<GSEControl name="Feed1SwiPosCtl" confRev="0" type="GOOSE" appID="0001" datSet="Feed1SwiPos"/>
 					</LN0>
 					<LN lnClass="LPHD" lnType="LPHD$oscd$_8ca3cb769327538e" inst="1" prefix=""/>
@@ -1000,7 +1005,7 @@
 						<DOI name="StrVal">
 							<SDI name="setMag">
 								<DAI name="f">
-									<Val>10000.3</Val>
+									<Val>100.3</Val>
 								</DAI>
 							</SDI>
 						</DOI>
@@ -1166,6 +1171,11 @@
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="4" doName="Pos" daName="stVal" fc="ST"/>
 						</DataSet>
 						<ReportControl name="ReportControl_001" buffered="true" rptID="Feed2Swi" bufTime="100" confRev="1" datSet="Feed2SwiPos" intgPd="2000">
+							<TrgOps dchg="true" period="true" gi="true"/>
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
+							<RptEnabled max="1"/>
+						</ReportControl>
+						<ReportControl name="ReportControl_002" buffered="true" rptID="Feed2Swi2" bufTime="100" confRev="1" datSet="Feed2SwiPos" intgPd="2000">
 							<TrgOps dchg="true" period="true" gi="true"/>
 							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
 							<RptEnabled max="1"/>
@@ -1419,6 +1429,25 @@
 					</LN>
 
 					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix="">
+						<DOI name="LoSet">
+							<SDI name="setMag">
+								<DAI name="f">
+									<Val>200.3</Val>
+								</DAI>
+							</SDI>
+						</DOI>
+						<DOI name="HiSet">
+							<SDI name="setMag">
+								<DAI name="f">
+									<Val>0.3</Val>
+								</DAI>
+							</SDI>
+						</DOI>
+						<DOI name="MinOpTmms">
+							<DAI name="setVal">
+								<Val>42</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="PDIF_in_Amp1_0" desc="sample_a1" iedName="BUS1" ldInst="LD1" prefix="F1" lnClass="TCTR" lnInst="1" doName="AmpSv" daName="instMag.i" serviceType="Poll"/>
 							<ExtRef intAddr="PDIF_in_Amp2_0" desc="sample_a2" iedName="BUS1" ldInst="LD1" prefix="F1" lnClass="TCTR" lnInst="2" doName="AmpSv" daName="instMag.i" serviceType="Poll"/>
@@ -1589,6 +1618,25 @@
 					</LN>
 
 					<LN lnClass="PDIF" lnType="PDIF$oscd$_ab16057220381a95" inst="1" prefix="">
+						<DOI name="LoSet">
+							<SDI name="setMag">
+								<DAI name="f">
+									<Val>200.5</Val>
+								</DAI>
+							</SDI>
+						</DOI>
+						<DOI name="HiSet">
+							<SDI name="setMag">
+								<DAI name="f">
+									<Val>0.35</Val>
+								</DAI>
+							</SDI>
+						</DOI>
+						<DOI name="MinOpTmms">
+							<DAI name="setVal">
+								<Val>43</Val>
+							</DAI>
+						</DOI>
 						<Inputs>
 							<ExtRef intAddr="PDIF_in_Amp1_0" desc="sample_a1" iedName="BUS2" ldInst="LD1" prefix="F1" lnClass="TCTR" lnInst="1" doName="AmpSv" daName="instMag.i" serviceType="Poll"/>
 							<ExtRef intAddr="PDIF_in_Amp2_0" desc="sample_a2" iedName="BUS2" ldInst="LD1" prefix="F1" lnClass="TCTR" lnInst="2" doName="AmpSv" daName="instMag.i" serviceType="Poll"/>
@@ -1697,6 +1745,11 @@
 							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
 							<RptEnabled max="1"/>
 						</ReportControl>
+						<ReportControl name="ReportControl_002" buffered="true" rptID="Trafo1Swi2" bufTime="100" confRev="1" datSet="Trafo1SwiPos" intgPd="2000">
+							<TrgOps dchg="true" period="true" gi="true"/>
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
+							<RptEnabled max="1"/>
+						</ReportControl>
 						<GSEControl name="Trafo1SwiPosCtl" confRev="0" type="GOOSE" appID="0005" datSet="Trafo1SwiPos"/>
 					</LN0>
 					<LN lnClass="LPHD" lnType="LPHD$oscd$_8ca3cb769327538e" inst="1" prefix=""/>
@@ -1716,7 +1769,7 @@
 						<DOI name="StrVal">
 							<SDI name="setMag">
 								<DAI name="f">
-									<Val>10000.3</Val>
+									<Val>100.3</Val>
 								</DAI>
 							</SDI>
 						</DOI>
@@ -1859,6 +1912,11 @@
 							<FCDA ldInst="LD1" prefix="" lnClass="XSWI" lnInst="3" doName="Pos" daName="stVal" fc="ST"/>
 						</DataSet>
 						<ReportControl name="ReportControl_001" buffered="true" rptID="Trafo2Swi" bufTime="100" confRev="1" datSet="Trafo2SwiPos" intgPd="2000">
+							<TrgOps dchg="true" period="true" gi="true"/>
+							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
+							<RptEnabled max="1"/>
+						</ReportControl>
+						<ReportControl name="ReportControl_002" buffered="true" rptID="Trafo2Swi2" bufTime="100" confRev="1" datSet="Trafo2SwiPos" intgPd="2000">
 							<TrgOps dchg="true" period="true" gi="true"/>
 							<OptFields seqNum="true" timeStamp="true" dataSet="true" reasonCode="true" configRef="true"/>
 							<RptEnabled max="1"/>
