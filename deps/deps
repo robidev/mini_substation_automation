@@ -26,6 +26,16 @@ iec61850_open_client
   - flask
   - flask-socketio
   - gevent
+open_scada_dms
+  - influxdb
+  - redis
+  - mongodb
+  - grafana
+  - redis-commander
+  - admin-mongo
+  - portainer
+  - flask-socketio
+  - lib60870
 
 hardware:
 arduino-mega
@@ -43,3 +53,4 @@ custom wires and boards:
  - leds
 20W 5v PSU
 servos
+
