@@ -10,7 +10,7 @@ It implements a hardware–software co-simulation implementing IEC 61850 communi
 
 ![Mini substation build](docs/build_steps/5_front/20260307_203248.jpg)
 
-![Baseplate and mechanics](docs/build_steps/3_baseplate/20251004_214522.min.jpg)
+![Baseplate and mechanics](docs/build_steps/3_baseplate/20251126_230217.min.jpg)
 
 ---
 
