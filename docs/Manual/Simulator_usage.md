@@ -8,7 +8,7 @@ overview
 * Output
 * Substation automation
 
-## general operating description.
+## General operating description.
 modify via local control, modify via station HMI, modify via remote SCADA DMS. Measure power via duspel, observe outputs energised.
 
 ## Comissioning steps. 

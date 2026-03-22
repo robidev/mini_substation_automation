@@ -1,0 +1,314 @@
+[
+  {
+    "id": "FEED1LD1_CBR1_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'FEED1LD1_CBR1_oper')"
+  },
+  {
+    "id": "FEED2LD1_CBR1_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'FEED2LD1_CBR1_oper')"
+  },
+  {
+    "id": "TR1LD1_CBR1_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'TR1LD1_CBR1_oper')"
+  },
+  {
+    "id": "TR2LD1_CBR1_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'TR2LD1_CBR1_oper')"
+  },
+  {
+    "id": "mscbr1_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr1_oper')"
+  },
+  {
+    "id": "mscbr3_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr3_oper')"
+  },
+  {
+    "id": "mscbr4_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr4_oper')"
+  },
+  {
+    "id": "mscbr5_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr5_oper')"
+  },
+  {
+    "id": "mscbr6_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr6_oper')"
+  },
+  {
+    "id": "mscbr8_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr8_oper')"
+  },
+  {
+    "id": "mscbr9_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr9_oper')"
+  },
+  {
+    "id": "mscbr10_status",
+    "class": "XCBR",
+    "value": null,
+    "onclick": "open_control(evt,'mscbr10_oper')"
+  },
+  {
+    "id": "FEED1LD1_SWI2_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED1LD1_SWI2_oper')"
+  },
+  {
+    "id": "FEED1LD1_SWI3_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED1LD1_SWI3_oper')"
+  },
+  {
+    "id": "FEED1LD1_SWI4_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED1LD1_SWI4_oper')"
+  },
+  {
+    "id": "FEED2LD1_SWI2_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED2LD1_SWI2_oper')"
+  },
+  {
+    "id": "FEED2LD1_SWI3_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED2LD1_SWI3_oper')"
+  },
+  {
+    "id": "FEED2LD1_SWI4_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'FEED2LD1_SWI4_oper')"
+  },
+  {
+    "id": "TR1LD1_SWI2_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'TR1LD1_SWI2_oper')"
+  },
+  {
+    "id": "TR1LD1_SWI3_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'TR1LD1_SWI3_oper')"
+  },
+  {
+    "id": "TR2LD1_SWI2_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'TR2LD1_SWI2_oper')"
+  },
+  {
+    "id": "TR2LD1_SWI3_status",
+    "class": "XSWI",
+    "value": null,
+    "onclick": "open_control(evt,'TR2LD1_SWI3_oper')"
+  },
+  {
+    "id": "V_Bus_1_HV",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'V_Bus_1_HV')"
+  },
+  {
+    "id": "V_Bus_2_HV",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'V_Bus_2_HV')"
+  },
+  {
+    "id": "FEED1LD1_SWI2_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED1LD1_CTR_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'FEED1LD1_CTR_value')"
+  },
+  {
+    "id": "FEED1LD1_CBR1_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED1LD1_SWI3_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED1LD1_SWI4_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED2LD1_SWI2_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED2LD1_CTR_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'FEED2LD1_CTR_value')"
+  },
+  {
+    "id": "FEED2LD1_CBR1_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED2LD1_SWI3_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "FEED2LD1_SWI4_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR1LD1_SWI2_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR1LD1_SWI3_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR1LD1_CBR1_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR1LD1_CTR_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'TR1LD1_CTR_value')"
+  },
+  {
+    "id": "TR2LD1_SWI2_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR2LD1_SWI3_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR2LD1_CBR1_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": null
+  },
+  {
+    "id": "TR2LD1_CTR_value",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'TR2LD1_CTR_value')"
+  },
+  {
+    "id": "V_PT1_BUS",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'V_PT1_BUS')"
+  },
+  {
+    "id": "Amp_PT1_IN",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT1_IN')"
+  },
+  {
+    "id": "Amp_PT2_F1",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F1')"
+  },
+  {
+    "id": "Amp_PT2_F2",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F2')"
+  },
+  {
+    "id": "Amp_PT2_F3",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F3')"
+  },
+  {
+    "id": "V_PT2_BUS",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'V_PT2_BUS')"
+  },
+  {
+    "id": "Amp_PT2_IN",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_IN')"
+  },
+  {
+    "id": "Amp_PT2_F4",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F4')"
+  },
+  {
+    "id": "Amp_PT2_F5",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F5')"
+  },
+  {
+    "id": "Amp_PT2_F6",
+    "class": "MEAS",
+    "value": null,
+    "onclick": "open_control(evt,'Amp_PT2_F6')"
+  }
+]
