@@ -1,6 +1,4 @@
-server, ui, client, gateway updaten
-
-[rly]                 -config network bridge on pi for GOOSE propagation
+server+ui updaten
 [substation hardware] -stickers?
 
 issues:
@@ -17,6 +15,13 @@ NEXT:
 
 [SCADA]
 make central SCADA display
-update eventlet(and maybe more)
+update readme, that the temp docker is no longer needed for mongodb
+improve healt-check for mongodb
+add datapoint mappings for svg/schema
+draw HS incomer, MS outgoing, and a few MSR/houses
+also add all to gismap
+test all signals
+improve CSS render
+maybe some alarms for open breaker?
 
 

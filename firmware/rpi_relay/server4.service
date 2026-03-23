@@ -1,7 +1,8 @@
 # /etc/systemd/system/server4.service
 [Unit]
 Description=C++ server 4
-After=network.target
+After=bridge-veth.service
+Requires=bridge-veth.service
 StartLimitIntervalSec=60
 StartLimitBurst=3
 
@@ -16,7 +17,7 @@ ExecStartPre=/bin/chown user /run/iec61850_ui
 WorkingDirectory=/opt/iec61850_open_server
 
 ExecStart=/opt/iec61850_open_server/open_server \
-		-e eth0 \
+		-e veth4p \
 		-i 172.16.1.31 \
 		-p 102 \
 		-c cfg/BUS2.cfg \
@@ -25,7 +26,6 @@ ExecStart=/opt/iec61850_open_server/open_server \
 
 Restart=on-failure
 RestartSec=5
-
 
 StandardOutput=journal
 StandardError=journal

@@ -1,0 +1,16 @@
+[Unit]
+Description=Setup bridge and veth interfaces for IEC61850 instances
+Wants=network-pre.target
+After=network-pre.target sys-subsystem-net-devices-eth0.device
+Before=network.target
+
+# Ensure eth0 exists
+Requires=sys-subsystem-net-devices-eth0.device
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/setup-bridge-veth.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

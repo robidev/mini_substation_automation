@@ -57,16 +57,16 @@ systemctl --user status pipewire pipewire-pulse
 
 vcgencmd measure_temp
 
-sudo nmcli connection modify "Wired connection 1" \
-ipv4.addresses "172.16.1.20/24,172.16.1.21/24",172.16.1.30/24",172.16.1.31/24",172.16.1.40/24",172.16.1.41/24" \
-ipv4.method manual
+#sudo nmcli connection modify "Wired connection 1" \
+#ipv4.addresses "172.16.1.20/24,172.16.1.21/24",172.16.1.30/24",172.16.1.31/24",172.16.1.40/24",172.16.1.41/24" \
+#ipv4.method manual
 
-sudo ifconfig eth0:0 172.16.1.20 netmask 255.255.255.0 up
-sudo ifconfig eth0:1 172.16.1.21 netmask 255.255.255.0 up
-sudo ifconfig eth0:2 172.16.1.30 netmask 255.255.255.0 up
-sudo ifconfig eth0:3 172.16.1.31 netmask 255.255.255.0 up
-sudo ifconfig eth0:4 172.16.1.40 netmask 255.255.255.0 up
-sudo ifconfig eth0:5 172.16.1.41 netmask 255.255.255.0 up
+#sudo ifconfig eth0:0 172.16.1.20 netmask 255.255.255.0 up
+#sudo ifconfig eth0:1 172.16.1.21 netmask 255.255.255.0 up
+#sudo ifconfig eth0:2 172.16.1.30 netmask 255.255.255.0 up
+#sudo ifconfig eth0:3 172.16.1.31 netmask 255.255.255.0 up
+#sudo ifconfig eth0:4 172.16.1.40 netmask 255.255.255.0 up
+#sudo ifconfig eth0:5 172.16.1.41 netmask 255.255.255.0 up
 
 sudo systemctl start server1.service
 sudo systemctl start server2.service

@@ -1,7 +1,8 @@
 # /etc/systemd/system/server6.service
 [Unit]
 Description=C++ server 6
-After=network.target
+After=bridge-veth.service
+Requires=bridge-veth.service
 StartLimitIntervalSec=60
 StartLimitBurst=3
 
@@ -16,7 +17,7 @@ ExecStartPre=/bin/chown user /run/iec61850_ui
 WorkingDirectory=/opt/iec61850_open_server
 
 ExecStart=/opt/iec61850_open_server/open_server \
-		-e eth0 \
+		-e veth6p \
 		-i 172.16.1.41 \
 		-p 102 \
 		-c cfg/TR2.cfg \
