@@ -382,7 +382,7 @@
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
         </g>
         <g id="PT1_Fdr1_txt" transform="translate(-120, 0)">
-          <text x="0" y="148" id="Amp_PT2_F1" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT2_F1')">CTR: {value} A</text>
+          <text x="0" y="148" id="Amp_PT1_F1" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT1_F1')">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F1</text>
           <text x="20" y="52" class="equipment-label">CBR_F1</text>
           <text x="20" y="92" class="equipment-label">DIS_F1</text>
@@ -406,7 +406,7 @@
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
         </g>
         <g id="PT1_Fdr2_txt"  transform="translate(-30, 0)">
-          <text x="0" y="148" id="Amp_PT2_F2" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT2_F2')">CTR: {value} A</text>
+          <text x="0" y="148" id="Amp_PT1_F2" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT1_F2')">CTR: {value} A</text>
           <text x="20" y="128" class="equipment-label">CTR_F2</text>
           <text x="20" y="52" class="equipment-label">CBR_F2</text>
           <text x="20" y="92" class="equipment-label">DIS_F2</text>
@@ -430,7 +430,7 @@
           <path d="M -10,180 L 0,200 L 10,180" class="arrow"/>
         </g>
         <g id="PT1_Fdr3_txt"  transform="translate(60, 0)">
-          <text x="0" y="148" id="Amp_PT2_F3" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT2_F3')">CTR: {value} A</text>
+          <text x="0" y="148" id="Amp_PT1_F3" class="MEAS" data-text="CTR: {value} A" fill="#ffffff" stroke="#ffffff" font-size="12" onclick="open_control(evt,'Amp_PT1_F3')">CTR: {value} A</text>
          <text x="20" y="128" class="equipment-label">CTR_F3</text>
           <text x="20" y="52" class="equipment-label">CBR_F3</text>
           <text x="20" y="92" class="equipment-label">DIS_F3</text>
