@@ -1,7 +1,5 @@
 server+ui updaten
-[substation hardware] -design door MS
-                      -stickers?
-                      -knoppen lijmen
+[substation hardware] -knoppen lijmen
                       -leds met krimpkous
 
 issues:
