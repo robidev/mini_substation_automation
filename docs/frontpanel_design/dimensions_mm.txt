@@ -2,7 +2,8 @@ SAS_102.193x50.038mm.png: 		102.193 mm x 50.038 mm
 MS_red_126.153x50.123mm.png: 		126.153 mm x 50.123 mm
 MS_blue_126.238x49.953mm.png: 		126.238 mm x 49.953 mm
 
-
+door_f_21.929x46.990mm.png: 		21.929 mm x 46.990 mm
+door_b_21.929x46.905mm.png: 		21.929 mm x 46.905 mm
 
 micom_text_only_71.797x6.943mm.png: 	71.797 mm x 6.943 mm
 micom_73.914x76.793mm.png: 		73.914 mm x 76.793 mm
