@@ -1,12 +1,9 @@
-server+ui updaten
-[substation hardware] -knoppen lijmen
-                      -leds met krimpkous
-
 issues:
 short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
 value scaling
+iec61850_open_client seems not to properly load iec61850 connections on Eee-pc
 
 
 NICE:   indicate hw-pi service running????
