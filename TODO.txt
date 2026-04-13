@@ -3,18 +3,13 @@ short matrix werkt anders
 phasor werkt wat vreemd, goed doortesten 
 VTR-feedback werkt vreemd. 1 scheider bij TR1/2 gesloten zorgde voor spanning op andere bus?
 value scaling
-iec61850_open_client seems not to properly load iec61850 connections on Eee-pc->git pull some fixes on gateway and client
 
 
 NICE:   indicate hw-pi service running????
         NTP timeserver op gtw
 
-NEXT:
-
 [SCADA]
-make central SCADA display
-improve healt-check for mongodb
-draw HS incomer, MS outgoing, and a few MSR/houses
+make central SCADA display-> draw HS incomer, MS outgoing, and a few MSR/houses
 also add all to gismap
 test all signals
 maybe some alarms for open breaker?
